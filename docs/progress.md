@@ -1196,6 +1196,36 @@ playwright test  ✓  21 passed, 11 tracked-skip (VG-004), dry run confirms serv
 
 ---
 
+### Backlog Session 3 — Content model extension (VG-010) + Railway production fix
+**Status:** Complete ✅ — merged to `main`, production verified live
+**Branches:** `schema/session-3-entities` (PR #14), `content/session-3-migration-stopgap` (PR #15), `fix/boot-env-non-fatal` (PR #16) — all merged · **Date:** 2026-08-31
+**Governing doc:** `01-final-implementation-blueprint-v2.md` §6 (Content model — schema deltas). Not to be confused with the earlier `Session 3 — CMS schemas + JSON-LD` above (different work, different date).
+
+#### What was done
+
+- **PR #14 — schema extension (`packages/schemas/src/cms.ts`):** four new entities (`ProductCategory`, `Industry`, `Capability`, `Resource`) and junction fields on `Product` (`categorySlug`, `industrySlugs` min 1, `capabilitySlugs`, `standardsMatrix`) and `Project` (`productSlugs` min 1, `industrySlug`, `capabilitySlugs`, `location`, optional `clientSlug` + narrative fields, `documents[]`). Three new ship gates: `Industry` needs ≥2 `productSlugs`, `Capability` needs ≥1 `envelope` row (both inline `.min()`), and a cross-entity gate `validateProjectClientPermission(project, allClients)` for the future content loader. Built TDD — 22 tests written and watched fail before implementation, 64/64 passing after. Two named decisions surfaced for review and resolved: `standardsMatrix` shape kept as `{code, phase}[]` (matches `SpecTableRow` convention); the Client-permission gate confirmed correct as-is — a `Client` record is only ever created once permission is approved, so "no matching Client record" already *is* "not approved," not a separate case.
+- **PR #15 — stopgap content migration:** merging PR #14 made 4 `Product` fields required, which broke `pnpm build` for all 17 hardcoded `Product.parse()` records in `apps/web/lib/content/{dhruv-epc,precise-engineers}.ts` (Zod validation failure at build time). Patched all 17 with `categorySlug` (reused from existing `group` value — real taxonomy), `industrySlugs: ['general']` (explicit `STOPGAP` placeholder comment — no `Industry` content exists yet to reference), and empty `capabilitySlugs`/`standardsMatrix` (honest "not yet classified" rather than a fabricated design/fab/test split). No `Project.parse()` records exist in content yet, so no Project-side migration was needed.
+- **PR #16 — Railway production fix:** user reported the live site showing an internal error. `railway logs` showed the container booting fine but crashing on every request — `apps/web/lib/env.ts`'s boot-time check (from the already-merged backend-persistence session) throws when any of 10 vars are missing, and Railway's `production` environment has none of them set (`DATABASE_URL`, `RESEND_API_KEY`, `RFQ_NOTIFY_TO/FROM`, `STORAGE_*`, `NEXT_PUBLIC_CONTACT_*`). Confirmed nothing imports the `env` export — RFQ/presign/notify all read `process.env` directly and already degrade per-request (presign already returns 503 when storage vars are unset) — so the throw was a pure fail-fast gate with no other dependent. Changed to `console.warn` instead of throw: same diagnostic visibility in logs, but the process stays up and every non-RFQ page works. User's call: RFQ credentials (Postgres, Resend, S3/R2) are being wired up later — team's immediate priority is reviewing the marketing site.
+
+#### Gate result
+
+```
+pnpm typecheck   ✓  4/4 packages, zero errors
+pnpm lint        ✓  0 errors (2 pre-existing Tailwind warnings in LegalDocument.tsx, unrelated)
+pnpm test        ✓  all pass except the pre-existing DATABASE_URL-gated RFQ integration test (unrelated, tracked)
+pnpm build       ✓  all routes prerendered, zero errors
+Railway prod     ✓  https://dhruv-epc-website-redesign-production.up.railway.app/ → 200, container RUNNING, no crash loop
+```
+
+#### What's NOT done / deferred
+
+- Real content migration: `industrySlugs: ['general']` is a placeholder on all 17 products — needs actual `Industry`/`Capability` content records and real per-product tagging once that content exists.
+- RFQ lead capture, email notification, and file upload are non-functional in production until real `DATABASE_URL`, `RESEND_API_KEY`, and `STORAGE_*` credentials are set in Railway — deliberately deferred per user instruction, logged loudly (not silently) in Railway logs in the meantime.
+- `NEXT_PUBLIC_CONTACT_EMAIL`/`NEXT_PUBLIC_CONTACT_PHONE` are also unset — likely `vedant@vedantagroup.net` / `+918905917700` per existing `dhruv-epc.ts`/`group.ts` content, not set without user confirmation since it's user-facing.
+- Project system content (routes, index, records) still doesn't exist — blueprint §8 already flagged this as later work; today's session only added the schema.
+
+---
+
 ### Deferred queue — ⏰ REMIND SWAYAM AFTER SESSION 10 (his instruction, 2026-07-10)
 
 1. **Session 6 human gate:** E2E RFQ with real creds — `STORAGE_*`, `RESEND_API_KEY`,
