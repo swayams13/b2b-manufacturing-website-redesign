@@ -3,7 +3,7 @@
 // already is), Step 2 Contact. Labeled progress, not dots. Failure preserves
 // every field (FR-3: a lost lead is the one unacceptable failure mode).
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button, ChoiceCard, Input, Select, Textarea, UploadDropzone } from '@vedanta/datum-ui'
 import { RFQStep1, RFQStep2 } from '@vedanta/schemas'
@@ -79,12 +79,26 @@ export function RFQForm({ initialCompany, initialEquipment, fallbackEmail, fallb
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [submitting, setSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  // Fade+rise the failure alert in on mount (mirrors MobileDrawer.tsx's
+  // shown/rAF pattern) — an instant appear/disappear reads as broken for a
+  // "your requirement failed to send" message (Datum §11: motion confirms
+  // actions).
+  const [submitErrorShown, setSubmitErrorShown] = useState(false)
 
   // Time-trap reference (form-open time) + stable idempotency key so a retry
   // after a timed-out-but-delivered submit cannot create a duplicate lead
   const openedAt = useRef(Date.now())
   const idempotencyKey = useRef(crypto.randomUUID())
   const stepHeadingRef = useRef<HTMLParagraphElement>(null)
+
+  useEffect(() => {
+    if (!submitError) {
+      setSubmitErrorShown(false)
+      return
+    }
+    const raf = requestAnimationFrame(() => setSubmitErrorShown(true))
+    return () => cancelAnimationFrame(raf)
+  }, [submitError])
 
   const step1Data = () => ({
     company,
@@ -418,7 +432,12 @@ export function RFQForm({ initialCompany, initialEquipment, fallbackEmail, fallb
           </div>
 
           {submitError && (
-            <div role="alert" className="rounded-sm border border-signal-error bg-signal-error-tint p-4 text-sm text-steel-950">
+            <div
+              role="alert"
+              className={`rounded-sm border border-signal-error bg-signal-error-tint p-4 text-sm text-steel-950 transition-all duration-standard ease-enter motion-reduce:transition-none ${
+                submitErrorShown ? 'opacity-100' : 'translate-y-3 opacity-0'
+              }`}
+            >
               <p>{submitError}</p>
               {(fallbackEmail || fallbackPhone) && (
                 <p className="mt-2 text-steel-700">
