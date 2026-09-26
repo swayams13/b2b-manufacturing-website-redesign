@@ -10,12 +10,12 @@ import {
   CategoryCard,
   CertificationCard,
   ClientMarquee,
-  HomeHero,
   IndustryCard,
   StatBand,
   type StampProps,
 } from '@vedanta/datum-ui'
 import { buildOrganization } from '@vedanta/schemas'
+import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { RFQBand } from '../../components/RFQBand'
 import { getCertifications, getClients, getEntity, getIndustries, getProductCategoriesByCompany, getProductsByCompany } from '../../lib/content-loader'
 import { categoryHref, industryHref } from '../../lib/product-urls'
@@ -90,20 +90,13 @@ export default function GroupHome() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildOrganization(groupEntity)) }}
         />
 
-        {/* §14.2 item 1 — hero, what the group manufactures, stated with a
-            figure. Hero C split hero (Decision 2, Phase 13) — the group
-            home is the top-level page, so it carries no breadcrumb (600px
-            panel height, per Decision 2's own derivation from breadcrumb
-            presence). No photo/dimensionLabel wired yet — same deferred
-            works-photography state as Dhruv/Precise. */}
-        <HomeHero
-          variant="split"
-          eyebrow="ASME U & U2 · IBR · EIL Approved · ISO 9001:2015"
-          headline="Vedanta Group — precision fabrication and flow-control engineering since 1994."
-          subhead="Two specialized works in Gujarat: static equipment to ASME Sec. VIII at Vadodara, and expansion joints to EJMA at Anand — one group, one quality system."
-          rfq={{ label: 'Request a quote', href: '/request-a-quote' }}
-          secondary={{ label: 'View products', href: '#products' }}
-        />
+        {/* §14.2 item 1 — hero. Group homepage v2 rebuild (Session 39):
+            replaces the split HomeHero with the design handoff's 4-slide
+            carousel — an approved, page-scoped override of the carousel
+            ban (docs/decisions.md, 2026-09-26 "Group homepage v2 hero").
+            Not a precedent for HomeHero itself, still used unchanged on
+            the Dhruv/Precise home pages. */}
+        <HeroCarousel />
 
         {/* §14.2 item 2 — products by category, the primary entry */}
         <section id="products" aria-labelledby="products-heading" className="bg-steel-900">

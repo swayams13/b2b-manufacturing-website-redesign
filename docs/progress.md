@@ -4555,3 +4555,246 @@ session revives it — no functionality was rewritten or reinterpreted,
 only deleted. If revived, the `PageHero`/`ProductHero` guard reasoning
 this session removed (don't pass `ExplodedSequence` into a fixed-
 min-height photo-ground slot) should be restored alongside it.
+
+---
+
+### Session 38 — RFQ 500 on live Railway — demo-mode fallback — PR #32 merged
+
+Human reported clicking Request a Quote / Send Quote on the live
+Railway site returned an internal error. Root-caused via `railway
+status` (project already linked) + `railway logs`, which printed the
+boot-time `[env]` warning outright: every RFQ-related env var
+(`DATABASE_URL`, `RESEND_API_KEY`, `RFQ_NOTIFY_TO`, `RFQ_NOTIFY_FROM`,
+all five `STORAGE_*` vars, both `NEXT_PUBLIC_CONTACT_*` vars) is unset
+on the production service. Traced which code path actually throws:
+`presign` and `notify.ts` already degrade gracefully (503 / log-only)
+per their existing design, but `apps/web/lib/leads.ts`'s
+`isRateLimited`/`findByIdempotencyKey`/`insertLead` call `query()`
+straight into `pg.Pool` with no `DATABASE_URL` guard — that throw is
+uncaught inside `POST /api/rfq`, which Next.js turns into the bare 500
+the human saw. Checked `.env.local` and found it empty of real values
+(only a local-only Postgres URL) — nothing to copy into Railway; real
+credentials don't exist anywhere in this repo or on this machine.
+
+Human's ask, once real credentials weren't available: make the RFQ
+button demoable for the team right now, without storing any real
+values, and wire real infra later once the team signals go-ahead.
+Added a `DEMO_MODE` branch to `leads.ts` (ponytail-marked, matching the
+degrade-instead-of-crash pattern `notify.ts`/`presign` already use):
+when `DATABASE_URL` is unset, rate-limiting, idempotency lookup, and
+lead "insert" run against an in-memory array instead of Postgres,
+producing a real-shaped `VG-######` reference via a local counter.
+`updateNotificationStatus` no-ops in this mode. Deliberately scoped to
+`leads.ts` only — `db.ts` and `presign-keys.ts` untouched, since a
+no-attachment RFQ submission never reaches `presign-keys.ts` and
+file-upload already has its own graceful 503 when storage vars are
+unset. Logs `[leads] DATABASE_URL not set — demo mode` on module load
+so it's visible in Railway logs as a known temporary state, not a
+silent success.
+
+**This is temporary and lossy by design:** no lead is persisted, no
+email/WhatsApp fires, and everything resets on redeploy/restart. The
+existing `notification_status`/durability guarantees (VG-040, VG-041)
+do not apply while `DEMO_MODE` is active. Self-disables the moment
+`DATABASE_URL` is set on Railway — no follow-up code change needed.
+
+**Verify:** typecheck/lint/build all clean (lint warnings are the
+pre-existing unrelated `LegalDocument.tsx` ones). Wrote a throwaway
+vitest file exercising `POST /api/rfq` with `DATABASE_URL` deleted from
+`process.env` — confirmed 200 + `VG-000000`-shaped reference instead of
+500, then deleted the test file (not part of the permanent suite; the
+real `route.test.ts` integration test still requires a real Postgres
+`DATABASE_URL` and is unaffected). Branch `docs/session-36-progress`
+(continued from this branch's pending log commits), commit `32dfecd`,
+PR #32 opened against `main`, CI green (Lint · Typecheck · Test ·
+Accessibility · Performance, Vercel deploy, Vercel Preview Comments),
+merged via `gh pr merge 32 --merge` on explicit human instruction
+(merge commit `52844c1`).
+
+**Follow-up owed:** once the team gives the go-ahead, set the real
+`DATABASE_URL`, `RESEND_API_KEY`, `RFQ_NOTIFY_TO`, `RFQ_NOTIFY_FROM`,
+`STORAGE_*`, and `NEXT_PUBLIC_CONTACT_*` vars on the Railway service
+(`beautiful-courage` project, `Dhruv-EPC-Website-Redesign-` service)
+and redeploy — this removes demo mode's lossiness without touching
+code again.
+
+---
+
+### Session 39 — Group homepage v2 rebuild (in progress) — branch `feat/group-home-v2`
+
+Design handoff supplied as `Prototype hub for two websites.zip`
+(Downloads — not the `design_handoff_group_home_v2`-named file/folder
+the human's instructions expected; asked, human gave the actual path).
+Extracted to `design_handoff_group_home_v2/` at repo root, no wrapper
+folder to flatten. All expected files present (`README.md`,
+`SKILLS-RUNBOOK.md`, `reference/Vedanta Group Website v2.dc.html`,
+`vedanta-data.js`, `support.js`, `reference/assets/`), plus one extra
+(`reference/Management review notes.md` — real content, read in full).
+`reference/assets/` gitignored per instruction (client/approval logo
+crops, permission pending; production logos already in
+`apps/web/public/logos`).
+
+**Skills installed** (project-scoped `.claude/skills/`, per
+SKILLS-RUNBOOK.md): `emil-design-eng` (from
+github.com/emilkowalski/skills — Emil Kowalski's UI-polish/animation
+philosophy) and `ui-ux-pro-max` (from
+github.com/nextlevelbuilder/ui-ux-pro-max-skill — UX/a11y/hierarchy
+review, Python search script verified working). `frontend-design` was
+already available as a built-in Claude Code plugin skill, no install
+needed. Playwright confirmed at 1.62.1, matching the runbook.
+
+**Step 0 — the README's 8 "Decisions needed"**, all resolved by Swayam
+before any page code was written:
+1. Hero rotating carousel: **approved as an override** (not the
+   static-hero recommendation) — logged in `docs/decisions.md`.
+2. Business-card accent fills: **approved as thin rule + mono label**
+   (not plain steel outline) — logged in `docs/decisions.md`.
+3. Motion durations above the §11 token ceiling (1400ms cross-fade,
+   9000ms Ken Burns): **approved as the prototype's own values**,
+   bundled into the same carousel decisions.md entry.
+4. Archivo → Plus Jakarta Sans: not a real decision, just applied.
+5. Uppercase eyebrows → title case: not a real decision, just applied.
+6. Careers: **build the full mechanism now** (job-listing UI, presigned
+   CV upload, `/api/careers` route) but keep the 3 listings tagged
+   `EXAMPLE` (no fabricated real vacancies) — the new API route still
+   needs Swayam's human-review sign-off before merge per CLAUDE.md.
+7. Missing DESPL photography: **no-photo variant** for genuinely
+   missing DESPL slots (see photography note below).
+8. Clients & Projects grid: **keep `ClientMarquee`** (not the
+   prototype's static grid).
+
+**Photography blocker, found and resolved mid-build:** the build agent
+found *no* production photography exists anywhere in `apps/web/public/`
+— not a DESPL-only gap as Decision 7 assumed, but true for Precise
+Engineers too (the prototype's PE photos only existed in the gitignored
+`reference/assets/`). Asked Swayam: promoted all 7 real (non-AI,
+non-stock) photos — 5 PE shop photos, DESPL's Emerson CGD-skid project
+photo, and DESPL's design-office 3D skid model (a labeled CAD render,
+approved as an honestly-captioned engineering artifact, Datum §2.1, not
+passed off as product photography) — into
+`apps/web/public/photography/<company-slug>/` (commit `c3315d6`).
+DESPL's actual facility/shop-floor photography (welding, boring mill,
+hydrotest, 6-of-8 product lines) is still genuinely missing and still
+gets the no-photo fallback.
+
+**Commits so far, on `feat/group-home-v2`:**
+- `fa51320` — handoff extraction + skill installs + decisions.md entries
+- `e1413df` — stop tracking `ui-ux-pro-max`'s accidental `__pycache__`
+- `429f481` — `Header` (`@vedanta/datum-ui`) gains an `extraMenus` prop
+  for multiple independent mega-panel triggers (Our Businesses /
+  Careers), no behavior change for Dhruv/Precise chromes
+- `5bbcc9a` — utility bar (phone/email from the group `EntityRecord`) +
+  primary nav restructured to the README's spec + Our
+  Businesses/Careers mega panels in `GroupChrome.tsx`
+- `c3315d6` — real photography promoted to production (above)
+
+Typecheck/lint clean on everything committed so far; zero
+`docs/mistakes.md` entries (no circuit-breaker hits yet).
+
+**Sections done (README "Screens / sections" order):** 1 Utility bar,
+2 Header/mega panels. **In progress, uncommitted:** 3 Hero — the build
+agent was mid-way through `apps/web/components/group/HeroCarousel.tsx`
+(278 lines: slide data, cross-fade/Ken-Burns per the approved override,
+reduced-motion collapse to a static frame, chapter-tab rail) when the
+human interrupted/killed the agent. The file exists on disk, untracked,
+**not yet wired into `(group)/page.tsx`, not yet reviewed or
+committed** — treat as a checkpoint to resume from, not finished work.
+**Not started:** 4 About, 5 Our Businesses (homepage section), 6
+Products & Solutions, 7 Manufacturing, 8 Figures, 9 Clients & Projects
+(featured case + `ProjectCard`s, keeping `ClientMarquee`), 10 Our
+Journey, 11 Quality, 12 Careers (+ `/api/careers`), 13 Enquiry, 14
+Footer check. Then Steps 2–5 of SKILLS-RUNBOOK.md: Apple design-eng
+polish pass, UI UX Pro review pass, Playwright e2e suite
+(`e2e/group-home-v2.spec.ts`), full `pnpm typecheck && lint && test &&
+build` verify (a separate, fresh-eyes pass — not self-graded), then PR.
+
+**To resume:** review `HeroCarousel.tsx` against the reference and the
+approved overrides before committing it or wiring it in, then continue
+section-by-section from Hero through Footer.
+
+---
+
+### Session 40 — Hero reviewed, fixed, wired in — group home v2 continues
+
+Resumed from Session 39's checkpoint. Reviewed the untracked
+`HeroCarousel.tsx` against `docs/decisions.md`'s carousel/motion-budget
+override and the reference handoff before committing, per the prior
+session's own instruction — found four real issues, not just style
+nits:
+
+1. **WCAG 2.2.2 (Pause, Stop, Hide) gap.** The carousel auto-rotates
+   every 7s indefinitely with no way to stop it — required for AA,
+   not optional polish (CLAUDE.md: "accessibility... build
+   constraints, not review items"). The reference prototype itself has
+   no pause control either, so this wasn't something to copy faithfully.
+   Added a pause/play toggle button (two small inline SVG glyphs,
+   Datum §12 24×24/1.5px-stroke construction, not added to the shared
+   glyph set — a one-off for this component's own control) next to the
+   years counter; hidden under `prefers-reduced-motion` since nothing
+   is rotating there to pause. Verified live: paused mid-rotation, held
+   for 8+s past the 7s interval, slide never advanced.
+2. **Arbitrary inline `fontSize: 44`** on the years-counter numeral —
+   no token matches (`text-h1` clamps 32–47px is the nearest resolved
+   value; `packages/tokens` has no bare-pixel display size). Swapped to
+   `text-h1`, which lint can't catch on an inline style but CLAUDE.md's
+   token rule still governs.
+3. **Two CI-blocking `tailwindcss/no-arbitrary-value` errors** —
+   `max-w-[620px]`/`max-w-[600px]` on the text column. No ~600px
+   `maxWidth` token exists (`packages/tokens/src/tailwind.ts` only has
+   content/1200 · wide/1360 · 2xl/1440 — adding one is a §26 review
+   event). Reused Tailwind's core fraction scale instead (`md:w-1/2`),
+   echoing `HomeHero`'s own 47/53 split, instead of introducing a token
+   or bypassing the linter with an inline style.
+4. **Three dead-on-arrival spacing classes** — `pb-10`, `w-7`, `mt-9`.
+   `packages/tokens/src/tailwind.ts` fully replaces (not extends) the
+   spacing scale down to `{0,px,1,2,3,4,6,8,12,16,24,32,40}`, so these
+   compiled to nothing (real bugs — missing bottom padding, a
+   zero-width kicker rule, missing CTA-row top margin — not lint
+   noise). Remapped to the nearest valid step: `pb-8`, `w-6`, `mt-8`.
+   Also cleared two `enforces-shorthand` warnings (`size-8`, `p-4`).
+
+**Noted, not fixed — logged here rather than a silent drive-by:**
+`DimensionLabel` (`packages/datum-ui`) was opened to the barrel on
+2026-07-16 specifically so this hero could reuse its count-up
+mechanic instead of reimplementing one — but it hardcodes `text-helper`
+(13px), incompatible with the 44px/extrabold treatment this stat needs,
+and takes no size override. `HeroCarousel.tsx` keeps its own
+`useCountUp` hook (already using the correct `motion-signature` token
+for duration, respects reduced motion). Extending `DimensionLabel` with
+a size variant would be a `datum-ui` component-contract change, out of
+scope for a hero commit — worth a design-review pass if another
+large-numeral stat shows up elsewhere.
+
+**Wired in:** `(group)/page.tsx` §14.2 item 1 now renders
+`<HeroCarousel />` in place of the old split `HomeHero`. Old hero
+props/copy fully replaced; `HomeHero` itself is untouched and still
+serves the Dhruv/Precise company homepages.
+
+**Verify:** `pnpm typecheck && lint && test && build` all clean
+(`HeroCarousel.tsx` has zero lint warnings/errors; the only remaining
+lint output is the pre-existing unrelated `LegalDocument.tsx` warnings
+from Session 38). Homepage route: 105 kB First Load JS, under the
+120 kB marketing-SSG budget. Live-browser check (`pnpm --filter
+@vedanta/web dev`, port 3000 was occupied by an unrelated project so
+Next fell back to 3001): hero photo/crossfade/Ken-Burns render
+correctly across all 4 slides, tab rail + fill-bar animation work,
+pause/play verified functional, and an existing `CategoryCard`'s
+`:focus-visible` ring confirmed the global focus rule still fires
+(§25 not suppressed). **Not verified this session:** 320px mobile
+reflow (the browser tool's `resize_window` didn't visibly take effect
+against the captured screenshot) and `prefers-reduced-motion` collapse
+in a real browser (verified by code inspection only — the `reduced`
+branch renders slide 0 statically, skips the fill-bar animation and
+hides the pause control). Flagging as an honest gap, not claiming
+verified.
+
+**Commits:** `apps/web/components/group/HeroCarousel.tsx` (new) +
+`apps/web/app/(group)/page.tsx` (hero swap) + this log, one commit.
+
+**Not started, unchanged from Session 39:** 4 About, 5 Our Businesses,
+6 Products & Solutions, 7 Manufacturing, 8 Figures, 9 Clients &
+Projects, 10 Our Journey, 11 Quality, 12 Careers (+ `/api/careers`),
+13 Enquiry, 14 Footer check, then SKILLS-RUNBOOK.md Steps 2–5 (design
+polish, UI/UX review, Playwright e2e, full verify, PR). Given the size
+of what's left, stopping here to check in rather than continuing
+unsupervised through 10+ more sections in one pass.
