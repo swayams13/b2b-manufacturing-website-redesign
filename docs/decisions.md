@@ -88,3 +88,25 @@ and does not revisit either.
 **Scope of the override:** the two "Our Businesses" cards on the group homepage only — not a precedent for accent fills, rules, or colored labels on `ProductCard`, `ProjectCard`, or any other card type, and not a precedent for any other route.
 
 **Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: page architecture — replace pre-v2 sections, keep Industries served
+
+**What was decided:** the pre-v2 `(group)/page.tsx` (blueprint §14.2, Session 9) has four sections whose purpose overlaps a new group-home-v2 section. Rather than run both (duplicate content, against Datum's restraint principle), each v2 section **replaces** its pre-v2 counterpart in place, one for one, as its own section commit:
+
+| Pre-v2 section (§14.2 item) | Replaced by v2 section |
+|---|---|
+| item 6, "Two specialized works, one group" (DOORS cards) | §03 Our Businesses |
+| item 2, products-by-category (`CategoryCard` grid) | §04 Products & Solutions (`ProductCard`, curated set) |
+| item 4, `StatBand` proof band | §06 Figures |
+| item 4/§proof, `CertificationCard` grid | §09 Quality |
+| clientele band (`ClientMarquee`) | §07 Clients & Projects (keeps `ClientMarquee` for the logo grid per README Decision 8, extended with featured case + `ProjectCard`s) |
+
+**Industries served (§14.2 item 3) is the one pre-v2 section with no v2 equivalent** — the handoff's section order has no "industries" slot. Decided: **keep it**, inserted into the v2 flow after §04 Products & Solutions (nearest thematic fit — it's demand-side context for the same products just shown). Not dropped, since the content is real and sourced (`getIndustries()`), not a v2 conflict, just an ordering gap.
+
+**Why:** explicit call by Swayam (2026-09-26), asked because the SKILLS-RUNBOOK.md build prompt didn't specify replace-vs-append and Industries served has no home in the new order — an architecture decision, not a token/spacing nit.
+
+**Scope:** the group homepage (`(group)/page.tsx`) only. Not a precedent for any other route's section structure.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.

@@ -1,9 +1,10 @@
-// Group home — blueprint §14.2 section order (Session 9, VG-050):
-// hero → products by category → industries served → proof → selected
-// projects (omitted — no Project system yet, §8, gated on ⛔C-1) → the
-// two companies (demoted from the old doors-first lead) → RFQ.
-// Zero accent-filled elements outside the RFQ button (§13's amber/blue
-// law) — the door CTAs stay accent-colored links, not fills.
+// Group home — being rebuilt section-by-section to the group-home-v2 design
+// (design_handoff_group_home_v2/README.md "Screens / sections"), replacing
+// the old blueprint §14.2 section order in place per section (see
+// docs/decisions.md, 2026-09-26 "page architecture" entry for the
+// replace/keep call on each pre-v2 section). Zero accent-filled elements
+// outside the RFQ button (§13's amber/blue law) except the two logged,
+// scoped overrides in docs/decisions.md.
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import {
@@ -19,7 +20,7 @@ import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { RFQBand } from '../../components/RFQBand'
 import { getCertifications, getClients, getEntity, getIndustries, getProductCategoriesByCompany, getProductsByCompany } from '../../lib/content-loader'
-import { categoryHref, industryHref } from '../../lib/product-urls'
+import { categoryHref, industryHref, productHref, rfqHref } from '../../lib/product-urls'
 import { groupStats } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
@@ -39,25 +40,53 @@ export const metadata: Metadata = {
     'Dhruv EPC Solutions (ASME U/U2, IBR static equipment, Vadodara) and Precise Engineers (EJMA expansion joints 80 – 8,000 mm, Anand). Est. 1994.',
 }
 
-// §14.2 item 6 — demoted from the old doors-first lead
-const DOORS = [
+// group-home-v2 §03 Our Businesses — replaces the old §14.2 item 6 DOORS
+// cards (docs/decisions.md, 2026-09-26 "page architecture" entry). Product
+// link lists are 6 of each company's real catalog (8 Dhruv EPC · 9 Precise
+// Engineers products — matches the reference's own selection), built with
+// productHref() rather than hardcoded paths.
+const BUSINESSES = [
   {
     company: 'dhruv' as const,
-    name: 'Dhruv EPC Solutions',
-    scope: 'Pressure vessels, heat exchangers and process skids to ASME Sec. VIII Div. 1 & 2',
-    chips: ['ASME U · U2 · IBR', 'CS · SS · Ni alloys', 'Vadodara works'],
-    groups: ['Static Equipment', 'Skids & Packages', 'Fabrication & Machining'],
-    href: '/dhruv-epc',
-    cta: 'Enter Dhruv EPC',
+    name: 'Dhruv EPC Solutions Pvt. Ltd.',
+    logo: '/logos/dhruv-epc.png',
+    tagline: 'Static equipment · EPC packages · heavy engineering',
+    scope:
+      'Pressure vessels, shell & tube heat exchangers, storage tanks and skid-mounted process packages, designed and fabricated to ASME, IBR and TEMA under ASME U and U2 Certificates of Authorization.',
+    products: [
+      ['static-equipment', 'pressure-vessels', 'Pressure Vessels'],
+      ['static-equipment', 'heat-exchangers', 'Shell & Tube Heat Exchangers'],
+      ['skids-packages', 'process-skids', 'Process Skids'],
+      ['skids-packages', 'pipe-spools', 'Pipe Spools'],
+      ['fabrication-machining', 'heavy-fabrication', 'Heavy Fabrication'],
+      ['fabrication-machining', 'heavy-machining', 'Heavy Machining'],
+    ] as const,
+    photo: '/photography/dhruv-epc/despl-cgd-skid.jpg',
+    photoAlt: 'City Gas Distribution skid fabricated by Dhruv EPC Solutions for Emerson',
+    photoTag: 'Manjusar GIDC, Vadodara',
+    exploreHref: '/dhruv-epc',
+    enquireHref: rfqHref('dhruv'),
   },
   {
     company: 'precise' as const,
     name: 'Precise Engineers',
-    scope: 'Metallic, rubber and fabric expansion joints to EJMA, 80 – 8,000 mm NB',
-    chips: ['EJMA · ASME B31.3', '80 – 8,000 mm NB', 'EIL approved'],
-    groups: ['Expansion Joints', 'Flow Control'],
-    href: '/precise-engineers',
-    cta: 'Enter Precise Engineers',
+    logo: '/logos/precise-engineers.png',
+    tagline: 'Expansion joints · bellows · pipeline components',
+    scope:
+      'Metallic, rubber and fabric expansion joints, dismantling joints, flange adaptors, valves and dampers, designed to EJMA and ASME B31.3 and built in our own works. EIL approved vendor.',
+    products: [
+      ['expansion-joints', 'metallic-bellows-expansion-joint', 'Metallic Bellows Expansion Joints'],
+      ['expansion-joints', 'dismantling-joint', 'Dismantling Joints'],
+      ['expansion-joints', 'telescopic-expansion-joint', 'Telescopic Expansion Joints'],
+      ['expansion-joints', 'rubber-bellows', 'Rubber Bellows'],
+      ['expansion-joints', 'flange-adaptor', 'Flange Adaptors'],
+      ['flow-control', 'damper', 'Dampers'],
+    ] as const,
+    photo: '/photography/precise-engineers/pe-inline-pb.jpg',
+    photoAlt: 'Inline pressure-balanced expansion joints built by Precise Engineers',
+    photoTag: 'Vitthal Udyognagar, Anand',
+    exploreHref: '/precise-engineers',
+    enquireHref: rfqHref('precise'),
   },
 ]
 
@@ -173,6 +202,96 @@ export default function GroupHome() {
                 Large-bore expansion joint · Precise Engineers works
               </figcaption>
             </figure>
+          </div>
+        </section>
+
+        {/* group-home-v2 §03 Our Businesses — replaces the old §14.2 item 6
+            DOORS section (docs/decisions.md, 2026-09-26 "page architecture"
+            entry). The thin brand/flex top rule + mono tagline on each card
+            is the one other approved accent-color override on this page
+            (docs/decisions.md, 2026-09-26 "business-card accent as rule +
+            label, not fill") — the "Explore Business" / "Enquire" buttons
+            stay non-accent (steel primary / secondary), so the RFQ button
+            remains the page's only accent-*filled* element. */}
+        <section id="businesses" aria-labelledby="businesses-heading" className="border-t border-steel-800 bg-steel-950">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-content">
+                <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-400">
+                  <span className="h-px w-6 bg-current" aria-hidden="true" />
+                  Our Businesses
+                </p>
+                <h2 id="businesses-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-50">
+                  Two specialised businesses. One engineering group.
+                </h2>
+              </div>
+              <p className="max-w-content text-body-lg text-steel-300">
+                Each business makes its own product range in its own works, holds its own
+                certifications and handles its own enquiries.
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {BUSINESSES.map((biz) => (
+                <article
+                  key={biz.company}
+                  data-company={biz.company}
+                  aria-labelledby={`biz-${biz.company}-h`}
+                  className="flex flex-col bg-white text-steel-950"
+                >
+                  <a href={biz.exploreHref} aria-label={`Explore ${biz.name}`} className="group relative block aspect-video overflow-hidden bg-steel-100">
+                    <Image
+                      src={biz.photo}
+                      alt={biz.photoAlt}
+                      fill
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                      className="object-cover transition-transform duration-signature ease-standard group-hover:scale-105"
+                    />
+                    <span className={`absolute inset-x-0 top-0 h-1 ${biz.company === 'dhruv' ? 'bg-brand-500' : 'bg-flex-500'}`} aria-hidden="true" />
+                    <span className="absolute bottom-0 left-0 bg-steel-950/90 px-4 py-2 font-mono text-helper text-white">
+                      {biz.photoTag}
+                    </span>
+                  </a>
+                  <div className="flex flex-1 flex-col gap-4 p-8 sm:p-12">
+                    <Image src={biz.logo} alt="" width={140} height={38} className="h-8 w-auto self-start" />
+                    <div>
+                      <p className={`mb-2 font-mono text-helper ${biz.company === 'dhruv' ? 'text-brand-600' : 'text-flex-600'}`}>
+                        {biz.tagline}
+                      </p>
+                      <h3 id={`biz-${biz.company}-h`} className="font-display text-h3 font-medium leading-tight text-steel-950">
+                        {biz.name}
+                      </h3>
+                    </div>
+                    <p className="text-body text-steel-700">{biz.scope}</p>
+                    {/* A Button (§13) is a box or inline text link, not a
+                        full-width space-between row with a trailing glyph —
+                        no existing component fits this list-row shape, so
+                        it's a plain, directly-styled <a> (global
+                        :focus-visible still applies, it's not Button-only). */}
+                    <ul className="grid grid-cols-1 gap-x-6 border-t border-steel-200 sm:grid-cols-2">
+                      {biz.products.map(([categorySlug, slug, name]) => (
+                        <li key={slug} className="border-b border-steel-100">
+                          <a
+                            href={productHref(biz.company === 'dhruv' ? 'dhruv-epc' : 'precise-engineers', categorySlug, slug)}
+                            className="flex items-center justify-between gap-3 py-3 text-sm font-semibold text-steel-950 transition-colors duration-instant ease-standard hover:text-steel-600"
+                          >
+                            {name}
+                            <span aria-hidden="true">→</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-auto flex flex-wrap gap-3 pt-2">
+                      <Button variant="primary" href={biz.exploreHref}>
+                        Explore Business →
+                      </Button>
+                      <Button variant="secondary" href={biz.enquireHref}>
+                        Enquire with {biz.name.split(' ')[0]}
+                      </Button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -300,45 +419,6 @@ export default function GroupHome() {
           </div>
         </section>
 
-        {/* §14.2 item 6 — the two companies, demoted from the old lead */}
-        <section aria-labelledby="companies-heading" className="border-t border-steel-200 bg-steel-900">
-          <div className="mx-auto max-w-wide px-6 py-24">
-            <h2 id="companies-heading" className="font-display text-h1 font-medium text-steel-50">
-              Two specialized works, one group.
-            </h2>
-            <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-              {DOORS.map((door) => (
-                <article
-                  key={door.company}
-                  data-company={door.company}
-                  className="flex h-full flex-col rounded-sm border border-steel-800 bg-steel-950 p-8 transition-colors duration-fast ease-standard hover:border-accent"
-                >
-                  <div className="mb-8 h-px w-16 bg-accent" aria-hidden="true" />
-                  <h3 className="font-display text-h3 font-medium text-steel-50">{door.name}</h3>
-                  <p className="mt-2 text-body-lg text-steel-400">{door.scope}</p>
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {door.chips.map((chip) => (
-                      <li
-                        key={chip}
-                        className="rounded-sm border border-steel-800 bg-steel-900 px-3 py-1 font-mono text-helper text-steel-400"
-                      >
-                        {chip}
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="mt-4 text-xs font-medium text-steel-400">
-                    {door.groups.join(' · ')}
-                  </p>
-                  <div className="mt-auto pt-8">
-                    <Button variant="link" onDark href={door.href}>
-                      {door.cta} →
-                    </Button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* §14.2 item 7 — RFQ closer */}

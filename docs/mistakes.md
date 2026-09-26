@@ -743,3 +743,11 @@ done." A future session should re-crop/re-request real SVG or 4× PNG
 per client from their own brand pages and swap the `logo` paths once
 available — the content records and components don't need to change,
 only the asset files and paths.
+
+---
+
+**2026-09-26 — `HeroCarousel.tsx`'s `/#contact` links are dead anchors, found while building Our Businesses.**
+
+While wiring the Our Businesses section's "Enquire with…" CTAs (group-home-v2 §03), found the right pattern (`rfqHref('dhruv' | 'precise')` from `apps/web/lib/product-urls.ts`, which resolves to `/request-a-quote?company=…`) and used it there. Session 40's `HeroCarousel.tsx` (committed, live) has three CTAs pointing at `/#contact` — `cta2` on the group/journey slides ("Discuss Your Project", "Our 30-year journey →" is fine, it's the `#heritage`→`/about` mapping that's correct) and both companies' "Enquire with …" CTAs — but no element on `(group)/page.tsx` has `id="contact"`, so all three are dead in-page anchors that just reload the page at `/`.
+
+**Rule:** not fixed here — out of scope for the Our Businesses commit (CLAUDE.md: log unrelated bugs, don't fix inline). A future session should repoint `HeroCarousel.tsx`'s three `/#contact` hrefs to `rfqHref('dhruv')` / `rfqHref('precise')` / `rfqHref` with no company for the group-level one.
