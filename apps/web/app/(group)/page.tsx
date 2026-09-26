@@ -21,7 +21,7 @@ import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { RFQBand } from '../../components/RFQBand'
 import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
-import { groupStats } from '../../lib/site-data'
+import { dhruvWorksFacts, groupStats, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
 const groupEntity = getEntity('group')
@@ -391,6 +391,100 @@ export default function GroupHome() {
             </div>
           </section>
         )}
+
+        {/* group-home-v2 §05 Manufacturing — new section, no pre-v2
+            equivalent. Facts/disciplines come from lib/site-data.ts's
+            dhruvWorksFacts/preciseWorksFacts/manufacturingDisciplines
+            (real sourced figures, already extracted from the reference).
+            The reference's small per-works "facility slot" photo grid
+            (fabrication bay, boring mill, hydrotest, etc.) is omitted, not
+            rendered with placeholder tags — that photography genuinely
+            doesn't exist yet (docs/progress.md Session 40) and CLAUDE.md's
+            omit-not-empty convention beats inventing a new "photo
+            required" tag pattern for content with no real shoot planned.
+            Top border stays plain steel, not brand/flex, for the same
+            reason as the About section's works-list dots: the only
+            approved accent-color override is scoped to the Our Businesses
+            cards specifically. */}
+        <section id="capabilities" aria-labelledby="manufacturing-heading" className="border-t border-steel-200 bg-white">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <div className="max-w-content">
+              <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+                <span className="h-px w-6 bg-current" aria-hidden="true" />
+                Manufacturing &amp; engineering
+              </p>
+              <h2 id="manufacturing-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+                Engineering Capability. Manufacturing Precision.
+              </h2>
+              <p className="mt-6 text-body-lg text-steel-700">
+                Design, fabrication, machining, forming and testing are carried out in the
+                group&apos;s two works. The figures below are taken from each business&apos;s product
+                and project records.
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+              {[
+                {
+                  company: 'dhruv' as const,
+                  label: 'Dhruv EPC Solutions · Manjusar works',
+                  facilitiesHref: '/dhruv-epc/capabilities',
+                  facts: dhruvWorksFacts,
+                  image: '/photography/dhruv-epc/despl-skid-3d.jpg',
+                  imageAlt: '3D model of a skid package from the Dhruv EPC Solutions design office',
+                },
+                {
+                  company: 'precise' as const,
+                  label: 'Precise Engineers · Anand works',
+                  facilitiesHref: '/precise-engineers/capabilities',
+                  facts: preciseWorksFacts,
+                  image: '/photography/precise-engineers/pe-shopfloor-team.jpg',
+                  imageAlt: 'Precise Engineers team with expansion joints staged for inspection',
+                },
+              ].map((works) => (
+                <div key={works.company} data-company={works.company} className="flex flex-col border-t-2 border-steel-950 bg-steel-50">
+                  <div className="flex flex-wrap items-baseline justify-between gap-3 p-6">
+                    <span className="text-body font-bold text-steel-950">{works.label}</span>
+                    <Button variant="link" href={works.facilitiesHref}>
+                      Facilities →
+                    </Button>
+                  </div>
+                  <div className="grid grid-cols-2 gap-px border-y border-steel-200 bg-steel-200">
+                    {works.facts.map((fact) => (
+                      <div key={fact.label} className="bg-white p-6">
+                        <div className="font-mono text-h4 font-extrabold leading-tight tracking-tight text-steel-950">
+                          {fact.value}
+                        </div>
+                        <div className="mt-2 text-sm text-steel-600">{fact.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="aspect-video overflow-hidden bg-steel-100 p-6">
+                    <div className="relative size-full overflow-hidden">
+                      <Image src={works.image} alt={works.imageAlt} fill className="object-cover" />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-12">
+              <h3 className="text-xs font-medium uppercase tracking-caption text-steel-600">
+                Manufacturing disciplines
+              </h3>
+              <div className="mt-4 grid grid-cols-1 gap-px border border-steel-200 bg-steel-200 sm:grid-cols-2 lg:grid-cols-4">
+                {manufacturingDisciplines.map((d, i) => (
+                  <div key={d.title} className="bg-white p-6">
+                    <span className="font-mono text-xs text-steel-500">{String(i + 1).padStart(2, '0')}</span>
+                    <h4 className="mt-2 text-sm font-bold text-steel-950">{d.title}</h4>
+                    <p className="mt-2 text-sm text-steel-600">{d.scope}</p>
+                    <p className="mt-3 font-mono text-helper text-steel-500">
+                      {[d.dhruv && 'DESPL', d.precise && 'PE'].filter(Boolean).join(' · ')}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* §14.2 item 4 — proof band: stats + certifications, real figures only */}
         <section className="border-t border-steel-200 bg-steel-50">
