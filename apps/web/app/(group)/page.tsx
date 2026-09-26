@@ -9,18 +9,18 @@ import type { Metadata } from 'next'
 import Image from 'next/image'
 import {
   Button,
-  CategoryCard,
   CertificationCard,
   ClientMarquee,
   IndustryCard,
+  ProductCard,
   StatBand,
   type StampProps,
 } from '@vedanta/datum-ui'
 import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { RFQBand } from '../../components/RFQBand'
-import { getCertifications, getClients, getEntity, getIndustries, getProductCategoriesByCompany, getProductsByCompany } from '../../lib/content-loader'
-import { categoryHref, industryHref, productHref, rfqHref } from '../../lib/product-urls'
+import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany } from '../../lib/content-loader'
+import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
 import { groupStats } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
@@ -98,10 +98,20 @@ const STAMP_BY_NAME: Record<string, StampProps['code'] | undefined> = {
   'ISO 9001:2015': 'ISO-9001',
 }
 
-// §14.2 item 2 — products by category, both companies visible
-const PRODUCT_COMPANIES = [
-  { slug: 'dhruv-epc' as const, label: 'Dhruv EPC Solutions' },
-  { slug: 'precise-engineers' as const, label: 'Precise Engineers' },
+// group-home-v2 §04 Products & Solutions — replaces the old §14.2 item 2
+// CategoryCard grid (docs/decisions.md, 2026-09-26 "page architecture"
+// entry) with a curated 6-of-17 showcase, matching the reference's own
+// selection size. "Process Skids" gets despl-skid-3d.jpg (a real, unused
+// promoted asset — a labeled CAD render, Datum §2.1, not passed off as shop
+// photography); the rest render ProductCard's own no-photo variant rather
+// than force a photo onto a product with no real shoot yet.
+const FEATURED_PRODUCTS: Array<{ company: 'dhruv-epc' | 'precise-engineers'; categorySlug: string; slug: string }> = [
+  { company: 'dhruv-epc', categorySlug: 'static-equipment', slug: 'pressure-vessels' },
+  { company: 'dhruv-epc', categorySlug: 'skids-packages', slug: 'process-skids' },
+  { company: 'dhruv-epc', categorySlug: 'static-equipment', slug: 'heat-exchangers' },
+  { company: 'precise-engineers', categorySlug: 'expansion-joints', slug: 'metallic-bellows-expansion-joint' },
+  { company: 'precise-engineers', categorySlug: 'expansion-joints', slug: 'rubber-bellows' },
+  { company: 'precise-engineers', categorySlug: 'expansion-joints', slug: 'dismantling-joint' },
 ]
 
 // Footer is owned by (group)/layout.tsx — pages must not render their own
@@ -113,6 +123,13 @@ export default function GroupHome() {
   // none yet (Session 8's own scoping). Omitted, not rendered empty —
   // CLAUDE.md's omit-not-empty convention.
   const completeIndustries = getIndustries().filter((i) => i.contentComplete)
+  const dhruvProductCount = getProductsByCompany('dhruv-epc').length
+  const preciseProductCount = getProductsByCompany('precise-engineers').length
+  const featuredProducts = FEATURED_PRODUCTS.map(({ company, slug }) => {
+    const product = getProductsByCompany(company).find((p) => p.slug === slug)
+    if (!product) throw new Error(`FEATURED_PRODUCTS references missing product: ${company}/${slug}`)
+    return product
+  })
 
   return (
     <>
@@ -295,33 +312,58 @@ export default function GroupHome() {
           </div>
         </section>
 
-        {/* §14.2 item 2 — products by category, the primary entry */}
-        <section id="products" aria-labelledby="products-heading" className="bg-steel-900">
-          <div className="mx-auto max-w-wide px-6 pb-24">
-            <h2 id="products-heading" className="font-display text-h1 font-medium text-steel-50">
-              Products.
-            </h2>
-            {PRODUCT_COMPANIES.map(({ slug, label }) => {
-              const categories = getProductCategoriesByCompany(slug)
-              const products = getProductsByCompany(slug)
-              return (
-                <div key={slug} data-company={slug === 'dhruv-epc' ? 'dhruv' : 'precise'} className="mt-8">
-                  <h3 className="text-xs font-medium text-steel-400">{label}</h3>
-                  <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {categories.map((category) => (
-                      <CategoryCard
-                        key={category.slug}
-                        name={category.name}
-                        oneLineScope={category.oneLineScope}
-                        href={categoryHref(slug, category.slug)}
-                        productCount={products.filter((p) => p.categorySlug === category.slug).length}
-                        onDark
+        {/* group-home-v2 §04 Products & Solutions — replaces the old §14.2
+            item 2 CategoryCard grid (docs/decisions.md, 2026-09-26 "page
+            architecture" entry). Category-level browsing now lives on the
+            Our Businesses cards' product link lists above; this is a
+            curated showcase of individual products. */}
+        <section id="products" aria-labelledby="products-heading" className="bg-steel-50">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+              <div className="max-w-content">
+                <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+                  <span className="h-px w-6 bg-current" aria-hidden="true" />
+                  Products &amp; Solutions
+                </p>
+                <h2 id="products-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+                  Core product lines across the group
+                </h2>
+              </div>
+              <p className="max-w-content text-body-lg text-steel-700">
+                Six of the group&apos;s {dhruvProductCount + preciseProductCount} product lines. Each opens its
+                detail page on the business that makes it.
+              </p>
+            </div>
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {featuredProducts.map((product) => (
+                <ProductCard
+                  key={product.slug}
+                  name={product.name}
+                  oneLineScope={product.oneLineScope}
+                  href={productHref(product.companySlug, product.categorySlug, product.slug)}
+                  chips={product.codes.slice(0, 3)}
+                  photo={
+                    product.slug === 'process-skids' ? (
+                      <Image
+                        src="/photography/dhruv-epc/despl-skid-3d.jpg"
+                        alt="3D model of a skid package from the Dhruv EPC Solutions design office"
+                        width={600}
+                        height={450}
+                        className="size-full object-cover"
                       />
-                    ))}
-                  </div>
-                </div>
-              )
-            })}
+                    ) : undefined
+                  }
+                />
+              ))}
+            </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button variant="secondary" href={productsIndexHref('dhruv-epc')}>
+                All Dhruv EPC Solutions products →
+              </Button>
+              <Button variant="secondary" href={productsIndexHref('precise-engineers')}>
+                All Precise Engineers products →
+              </Button>
+            </div>
           </div>
         </section>
 
