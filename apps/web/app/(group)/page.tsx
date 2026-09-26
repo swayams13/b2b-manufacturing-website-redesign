@@ -13,6 +13,7 @@ import {
   ClientMarquee,
   IndustryCard,
   ProductCard,
+  ProjectCard,
   StatBand,
   type StampProps,
 } from '@vedanta/datum-ui'
@@ -130,8 +131,22 @@ export default function GroupHome() {
     if (!product) throw new Error(`FEATURED_PRODUCTS references missing product: ${company}/${slug}`)
     return product
   })
-  const dhruvProjectCount = getProjectHighlights('dhruv-epc').length
-  const preciseProjectCount = getProjectHighlights('precise-engineers').length
+  const dhruvProjects = getProjectHighlights('dhruv-epc')
+  const preciseProjects = getProjectHighlights('precise-engineers')
+  const dhruvProjectCount = dhruvProjects.length
+  const preciseProjectCount = preciseProjects.length
+  // group-home-v2 §07 Clients & Projects: the featured case is named
+  // explicitly in the README ("the Emerson CGD skids") — a real,
+  // low-detail ProjectHighlight record, paired with the one real photo
+  // that documents it.
+  const featuredProject = dhruvProjects.find((p) => p.slug === 'dhruv-epc-cgd-skids-emerson')
+  if (!featuredProject) throw new Error('Featured project dhruv-epc-cgd-skids-emerson is missing from content/projects')
+  const teaserProjectSlugs = ['precise-expansion-joint-chevron-usa', 'precise-fccu-expansion-joint-inconel-625', 'dhruv-epc-toyo-ngc-skid']
+  const teaserProjects = teaserProjectSlugs.map((slug) => {
+    const project = dhruvProjects.find((p) => p.slug === slug) ?? preciseProjects.find((p) => p.slug === slug)
+    if (!project) throw new Error(`Teaser project slug missing from content/projects: ${slug}`)
+    return project
+  })
   // group-home-v2 §06 Figures — six sourced figures (README item 8: "only
   // publish figures that have a source"), replacing the old §14.2 item 4
   // groupStats-only band (docs/decisions.md, 2026-09-26 "page architecture"
@@ -558,33 +573,71 @@ export default function GroupHome() {
           </div>
         </section>
 
-        {/* §14.2 item 5 — selected projects: omitted, not rendered empty.
-            The Project content model and getProjects() loader don't exist
-            yet (blueprint §8, gated on ⛔C-1 — real project records).
-            Writing a conditional against data that doesn't exist would be
-            scaffolding for a future session, not this one; add the section
-            here when that session ships getProjects(). */}
-
-        {/* Clients & Projects spec §2/§4 — homepage clientele band (ref 4a).
-            80px padding rounds to py-16 (64px, nearest token) per the
-            2026-09-03 token-gap policy. */}
-        <section aria-labelledby="clientele-band-heading" className="border-t border-steel-200 bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-16">
+        {/* group-home-v2 §07 Clients & Projects — replaces the old §14.2
+            item 5 (omitted) + the old clientele band (docs/decisions.md,
+            2026-09-26 "page architecture" entry). Keeps ClientMarquee per
+            README Decision 8 ("closer to the no-carousel law" than the
+            prototype's static grid), extended with the named featured case
+            and a ProjectCard teaser — both now buildable since
+            getProjectHighlights() ships real records (the old comment here
+            claiming it "doesn't exist yet" was stale). No case-study pages
+            exist yet, so the featured case and every ProjectCard link to
+            the full /clients-projects record instead of a per-project URL
+            that doesn't exist. */}
+        <section aria-labelledby="clients-projects-heading" className="border-t border-steel-200 bg-steel-50">
+          <div className="mx-auto max-w-wide px-6 py-24">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
-                <p className="text-body font-bold text-steel-950">Who we supply</p>
-                <h2 id="clientele-band-heading" className="mt-2 font-display text-h1 font-medium text-steel-950">
-                  Forty-four named clients
+                <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+                  <span className="h-px w-6 bg-current" aria-hidden="true" />
+                  Clients &amp; Projects
+                </p>
+                <h2 id="clients-projects-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+                  {allClients.length} named clients, {dhruvProjectCount + preciseProjectCount} documented jobs
                 </h2>
               </div>
               <Button variant="link" href="/clients-projects">
                 See all clients &amp; projects ↗
               </Button>
             </div>
-            <div className="mt-8 bg-white">
+            <div className="mt-12 bg-white">
               <ClientMarquee rowA={clientMarqueeRowA} rowB={clientMarqueeRowB} />
             </div>
             <p className="mt-4 font-mono text-helper text-steel-500">Vedanta Group Brochure, 2026</p>
+
+            <div className="mt-16 grid grid-cols-1 items-center gap-8 border border-steel-200 bg-white lg:grid-cols-2">
+              <div className="relative aspect-video overflow-hidden bg-steel-100 lg:aspect-square">
+                <Image
+                  src="/photography/dhruv-epc/despl-cgd-skid.jpg"
+                  alt="City Gas Distribution skid fabricated by Dhruv EPC Solutions for Emerson"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-contain p-8"
+                />
+              </div>
+              <div className="p-8 lg:p-12">
+                <p className="text-xs font-medium uppercase tracking-caption text-steel-500">Featured case · Dhruv EPC Solutions</p>
+                <h3 className="mt-3 font-display text-h3 font-medium text-steel-950">{featuredProject.statement}</h3>
+                <p className="mt-4 font-mono text-helper text-steel-500">{featuredProject.tags.join(' · ')}</p>
+                <div className="mt-6">
+                  <Button variant="link" href="/clients-projects">
+                    See the full project record →
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {teaserProjects.map((project) => (
+                <ProjectCard
+                  key={project.slug}
+                  title={project.statement}
+                  sector={project.tags.join(' · ')}
+                  href="/clients-projects"
+                  metrics={project.figures.map((f) => ({ label: f.label, value: `${f.value}${f.unit ? ' ' + f.unit : ''}` }))}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
