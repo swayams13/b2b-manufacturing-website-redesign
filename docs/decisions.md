@@ -57,3 +57,34 @@ alongside a red accent. This branch's Session 0 stabilization work
 and does not revisit either.
 
 **Approval:** Swayam, confirmed 27 Aug 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2 hero: rotating carousel + motion-budget override
+
+**What was overridden:**
+
+1. **Datum §3 "Restraint is confidence" / §17 "Banned: carousels of any kind, auto-rotating anything" / §19 "one message per hero (no rotation — carousels are banned system-wide)"** — the group homepage v2 hero (`design_handoff_group_home_v2` handoff → `(group)/page.tsx`) keeps the prototype's 4-slide auto-rotating hero (four "chapter" tabs cycling the hero photo/headline/CTA pair), instead of the static-hero-plus-chapter-links pattern that `design_handoff_group_home_v2/README.md` Decision 1 recommended.
+2. **Datum §11's motion duration set** (largest token `motion-signature`, 700ms) — the hero's slide cross-fade (1400ms) and Ken Burns zoom (9000ms), as built in the prototype reference, are approved as-is rather than clamped to the 700ms ceiling (README Decision 3).
+
+**Why:** explicit approval by Swayam (2026-09-26), given during Step 0 review of the group-home-v2 design handoff.
+
+**Scope of the override:** the group homepage's own bespoke hero markup only — not `HomeHero.tsx` (used by the Dhruv EPC and Precise Engineers product-page heroes), and not a precedent for carousels, auto-rotation, or motion durations above `motion-signature` anywhere else on the site.
+
+**Follow-up required before launch:** `prefers-reduced-motion` must still collapse this hero to a single static frame with no rotation and no Ken Burns zoom, per Datum §11 (a first-class rendering mode, not a fallback) — the override applies only to the default-motion state.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: business-card accent as rule + label, not fill
+
+**What was overridden:**
+
+1. **Datum §13's Amber Law / §4.3's accent usage law** — "the RFQ button... is the only amber-filled element in the system" is extended, for this one component only, to also permit DESPL red / PE blue as a thin top rule plus a mono eyebrow label on the two "Our Businesses" cards on the group homepage, per `design_handoff_group_home_v2/README.md` Decision 2. The buttons themselves ("Explore Business", "Enquire with …") stay non-accent (steel outline / ghost) — only the card's top rule and its mono label carry the business color; the RFQ button remains the only accent-*filled* element on the page.
+
+**Why:** explicit approval by Swayam (2026-09-26), given during Step 0 review of the group-home-v2 design handoff.
+
+**Scope of the override:** the two "Our Businesses" cards on the group homepage only — not a precedent for accent fills, rules, or colored labels on `ProductCard`, `ProjectCard`, or any other card type, and not a precedent for any other route.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.
