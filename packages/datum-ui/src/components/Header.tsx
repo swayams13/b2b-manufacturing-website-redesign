@@ -52,6 +52,18 @@ export interface HeaderNavLink {
   href: string
 }
 
+// HeaderMenu: additional named dropdown triggers beyond the primary
+// menuLabel/megaPanel pair — group homepage v2 (Datum §17) needs "Our
+// Businesses" and "Careers" triggers alongside "Products & Solutions"
+// (which stays on the existing megaPanel prop, unchanged). Panel content is
+// caller-supplied (arbitrary, not column-shaped like MegaPanel), since
+// "Our Businesses" and "Careers" aren't per-company product columns.
+export interface HeaderMenu {
+  id: string
+  label: string
+  panel: React.ReactNode
+}
+
 export interface HeaderProps {
   /** Logo lockup — receives the scrolled/compressed state so the caller can
    *  size it correctly (58px full-height bar / 44px scrolled bar, §2.0). */
@@ -66,6 +78,10 @@ export interface HeaderProps {
   /** Right rail: deep-link to Capability Matrix. Rendered beside the legacy menuGroups grid only. */
   capabilityRail?: HeaderNavLink
   links: HeaderNavLink[]
+  /** Additional named dropdown triggers rendered after the primary menu and
+   *  before `links` — group homepage v2 only. Only one menu (primary or
+   *  extra) is ever open at a time. */
+  extraMenus?: HeaderMenu[]
   /** Company-switcher row above the main bar — group nav only (VG-051). */
   utilityBar?: HeaderNavLink[]
   /** tel: link — optional; GroupChrome omits it */
@@ -85,6 +101,7 @@ export function Header({
   megaPanel,
   capabilityRail,
   links,
+  extraMenus,
   utilityBar,
   phoneHref,
   whatsappHref,
@@ -93,9 +110,11 @@ export function Header({
 }: HeaderProps): React.ReactElement {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [openExtra, setOpenExtra] = useState<string | null>(null)
   const contentRfqInView = useRfqAnchorInView()
   const headerRef = useRef<HTMLElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const lastTriggerRef = useRef<HTMLElement | null>(null)
   const hasUtilityBar = Boolean(utilityBar && utilityBar.length > 0)
   const hasMegaPanel = Boolean(megaPanel && megaPanel.length > 0)
   // Legacy mega-menu grid must size to what's actually there — DhruvChrome (3 groups
@@ -115,17 +134,22 @@ export function Header({
   }, [])
 
   useEffect(() => {
-    if (!menuOpen) return
+    if (!menuOpen && openExtra === null) return
     const onKey = (e: KeyboardEvent) => {
-      // MegaPanel owns its own ESC handling + focus return when active.
-      if (hasMegaPanel) return
+      // MegaPanel owns its own ESC handling + focus return when the primary
+      // menu (not an extra one) is what's open.
+      if (hasMegaPanel && menuOpen) return
       if (e.key === 'Escape') {
         setMenuOpen(false)
-        triggerRef.current?.focus()
+        setOpenExtra(null)
+        lastTriggerRef.current?.focus()
       }
     }
     const onPointer = (e: PointerEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setMenuOpen(false)
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+        setOpenExtra(null)
+      }
     }
     document.addEventListener('keydown', onKey)
     document.addEventListener('pointerdown', onPointer)
@@ -133,7 +157,7 @@ export function Header({
       document.removeEventListener('keydown', onKey)
       document.removeEventListener('pointerdown', onPointer)
     }
-  }, [menuOpen, hasMegaPanel])
+  }, [menuOpen, openExtra, hasMegaPanel])
 
   return (
     <div className="relative">
@@ -176,7 +200,11 @@ export function Header({
               type="button"
               aria-expanded={menuOpen}
               aria-controls="datum-mega-menu"
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => {
+                lastTriggerRef.current = triggerRef.current
+                setOpenExtra(null)
+                setMenuOpen((v) => !v)
+              }}
               className="flex h-full items-center gap-1 text-body font-semibold text-steel-500 transition-colors duration-instant ease-standard hover:text-steel-950"
             >
               {menuLabel}
@@ -186,6 +214,27 @@ export function Header({
                 <ChevronDown size={16} />
               </span>
             </button>
+            {extraMenus?.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                aria-expanded={openExtra === m.id}
+                aria-controls={`datum-mega-menu-${m.id}`}
+                onClick={(e) => {
+                  lastTriggerRef.current = e.currentTarget
+                  setMenuOpen(false)
+                  setOpenExtra((v) => (v === m.id ? null : m.id))
+                }}
+                className="flex h-full items-center gap-1 text-body font-semibold text-steel-500 transition-colors duration-instant ease-standard hover:text-steel-950"
+              >
+                {m.label}
+                <span
+                  className={`text-accent transition-transform duration-instant ease-standard ${openExtra === m.id ? 'rotate-180' : ''}`}
+                >
+                  <ChevronDown size={16} />
+                </span>
+              </button>
+            ))}
             {links.map((l) => (
               <a
                 key={l.href}
@@ -287,6 +336,17 @@ export function Header({
             </div>
           </div>
         )}
+
+        {extraMenus?.map((m) => (
+          <div
+            key={m.id}
+            id={`datum-mega-menu-${m.id}`}
+            hidden={openExtra !== m.id}
+            className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+          >
+            {m.panel}
+          </div>
+        ))}
       </header>
     </div>
   )

@@ -40,6 +40,7 @@ export {
   Header,
   type HeaderProps,
   type HeaderNavLink,
+  type HeaderMenu,
   type MegaMenuGroup,
   type MegaMenuItem,
 } from './components/Header'
