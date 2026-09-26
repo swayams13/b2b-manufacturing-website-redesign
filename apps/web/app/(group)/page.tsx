@@ -19,10 +19,11 @@ import {
 } from '@vedanta/datum-ui'
 import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
+import { JourneyTimeline } from '../../components/group/JourneyTimeline'
 import { RFQBand } from '../../components/RFQBand'
 import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
-import { dhruvWorksFacts, groupFiguresExtra, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
+import { dhruvWorksFacts, groupFiguresExtra, journeyMilestones, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
 const groupEntity = getEntity('group')
@@ -541,38 +542,6 @@ export default function GroupHome() {
           </div>
         </section>
 
-        <section id="proof" aria-labelledby="proof-heading" className="bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-16">
-            <h2 id="proof-heading" className="font-display text-h1 font-medium text-steel-950">
-              Certifications &amp; approvals
-            </h2>
-            {[
-              { label: 'Dhruv EPC Solutions', certs: dhruvCertifications },
-              { label: 'Precise Engineers', certs: preciseCertifications },
-            ].map((group) => (
-              <div key={group.label} className="mt-8">
-                <h3 className="text-xs font-medium text-steel-600">
-                  {group.label}
-                </h3>
-                <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                  {group.certs.map((cert) => (
-                    <CertificationCard
-                      key={cert.name}
-                      stampCode={STAMP_BY_NAME[cert.name]}
-                      name={cert.name}
-                      scopeStatement={cert.scopeStatement}
-                      issuer={cert.issuer}
-                      validFrom={cert.validFrom}
-                      validTo={cert.validTo}
-                      artifactUrl={cert.artifactUrl}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
         {/* group-home-v2 §07 Clients & Projects — replaces the old §14.2
             item 5 (omitted) + the old clientele band (docs/decisions.md,
             2026-09-26 "page architecture" entry). Keeps ClientMarquee per
@@ -638,6 +607,66 @@ export default function GroupHome() {
                 />
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* group-home-v2 §08 Our Journey — new section, no pre-v2
+            equivalent. See components/group/JourneyTimeline.tsx for the
+            scroll-tracking behavior and the "Year TBC" content-gate note
+            (README: "Years marked TBC must be confirmed before
+            publishing" — a launch gate, not a code problem, on this
+            prototype demo). */}
+        <section id="heritage" aria-labelledby="journey-heading" className="border-t border-steel-200 bg-steel-50">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+              <span className="h-px w-6 bg-current" aria-hidden="true" />
+              Our Journey
+            </p>
+            <h2 id="journey-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+              Three decades on the shop floor.
+            </h2>
+            <div className="mt-12">
+              <JourneyTimeline milestones={journeyMilestones} />
+            </div>
+          </div>
+        </section>
+
+        {/* group-home-v2 §09 Quality — relocated from its old §14.2
+            position (which sat before Clients & Projects) to match the v2
+            section order; content unchanged in this commit. */}
+        <section id="quality" aria-labelledby="proof-heading" className="border-t border-steel-200 bg-white">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+              <span className="h-px w-6 bg-current" aria-hidden="true" />
+              Quality
+            </p>
+            <h2 id="proof-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+              Certifications &amp; approvals
+            </h2>
+            {[
+              { label: 'Dhruv EPC Solutions', certs: dhruvCertifications },
+              { label: 'Precise Engineers', certs: preciseCertifications },
+            ].map((group) => (
+              <div key={group.label} className="mt-8">
+                <h3 className="text-xs font-medium text-steel-600">
+                  {group.label}
+                </h3>
+                <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                  {group.certs.map((cert) => (
+                    <CertificationCard
+                      key={cert.name}
+                      stampCode={STAMP_BY_NAME[cert.name]}
+                      name={cert.name}
+                      scopeStatement={cert.scopeStatement}
+                      issuer={cert.issuer}
+                      validFrom={cert.validFrom}
+                      validTo={cert.validTo}
+                      artifactUrl={cert.artifactUrl}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
