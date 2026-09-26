@@ -53,6 +53,14 @@ export function MegaPanel({
 }: MegaPanelProps): React.ReactElement {
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // React 18 can't set the `inert` IDL property via JSX (it strips unknown
+  // boolean attributes) — set it directly on the node. Keeps the closed
+  // panel out of the tab order and the a11y tree while still letting it
+  // animate (unlike the old `hidden` attribute, which can't transition).
+  useEffect(() => {
+    if (panelRef.current) panelRef.current.inert = !open
+  }, [open])
+
   useEffect(() => {
     if (!open) return
     const panel = panelRef.current
@@ -84,8 +92,9 @@ export function MegaPanel({
     <div
       id={id}
       ref={panelRef}
-      hidden={!open}
-      className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+      className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+        open ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+      }`}
     >
       <div className="mx-auto grid max-w-wide grid-cols-1 gap-8 px-6 py-8 md:grid-cols-2">
         {columns.map((column) => (

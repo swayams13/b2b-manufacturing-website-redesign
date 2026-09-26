@@ -115,6 +115,8 @@ export function Header({
   const headerRef = useRef<HTMLElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
   const lastTriggerRef = useRef<HTMLElement | null>(null)
+  const legacyPanelRef = useRef<HTMLDivElement>(null)
+  const extraPanelRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const hasUtilityBar = Boolean(utilityBar && utilityBar.length > 0)
   const hasMegaPanel = Boolean(megaPanel && megaPanel.length > 0)
   // Legacy mega-menu grid must size to what's actually there — DhruvChrome (3 groups
@@ -132,6 +134,19 @@ export function Header({
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
+
+  // React 18 can't set the `inert` IDL property via JSX — set it directly
+  // (see MegaPanel.tsx). Keeps closed dropdowns out of the tab order and
+  // a11y tree while letting them animate, instead of the old `hidden` toggle.
+  useEffect(() => {
+    if (legacyPanelRef.current) legacyPanelRef.current.inert = !menuOpen
+  }, [menuOpen])
+
+  useEffect(() => {
+    for (const [menuId, el] of Object.entries(extraPanelRefs.current)) {
+      if (el) el.inert = openExtra !== menuId
+    }
+  }, [openExtra])
 
   useEffect(() => {
     if (!menuOpen && openExtra === null) return
@@ -293,8 +308,10 @@ export function Header({
         ) : (
           <div
             id="datum-mega-menu"
-            hidden={!menuOpen}
-            className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+            ref={legacyPanelRef}
+            className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+              menuOpen ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+            }`}
           >
             <div className={`mx-auto grid max-w-wide ${legacyGridColsClass} gap-8 px-6 py-8`}>
               {(menuGroups ?? []).map((group) => (
@@ -341,8 +358,12 @@ export function Header({
           <div
             key={m.id}
             id={`datum-mega-menu-${m.id}`}
-            hidden={openExtra !== m.id}
-            className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+            ref={(el) => {
+              extraPanelRefs.current[m.id] = el
+            }}
+            className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+              openExtra === m.id ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+            }`}
           >
             {m.panel}
           </div>
