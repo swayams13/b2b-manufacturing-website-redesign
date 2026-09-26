@@ -116,7 +116,7 @@ export function MegaPanel({
                       <li key={product.href}>
                         <a
                           href={product.href}
-                          className="-mx-2 block rounded-sm px-2 py-1.5 text-sm text-steel-600 transition-colors duration-instant ease-standard hover:bg-steel-100 hover:text-steel-950"
+                          className="-mx-2 block rounded-sm px-2 py-2 text-sm text-steel-600 transition-colors duration-instant ease-standard hover:bg-steel-100 hover:text-steel-950"
                         >
                           {product.name}
                         </a>
