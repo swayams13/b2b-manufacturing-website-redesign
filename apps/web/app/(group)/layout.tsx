@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { Footer, type MegaPanelColumn } from '@vedanta/datum-ui'
 import type { CompanySlug } from '@vedanta/schemas'
 import { GroupChrome } from '../../components/group/GroupChrome'
-import { getEntity, getProductCategoriesByCompany, getProductsByCompany } from '../../lib/content-loader'
+import { getEntity, getProductCategoriesByCompany, getProductsByCompany, phoneHref } from '../../lib/content-loader'
 import { categoryHref, productHref, productsIndexHref } from '../../lib/product-urls'
 
 const groupEntity = getEntity('group')
@@ -70,7 +70,11 @@ const FOOTER_COLUMNS = [
 export default function GroupLayout({ children }: { children: React.ReactNode }) {
   return (
     <div data-company="group">
-      <GroupChrome megaPanelColumns={megaPanelColumns} />
+      <GroupChrome
+        megaPanelColumns={megaPanelColumns}
+        phoneHref={phoneHref(groupEntity)}
+        email={groupEntity.emails[0]!}
+      />
       {children}
       {/* certificationsHref: stamps link to the group home proof strip —
           carried over from the removed per-page Footers (audit P0-1). */}

@@ -49,3 +49,10 @@ apps/web/__snapshots__/.compare-tmp/
 # .md docs (spec + design law) are the exception and stay tracked.
 design_handoff_clients_projects/*
 !design_handoff_clients_projects/*.md
+
+# Group homepage v2 design handoff — client/approval review images are not
+# production assets (those already live in apps/web/public/).
+design_handoff_group_home_v2/reference/assets/
+
+# Python bytecode cache from ui-ux-pro-max skill script
+.claude/skills/*/scripts/__pycache__/

@@ -57,3 +57,70 @@ alongside a red accent. This branch's Session 0 stabilization work
 and does not revisit either.
 
 **Approval:** Swayam, confirmed 27 Aug 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2 hero: rotating carousel + motion-budget override
+
+**What was overridden:**
+
+1. **Datum §3 "Restraint is confidence" / §17 "Banned: carousels of any kind, auto-rotating anything" / §19 "one message per hero (no rotation — carousels are banned system-wide)"** — the group homepage v2 hero (`design_handoff_group_home_v2` handoff → `(group)/page.tsx`) keeps the prototype's 4-slide auto-rotating hero (four "chapter" tabs cycling the hero photo/headline/CTA pair), instead of the static-hero-plus-chapter-links pattern that `design_handoff_group_home_v2/README.md` Decision 1 recommended.
+2. **Datum §11's motion duration set** (largest token `motion-signature`, 700ms) — the hero's slide cross-fade (1400ms) and Ken Burns zoom (9000ms), as built in the prototype reference, are approved as-is rather than clamped to the 700ms ceiling (README Decision 3).
+
+**Why:** explicit approval by Swayam (2026-09-26), given during Step 0 review of the group-home-v2 design handoff.
+
+**Scope of the override:** the group homepage's own bespoke hero markup only — not `HomeHero.tsx` (used by the Dhruv EPC and Precise Engineers product-page heroes), and not a precedent for carousels, auto-rotation, or motion durations above `motion-signature` anywhere else on the site.
+
+**Follow-up required before launch:** `prefers-reduced-motion` must still collapse this hero to a single static frame with no rotation and no Ken Burns zoom, per Datum §11 (a first-class rendering mode, not a fallback) — the override applies only to the default-motion state.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: business-card accent as rule + label, not fill
+
+**What was overridden:**
+
+1. **Datum §13's Amber Law / §4.3's accent usage law** — "the RFQ button... is the only amber-filled element in the system" is extended, for this one component only, to also permit DESPL red / PE blue as a thin top rule plus a mono eyebrow label on the two "Our Businesses" cards on the group homepage, per `design_handoff_group_home_v2/README.md` Decision 2. The buttons themselves ("Explore Business", "Enquire with …") stay non-accent (steel outline / ghost) — only the card's top rule and its mono label carry the business color; the RFQ button remains the only accent-*filled* element on the page.
+
+**Why:** explicit approval by Swayam (2026-09-26), given during Step 0 review of the group-home-v2 design handoff.
+
+**Scope of the override:** the two "Our Businesses" cards on the group homepage only — not a precedent for accent fills, rules, or colored labels on `ProductCard`, `ProjectCard`, or any other card type, and not a precedent for any other route.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: page architecture — replace pre-v2 sections, keep Industries served
+
+**What was decided:** the pre-v2 `(group)/page.tsx` (blueprint §14.2, Session 9) has four sections whose purpose overlaps a new group-home-v2 section. Rather than run both (duplicate content, against Datum's restraint principle), each v2 section **replaces** its pre-v2 counterpart in place, one for one, as its own section commit:
+
+| Pre-v2 section (§14.2 item) | Replaced by v2 section |
+|---|---|
+| item 6, "Two specialized works, one group" (DOORS cards) | §03 Our Businesses |
+| item 2, products-by-category (`CategoryCard` grid) | §04 Products & Solutions (`ProductCard`, curated set) |
+| item 4, `StatBand` proof band | §06 Figures |
+| item 4/§proof, `CertificationCard` grid | §09 Quality |
+| clientele band (`ClientMarquee`) | §07 Clients & Projects (keeps `ClientMarquee` for the logo grid per README Decision 8, extended with featured case + `ProjectCard`s) |
+
+**Industries served (§14.2 item 3) is the one pre-v2 section with no v2 equivalent** — the handoff's section order has no "industries" slot. Decided: **keep it**, inserted into the v2 flow after §04 Products & Solutions (nearest thematic fit — it's demand-side context for the same products just shown). Not dropped, since the content is real and sourced (`getIndustries()`), not a v2 conflict, just an ordering gap.
+
+**Why:** explicit call by Swayam (2026-09-26), asked because the SKILLS-RUNBOOK.md build prompt didn't specify replace-vs-append and Industries served has no home in the new order — an architecture decision, not a token/spacing nit.
+
+**Scope:** the group homepage (`(group)/page.tsx`) only. Not a precedent for any other route's section structure.
+
+**Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: Careers section scope (backfilled from Session 39)
+
+**What was decided (Session 39, Step 0 review — recorded in `docs/progress.md` at the time but never logged here; this entry backfills that gap):** build the Careers section's real mechanism now rather than defer the whole section — job-listing UI with real filtering, and eventually a presigned CV upload + `/api/careers` route — but the three job listings themselves stay tagged `EXAMPLE`, no fabricated real vacancies (per `design_handoff_group_home_v2/reference/Management review notes.md`). A new `app/api/` route still requires human review before merge per CLAUDE.md, regardless of when it's built.
+
+**Session 44 addendum (this build pass):** the CV-upload mechanism and `/api/careers` route are being deferred to a dedicated future session rather than built as part of this multi-section pass — the presigned-upload + validated-route + tests shape is comparable in size to the RFQ engine itself (which took multiple sessions originally), and rushing it through a compressed multi-section commit run risks exactly the kind of under-reviewed new attack surface CLAUDE.md's API-route review gate exists to catch. This section instead ships the job-listing UI (real `groupExampleJobs` records, `EXAMPLE` tag preserved) with a `mailto:` "Send us your CV" call to action — a real, working mechanism (opens the visitor's email client), not a fake success state — as an honest interim, not the full decided-on mechanism.
+
+**Why:** Session 39's own decision already anticipated the route needing separate sign-off; this addendum makes that separation of concerns explicit rather than build the full route unreviewed inside a large batch of section commits.
+
+**Scope:** the group homepage's Careers section only.
+
+**Approval:** Session 39 portion approved by Swayam, 2026-09-26. The addendum is a scope-execution call, not a new architecture decision — flagged in `docs/progress.md` for Swayam's visibility, not a stop-and-ask blocker.

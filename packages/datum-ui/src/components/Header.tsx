@@ -52,6 +52,22 @@ export interface HeaderNavLink {
   href: string
 }
 
+// HeaderMenu: additional named dropdown triggers beyond the primary
+// menuLabel/megaPanel pair — group homepage v2 (Datum §17) needs "Our
+// Businesses" and "Careers" triggers alongside "Products & Solutions"
+// (which stays on the existing megaPanel prop, unchanged). Panel content is
+// caller-supplied (arbitrary, not column-shaped like MegaPanel), since
+// "Our Businesses" and "Careers" aren't per-company product columns.
+export interface HeaderMenu {
+  id: string
+  label: string
+  /** Receives the panel's open state so the caller can apply its own
+   *  aria-hidden/tabIndex SSR-safe closed-state baseline (see MegaPanel.tsx
+   *  and this file's legacy panel for the pattern) — content here is
+   *  caller-supplied, so Header can't reach into it to set that itself. */
+  panel: (open: boolean) => React.ReactNode
+}
+
 export interface HeaderProps {
   /** Logo lockup — receives the scrolled/compressed state so the caller can
    *  size it correctly (58px full-height bar / 44px scrolled bar, §2.0). */
@@ -66,6 +82,10 @@ export interface HeaderProps {
   /** Right rail: deep-link to Capability Matrix. Rendered beside the legacy menuGroups grid only. */
   capabilityRail?: HeaderNavLink
   links: HeaderNavLink[]
+  /** Additional named dropdown triggers rendered after the primary menu and
+   *  before `links` — group homepage v2 only. Only one menu (primary or
+   *  extra) is ever open at a time. */
+  extraMenus?: HeaderMenu[]
   /** Company-switcher row above the main bar — group nav only (VG-051). */
   utilityBar?: HeaderNavLink[]
   /** tel: link — optional; GroupChrome omits it */
@@ -85,6 +105,7 @@ export function Header({
   megaPanel,
   capabilityRail,
   links,
+  extraMenus,
   utilityBar,
   phoneHref,
   whatsappHref,
@@ -93,9 +114,13 @@ export function Header({
 }: HeaderProps): React.ReactElement {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [openExtra, setOpenExtra] = useState<string | null>(null)
   const contentRfqInView = useRfqAnchorInView()
   const headerRef = useRef<HTMLElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
+  const lastTriggerRef = useRef<HTMLElement | null>(null)
+  const legacyPanelRef = useRef<HTMLDivElement>(null)
+  const extraPanelRefs = useRef<Record<string, HTMLDivElement | null>>({})
   const hasUtilityBar = Boolean(utilityBar && utilityBar.length > 0)
   const hasMegaPanel = Boolean(megaPanel && megaPanel.length > 0)
   // Legacy mega-menu grid must size to what's actually there — DhruvChrome (3 groups
@@ -114,18 +139,36 @@ export function Header({
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  // React 18 can't set the `inert` IDL property via JSX — set it directly
+  // (see MegaPanel.tsx). Keeps closed dropdowns out of the tab order and
+  // a11y tree while letting them animate, instead of the old `hidden` toggle.
   useEffect(() => {
-    if (!menuOpen) return
+    if (legacyPanelRef.current) legacyPanelRef.current.inert = !menuOpen
+  }, [menuOpen])
+
+  useEffect(() => {
+    for (const [menuId, el] of Object.entries(extraPanelRefs.current)) {
+      if (el) el.inert = openExtra !== menuId
+    }
+  }, [openExtra])
+
+  useEffect(() => {
+    if (!menuOpen && openExtra === null) return
     const onKey = (e: KeyboardEvent) => {
-      // MegaPanel owns its own ESC handling + focus return when active.
-      if (hasMegaPanel) return
+      // MegaPanel owns its own ESC handling + focus return when the primary
+      // menu (not an extra one) is what's open.
+      if (hasMegaPanel && menuOpen) return
       if (e.key === 'Escape') {
         setMenuOpen(false)
-        triggerRef.current?.focus()
+        setOpenExtra(null)
+        lastTriggerRef.current?.focus()
       }
     }
     const onPointer = (e: PointerEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setMenuOpen(false)
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+        setOpenExtra(null)
+      }
     }
     document.addEventListener('keydown', onKey)
     document.addEventListener('pointerdown', onPointer)
@@ -133,7 +176,7 @@ export function Header({
       document.removeEventListener('keydown', onKey)
       document.removeEventListener('pointerdown', onPointer)
     }
-  }, [menuOpen, hasMegaPanel])
+  }, [menuOpen, openExtra, hasMegaPanel])
 
   return (
     <div className="relative">
@@ -176,7 +219,11 @@ export function Header({
               type="button"
               aria-expanded={menuOpen}
               aria-controls="datum-mega-menu"
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => {
+                lastTriggerRef.current = triggerRef.current
+                setOpenExtra(null)
+                setMenuOpen((v) => !v)
+              }}
               className="flex h-full items-center gap-1 text-body font-semibold text-steel-500 transition-colors duration-instant ease-standard hover:text-steel-950"
             >
               {menuLabel}
@@ -186,6 +233,27 @@ export function Header({
                 <ChevronDown size={16} />
               </span>
             </button>
+            {extraMenus?.map((m) => (
+              <button
+                key={m.id}
+                type="button"
+                aria-expanded={openExtra === m.id}
+                aria-controls={`datum-mega-menu-${m.id}`}
+                onClick={(e) => {
+                  lastTriggerRef.current = e.currentTarget
+                  setMenuOpen(false)
+                  setOpenExtra((v) => (v === m.id ? null : m.id))
+                }}
+                className="flex h-full items-center gap-1 text-body font-semibold text-steel-500 transition-colors duration-instant ease-standard hover:text-steel-950"
+              >
+                {m.label}
+                <span
+                  className={`text-accent transition-transform duration-instant ease-standard ${openExtra === m.id ? 'rotate-180' : ''}`}
+                >
+                  <ChevronDown size={16} />
+                </span>
+              </button>
+            ))}
             {links.map((l) => (
               <a
                 key={l.href}
@@ -244,8 +312,14 @@ export function Header({
         ) : (
           <div
             id="datum-mega-menu"
-            hidden={!menuOpen}
-            className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+            ref={legacyPanelRef}
+            // aria-hidden + tabIndex=-1 on every link below are the SSR-safe
+            // baseline for the closed state (see MegaPanel.tsx's identical
+            // comment) — the `inert` effect above only applies post-hydration.
+            aria-hidden={!menuOpen}
+            className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+              menuOpen ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+            }`}
           >
             <div className={`mx-auto grid max-w-wide ${legacyGridColsClass} gap-8 px-6 py-8`}>
               {(menuGroups ?? []).map((group) => (
@@ -258,6 +332,7 @@ export function Header({
                       <li key={item.href}>
                         <a
                           href={item.href}
+                          tabIndex={menuOpen ? undefined : -1}
                           className="-mx-2 block rounded-sm px-2 py-2 transition-colors duration-instant hover:bg-steel-100"
                         >
                           <span className="block text-data font-medium text-steel-950">
@@ -275,6 +350,7 @@ export function Header({
                 <div className="border-l border-steel-200 pl-8">
                   <a
                     href={capabilityRail.href}
+                    tabIndex={menuOpen ? undefined : -1}
                     className="group flex items-center gap-2 text-data font-medium text-accent-text transition-colors duration-instant hover:text-accent-text-hover"
                   >
                     {capabilityRail.label}
@@ -287,6 +363,22 @@ export function Header({
             </div>
           </div>
         )}
+
+        {extraMenus?.map((m) => (
+          <div
+            key={m.id}
+            id={`datum-mega-menu-${m.id}`}
+            ref={(el) => {
+              extraPanelRefs.current[m.id] = el
+            }}
+            aria-hidden={openExtra !== m.id}
+            className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+              openExtra === m.id ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+            }`}
+          >
+            {m.panel(openExtra === m.id)}
+          </div>
+        ))}
       </header>
     </div>
   )

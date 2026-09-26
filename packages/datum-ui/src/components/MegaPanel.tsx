@@ -53,6 +53,14 @@ export function MegaPanel({
 }: MegaPanelProps): React.ReactElement {
   const panelRef = useRef<HTMLDivElement>(null)
 
+  // React 18 can't set the `inert` IDL property via JSX (it strips unknown
+  // boolean attributes) — set it directly on the node. Keeps the closed
+  // panel out of the tab order and the a11y tree while still letting it
+  // animate (unlike the old `hidden` attribute, which can't transition).
+  useEffect(() => {
+    if (panelRef.current) panelRef.current.inert = !open
+  }, [open])
+
   useEffect(() => {
     if (!open) return
     const panel = panelRef.current
@@ -84,8 +92,16 @@ export function MegaPanel({
     <div
       id={id}
       ref={panelRef}
-      hidden={!open}
-      className="absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay"
+      // aria-hidden + tabIndex=-1 on every link below are the SSR-safe
+      // baseline for the closed state — the `inert` effect above only takes
+      // effect after hydration, so without these, a keyboard user tabbing
+      // (or a screen reader, before/without JS) can reach an invisible
+      // panel's links. `inert` (once it runs) makes both redundant, but
+      // React 18 can't render `inert` itself via JSX (see the effect above).
+      aria-hidden={!open}
+      className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
+        open ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
+      }`}
     >
       <div className="mx-auto grid max-w-wide grid-cols-1 gap-8 px-6 py-8 md:grid-cols-2">
         {columns.map((column) => (
@@ -98,6 +114,7 @@ export function MegaPanel({
                 <div key={category.href}>
                   <a
                     href={category.href}
+                    tabIndex={open ? undefined : -1}
                     className="-mx-2 block rounded-sm px-2 py-1 text-data font-medium text-steel-950 transition-colors duration-instant ease-standard hover:bg-steel-100"
                   >
                     {category.name}
@@ -107,7 +124,8 @@ export function MegaPanel({
                       <li key={product.href}>
                         <a
                           href={product.href}
-                          className="-mx-2 block rounded-sm px-2 py-1.5 text-sm text-steel-600 transition-colors duration-instant ease-standard hover:bg-steel-100 hover:text-steel-950"
+                          tabIndex={open ? undefined : -1}
+                          className="-mx-2 block rounded-sm px-2 py-2 text-sm text-steel-600 transition-colors duration-instant ease-standard hover:bg-steel-100 hover:text-steel-950"
                         >
                           {product.name}
                         </a>
@@ -119,6 +137,7 @@ export function MegaPanel({
             </div>
             <a
               href={column.allProductsHref}
+              tabIndex={open ? undefined : -1}
               className="group mt-6 flex items-center gap-2 text-data font-medium text-accent-text transition-colors duration-instant ease-standard hover:text-accent-text-hover"
             >
               {column.allProductsLabel}

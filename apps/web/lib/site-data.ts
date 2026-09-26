@@ -46,6 +46,126 @@ export const dhruvEquipment = {
   ],
 }
 
+// Group homepage v2 Careers section (Datum §21-style trust-page spine,
+// applied to a homepage section) — decisions.md 2026-09-26 "build the
+// full flow now": real CV-upload mechanism + /api/careers route, but the
+// three listings themselves stay EXAMPLE (no real vacancies confirmed yet,
+// per design_handoff_group_home_v2/reference/Management review notes.md).
+// Flip to [] (and the Careers section renders its "no open positions"
+// state) once these are replaced or withdrawn — same on/off switch the
+// prototype's own `showExampleJobs` toggle describes.
+export interface GroupExampleJob {
+  company: 'dhruv' | 'precise'
+  companyLabel: string
+  title: string
+  department: string
+  location: string
+  employmentType: string
+  experience: string
+}
+
+export const groupExampleJobs: GroupExampleJob[] = [
+  {
+    company: 'dhruv',
+    companyLabel: 'Dhruv EPC Solutions',
+    title: 'Design Engineer — Pressure Vessels',
+    department: 'Engineering & design',
+    location: 'Manjusar GIDC, Vadodara',
+    employmentType: 'Full-time',
+    experience: '3–6 years',
+  },
+  {
+    company: 'dhruv',
+    companyLabel: 'Dhruv EPC Solutions',
+    title: 'QA/QC Inspector (NDT Level II)',
+    department: 'Quality & inspection',
+    location: 'Manjusar GIDC, Vadodara',
+    employmentType: 'Full-time',
+    experience: '4+ years',
+  },
+  {
+    company: 'precise',
+    companyLabel: 'Precise Engineers',
+    title: 'Production Supervisor — Bellows Shop',
+    department: 'Production',
+    location: 'Vitthal Udyognagar, Anand',
+    employmentType: 'Full-time',
+    experience: '5+ years',
+  },
+]
+
+// The group in figures (Datum §19's stats-band pattern) — 6th figure adds
+// export destinations to the existing 4 groupStats above; kept separate
+// (not merged into groupStats) since the two bands render in different
+// sections with different source-line conventions.
+export const groupFiguresExtra = {
+  value: '5',
+  label: 'Export destinations on record',
+  source: 'USA · Argentina · Turkey · Saudi Arabia · Australia',
+}
+
+// Manufacturing disciplines grid (Datum §21 item 5's fabrication/QA strip
+// pattern, applied group-wide) — which of the two works does each
+// discipline apply to. Static page-decoration data, not a CMS record (no
+// per-discipline detail page exists to justify one).
+export interface ManufacturingDiscipline {
+  title: string
+  scope: string
+  dhruv: boolean
+  precise: boolean
+}
+
+export const manufacturingDisciplines: ManufacturingDiscipline[] = [
+  { title: 'Design & engineering', scope: 'Code design to ASME, TEMA and EJMA; 3D modelling; FEA under special design conditions.', dhruv: true, precise: true },
+  { title: 'Heavy fabrication', scope: 'Vessel shells, skids, base frames and structures up to 200 T per unit.', dhruv: true, precise: false },
+  { title: 'Heavy machining', scope: 'Floor-type boring mills to Ø 4,000 mm for tube-sheets, flanges and large components.', dhruv: true, precise: false },
+  { title: 'Bellows forming', scope: 'Convolution forming for circular bellows 80 – 8,000 mm NB and rectangular bellows.', dhruv: false, precise: true },
+  { title: 'Welding', scope: 'Qualified procedures and welders for carbon steel, stainless, duplex and nickel alloys.', dhruv: true, precise: true },
+  { title: 'Testing & inspection', scope: 'NDT, hydrotest and stage inspection to code and client ITP, witnessed by third parties.', dhruv: true, precise: true },
+  { title: 'Skid integration & FAT', scope: 'Piping, electrical and instrumentation integration with factory acceptance testing.', dhruv: true, precise: false },
+  { title: 'Heat & surface treatment', scope: 'Post-weld heat treatment and surface finishing — in-house scope to be confirmed.', dhruv: true, precise: true },
+]
+
+// Manufacturing works-level facts (per-works 2×2 grid) — mirrors the
+// prototype's desplFacts/peFacts; kept here (not content-loader) since no
+// Capability/EntityRecord field carries "largest skid on record" etc. yet.
+export const dhruvWorksFacts = [
+  { value: '200 T', label: 'Maximum unit weight, heavy fabrication' },
+  { value: 'Ø 4,000 mm', label: 'Floor-type boring mills' },
+  { value: '100 T', label: 'Heat exchangers, maximum unit weight' },
+  { value: '21 m · 45 MT', label: 'Largest skid on record' },
+]
+
+export const preciseWorksFacts = [
+  { value: '80 – 8,000 mm', label: 'NB range, circular metallic bellows' },
+  { value: '9,000 × 5,000 mm', label: 'Maximum rectangular bellows' },
+  { value: '3,700 PSI', label: 'Highest design pressure on record' },
+  { value: '2,192 mm ID', label: 'Inconel 625 joint, cycle-life tested under TPI' },
+]
+
+// Our Journey timeline (Datum §11 addendum territory — a scroll-driven
+// milestone list, not the exploded-view sequence). Years and photos marked
+// pending per Management review notes.md — publish gate is content
+// approval, not a code change; `pending: false` plus a supplied `photo`
+// unblocks a milestone independently of the others.
+export interface JourneyMilestone {
+  year: string
+  pending: boolean
+  business: string
+  title: string
+  description: string
+  photo?: string
+}
+
+export const journeyMilestones: JourneyMilestone[] = [
+  { year: '1994', pending: true, business: 'Precise Engineers', title: 'Precise Engineers begins operations in Anand', description: 'The group’s first business starts work at GIDC Estate, Vitthal Udyognagar, Anand.' },
+  { year: 'Year TBC', pending: true, business: 'Precise Engineers', title: 'Approved by Engineers India Limited', description: 'Precise Engineers is listed as an EIL approved vendor for expansion bellows and joints.' },
+  { year: 'Year TBC', pending: true, business: 'Dhruv EPC Solutions', title: 'Dhruv EPC Solutions Pvt. Ltd. established', description: 'The group’s second business sets up its works at Manjusar GIDC, Savli, Vadodara, for pressure equipment and process skids.' },
+  { year: 'Year TBC', pending: true, business: 'Dhruv EPC Solutions', title: 'ASME U and U2 Certificates of Authorization', description: 'DESPL is authorised to apply the ASME U and U2 code stamps, alongside IBR approval for boiler-quality equipment.' },
+  { year: 'Year TBC', pending: true, business: 'Both businesses', title: 'Projects delivered for export', description: 'Project records include supply to the USA, Argentina, Turkey, Saudi Arabia and Australia.' },
+  { year: '2026', pending: false, business: 'Vedanta Group', title: 'Two businesses, two works', description: 'Two specialised businesses, each with its own works, serving refiners, utilities, steel producers and EPC contractors across Dhruv EPC Solutions and Precise Engineers.' },
+]
+
 export const preciseProducts = {
   'expansion-joints': [
     { name: 'Metallic Bellows Expansion Joints', scope: 'EJMA/ASME B31.3, 80 – 8,000 mm NB circular', href: '/precise-engineers/products/expansion-joints/metallic-bellows-expansion-joint/' },

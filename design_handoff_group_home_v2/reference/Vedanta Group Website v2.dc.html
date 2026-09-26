@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedanta Group of Companies — Engineering Excellence. Built Over 30+ Years.</title>
+<meta name="description" content="The Vedanta Group of Companies: Dhruv EPC Solutions (pressure vessels, heat exchangers, process skids) and Precise Engineers (expansion joints and pipeline components), with works in Vadodara and Anand, Gujarat.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Archivo:wdth,wght@62..125,500..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="vedanta-data.js"></script>
+<style>
+html,body{margin:0;padding:0;background:#fff;color:#222334;font-family:"Plus Jakarta Sans",sans-serif;-webkit-font-smoothing:antialiased;}
+*{box-sizing:border-box;}
+a{color:#222334;text-decoration:none;}
+a:hover{color:#3F4250;}
+button,input,select,textarea{font-family:inherit;}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #0E6BA8;outline-offset:2px;}
+@keyframes vgFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion: reduce){*{transition-duration:0ms !important;animation-duration:0ms !important;}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff;" data-screen-label="Group Home v2">
+
+  <div style="background:#111417;color:#A5A8B2;font-size:13px;">
+    <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);min-height:38px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <div style="display:flex;gap:22px;align-items:center;">
+        <span style="color:#F5F6F8;font-weight:600;">Vedanta Group of Companies</span>
+        <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;gap:18px;align-items:center;">
+            <a href="DESPL Website v2.dc.html" style="color:#A5A8B2;" style-hover="color:#fff;">Dhruv EPC Solutions ↗</a>
+            <a href="Precise Engineers Website v2.dc.html" style="color:#A5A8B2;" style-hover="color:#fff;">Precise Engineers ↗</a>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display:flex;gap:20px;align-items:center;">
+        <a href="tel:+918905917700" style="color:#A5A8B2;" style-hover="color:#fff;">+91 89059 17700</a>
+        <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+          <a href="mailto:vedant@vedantagroup.net" style="color:#A5A8B2;" style-hover="color:#fff;">vedant@vedantagroup.net</a>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <header onMouseLeave="{{ closeMenu }}" style="position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #E0E0E0;box-shadow:{{ hdrShadow }};transition:box-shadow 240ms ease;">
+    <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);height:84px;display:flex;align-items:center;justify-content:space-between;gap:24px;">
+      <a href="#top" onClick="{{ goTop }}" aria-label="Vedanta Group of Companies — home" style="display:block;flex:none;">
+        <img src="assets/logo-vedanta.png" alt="Vedanta Group of Companies" style="height:56px;width:auto;display:block;">
+      </a>
+      <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;align-items:center;gap:20px;height:100%;">
+          <nav aria-label="Primary" style="display:flex;align-items:center;height:100%;">
+            <sc-for list="{{ nav }}" as="n" hint-placeholder-count="6">
+              <button onClick="{{ n.click }}" onMouseEnter="{{ n.enter }}" aria-expanded="{{ n.expanded }}" style="position:relative;height:84px;background:transparent;border:0;padding:0 13px;font-size:15px;font-weight:600;color:#222334;cursor:pointer;display:flex;align-items:center;gap:7px;white-space:nowrap;" style-hover="color:#5C5F6E;">
+                {{ n.label }}
+                <sc-if value="{{ n.hasMenu }}" hint-placeholder-val="{{ false }}">
+                  <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true" style="transform:{{ n.chev }};transition:transform 220ms ease;"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none"></path></svg>
+                </sc-if>
+                <span style="position:absolute;left:13px;right:13px;bottom:-1px;height:3px;background:#222334;transform:scaleX({{ n.bar }});transform-origin:left;transition:transform 280ms cubic-bezier(0.2,0.7,0.1,1);"></span>
+              </button>
+            </sc-for>
+          </nav>
+          <button onClick="{{ goContact }}" onMouseEnter="{{ closeMenu }}" style="background:#222334;color:#fff;border:0;border-radius:2px;padding:14px 20px;font-size:15px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background 180ms;" style-hover="background:#3F4250;">Request a Quote</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button onClick="{{ goContact }}" style="background:#222334;color:#fff;border:0;border-radius:2px;padding:0 14px;height:44px;font-size:14px;font-weight:600;">Request a Quote</button>
+          <button onClick="{{ toggleMobile }}" aria-label="Menu" aria-expanded="{{ mobileOpen }}" style="width:44px;height:44px;border:1px solid #E0E0E0;background:#fff;border-radius:2px;display:flex;flex-direction:column;gap:5px;align-items:center;justify-content:center;cursor:pointer;">
+            <span style="width:18px;height:2px;background:#222334;transform:{{ burgerA }};transition:transform 220ms;"></span>
+            <span style="width:18px;height:2px;background:#222334;opacity:{{ burgerB }};transition:opacity 160ms;"></span>
+            <span style="width:18px;height:2px;background:#222334;transform:{{ burgerC }};transition:transform 220ms;"></span>
+          </button>
+        </div>
+      </sc-if>
+    </div>
+
+    <div aria-hidden="{{ mp.hidden }}" style="position:absolute;left:0;right:0;top:100%;background:#fff;border-top:1px solid #E0E0E0;box-shadow:0 28px 48px rgba(17,20,23,0.14);opacity:{{ mp.o }};visibility:{{ mp.vis }};transform:{{ mp.y }};transition:opacity 220ms ease, transform 300ms cubic-bezier(0.2,0.7,0.1,1), visibility 0ms linear {{ mp.visDelay }};">
+      <sc-if value="{{ menuBiz }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1360px;margin:0 auto;padding:36px clamp(20px,4vw,48px) 40px;display:grid;grid-template-columns:260px minmax(0,1fr) minmax(0,1fr);gap:36px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;">Our Businesses</div>
+            <p style="font-size:15px;line-height:1.6;color:#3F4250;margin:0;">Two businesses, each with its own works, engineering team, certifications and enquiry desk.</p>
+            <a href="#businesses" onClick="{{ goBusinesses }}" style="font-size:15px;font-weight:600;" style-hover="color:#5C5F6E;">Compare both businesses →</a>
+          </div>
+          <div style="order:{{ desplOrder }};display:flex;gap:20px;padding:20px;border:1px solid #E0E0E0;border-top:3px solid #AA3833;">
+            <a href="DESPL Website v2.dc.html" style="flex:none;width:150px;aspect-ratio:4/3;background:#EDEFF2;display:flex;align-items:center;justify-content:center;overflow:hidden;"><img src="assets/despl-cgd-skid.jpg" alt="" style="width:92%;mix-blend-mode:multiply;display:block;"></a>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+              <a href="DESPL Website v2.dc.html" style="font-size:18px;font-weight:700;" style-hover="color:#AA3833;">Dhruv EPC Solutions (DESPL)</a>
+              <div style="font-size:14px;line-height:1.5;color:#5C5F6E;">Pressure vessels, heat exchangers, process skids and heavy fabrication. Manjusar GIDC, Vadodara.</div>
+              <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px;font-weight:600;margin-top:4px;">
+                <a href="DESPL Website v2.dc.html#capabilities" style="color:#AA3833;" style-hover="color:#8D2F2A;">Products</a>
+                <a href="DESPL Website v2.dc.html#projects" style="color:#AA3833;" style-hover="color:#8D2F2A;">Projects</a>
+                <a href="DESPL Website v2.dc.html#rfq" style="color:#AA3833;" style-hover="color:#8D2F2A;">Enquire with DESPL</a>
+              </div>
+            </div>
+          </div>
+          <div style="order:{{ peOrder }};display:flex;gap:20px;padding:20px;border:1px solid #E0E0E0;border-top:3px solid #0E6BA8;">
+            <a href="Precise Engineers Website v2.dc.html" style="flex:none;width:150px;aspect-ratio:4/3;background:#1A1E22;overflow:hidden;"><img src="assets/pe-inline-pb.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block;"></a>
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0;">
+              <a href="Precise Engineers Website v2.dc.html" style="font-size:18px;font-weight:700;" style-hover="color:#0E6BA8;">Precise Engineers (PE)</a>
+              <div style="font-size:14px;line-height:1.5;color:#5C5F6E;">Expansion joints, bellows, dismantling joints and pipeline components. Vitthal Udyognagar, Anand.</div>
+              <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px;font-weight:600;margin-top:4px;">
+                <a href="Precise Engineers Website v2.dc.html#capabilities" style="color:#0E6BA8;" style-hover="color:#0A5589;">Products</a>
+                <a href="Precise Engineers Website v2.dc.html#projects" style="color:#0E6BA8;" style-hover="color:#0A5589;">Projects</a>
+                <a href="Precise Engineers Website v2.dc.html#rfq" style="color:#0E6BA8;" style-hover="color:#0A5589;">Enquire with Precise Engineers</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ menuProd }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1360px;margin:0 auto;padding:36px clamp(20px,4vw,48px) 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;">
+          <div style="order:{{ desplOrder }};">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:12px;border-bottom:2px solid #AA3833;">
+              <span style="font-size:16px;font-weight:700;">Dhruv EPC Solutions</span>
+              <a href="DESPL Website v2.dc.html#capabilities" style="font-size:14px;font-weight:600;color:#AA3833;" style-hover="color:#8D2F2A;">All DESPL products →</a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;padding-top:18px;">
+              <sc-for list="{{ desplCats }}" as="c" hint-placeholder-count="3">
+                <div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;margin-bottom:8px;">{{ c.label }}</div>
+                  <sc-for list="{{ c.items }}" as="p" hint-placeholder-count="3">
+                    <a href="{{ p.href }}" style="display:block;padding:6px 0;font-size:15px;font-weight:600;" style-hover="color:#AA3833;">{{ p.name }}</a>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="order:{{ peOrder }};">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:12px;border-bottom:2px solid #0E6BA8;">
+              <span style="font-size:16px;font-weight:700;">Precise Engineers</span>
+              <a href="Precise Engineers Website v2.dc.html#capabilities" style="font-size:14px;font-weight:600;color:#0E6BA8;" style-hover="color:#0A5589;">All PE products →</a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding-top:18px;">
+              <sc-for list="{{ peCats }}" as="c" hint-placeholder-count="2">
+                <div>
+                  <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;margin-bottom:8px;">{{ c.label }}</div>
+                  <sc-for list="{{ c.items }}" as="p" hint-placeholder-count="4">
+                    <a href="{{ p.href }}" style="display:block;padding:6px 0;font-size:15px;font-weight:600;" style-hover="color:#0E6BA8;">{{ p.name }}</a>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ menuCar }}" hint-placeholder-val="{{ false }}">
+        <div style="max-width:1360px;margin:0 auto;padding:36px clamp(20px,4vw,48px) 40px;display:grid;grid-template-columns:280px minmax(0,1fr);gap:48px;">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;">Careers</div>
+            <p style="font-size:15px;line-height:1.6;color:#3F4250;margin:0;">Openings at Dhruv EPC Solutions and Precise Engineers. No suitable role? Send your CV and we will keep it on file.</p>
+            <a href="#careers" onClick="{{ goCareers }}" style="font-size:15px;font-weight:600;" style-hover="color:#5C5F6E;">All openings →</a>
+            <a href="#careers-form" onClick="{{ goCareersForm }}" style="align-self:flex-start;background:#222334;color:#fff;border-radius:2px;padding:12px 16px;font-size:14px;font-weight:600;" style-hover="background:#3F4250;color:#fff;">Send your CV</a>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-bottom:12px;border-bottom:2px solid #222334;">
+              <span style="font-size:16px;font-weight:700;">Current openings</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;">{{ menuJobCount }}</span>
+            </div>
+            <sc-if value="{{ menuHasJobs }}" hint-placeholder-val="{{ true }}">
+              <sc-for list="{{ menuJobs }}" as="j" hint-placeholder-count="3">
+                <div role="link" tabindex="0" onClick="{{ j.apply }}" style="display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #EDEFF2;cursor:pointer;" style-hover="background:#F5F6F8;">
+                  <span style="width:4px;align-self:stretch;background:{{ j.color }};flex:none;"></span>
+                  <span style="flex:1;min-width:0;"><span style="display:block;font-size:15px;font-weight:700;">{{ j.title }}</span><span style="display:block;font-size:13px;color:#5C5F6E;margin-top:2px;">{{ j.biz }} · {{ j.loc }} · {{ j.exp }}</span></span>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A6116;background:#F5EDD8;padding:3px 6px;flex:none;">EXAMPLE</span>
+                  <span style="font-size:14px;font-weight:700;flex:none;">Apply →</span>
+                </div>
+              </sc-for>
+            </sc-if>
+            <sc-if value="{{ menuNoJobs }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:18px 0;font-size:15px;color:#5C5F6E;">No open positions right now — send your CV and we will contact you when a role opens.</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-if>
+    </div>
+
+    <sc-if value="{{ mobileOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;top:100%;height:calc(100vh - 84px);background:#fff;border-top:1px solid #E0E0E0;padding:8px 20px 40px;overflow:auto;">
+        <sc-for list="{{ mNav }}" as="n" hint-placeholder-count="5">
+          <div role="link" tabindex="0" onClick="{{ n.go }}" style="padding:18px 0;border-bottom:1px solid #E0E0E0;font-size:20px;font-weight:600;display:flex;justify-content:space-between;cursor:pointer;">{{ n.label }}<span style="color:#A5A8B2;">→</span></div>
+        </sc-for>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin:28px 0 12px;">Current openings</div>
+        <sc-for list="{{ menuJobs }}" as="j" hint-placeholder-count="3">
+          <div role="link" tabindex="0" onClick="{{ j.apply }}" style="padding:12px 0 12px 14px;border-left:3px solid {{ j.color }};margin-bottom:8px;cursor:pointer;"><span style="display:block;font-size:15px;font-weight:700;">{{ j.title }}</span><span style="display:block;font-size:13px;color:#5C5F6E;margin-top:2px;">{{ j.biz }} · {{ j.loc }}</span></div>
+        </sc-for>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin:28px 0 12px;">Our Businesses</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="DESPL Website v2.dc.html" style="order:{{ desplOrder }};display:block;padding:18px;border:1px solid #E0E0E0;border-left:4px solid #AA3833;"><span style="display:block;font-size:17px;font-weight:700;">Dhruv EPC Solutions</span><span style="display:block;font-size:14px;color:#5C5F6E;margin-top:4px;">Pressure vessels · heat exchangers · process skids</span></a>
+          <a href="Precise Engineers Website v2.dc.html" style="order:{{ peOrder }};display:block;padding:18px;border:1px solid #E0E0E0;border-left:4px solid #0E6BA8;"><span style="display:block;font-size:17px;font-weight:700;">Precise Engineers</span><span style="display:block;font-size:14px;color:#5C5F6E;margin-top:4px;">Expansion joints · bellows · pipeline components</span></a>
+        </div>
+      </div>
+    </sc-if>
+  </header>
+
+  <main>
+
+    <section id="top" aria-label="Vedanta Group highlights" aria-roledescription="carousel" data-screen-label="01 Hero" style="position:relative;height:clamp(640px,calc(100vh - 122px),920px);background:#111417;overflow:hidden;display:flex;flex-direction:column;">
+      <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+        <div aria-hidden="{{ s.hidden }}" style="position:absolute;inset:0;background:{{ s.bg }};opacity:{{ s.o }};transition:opacity 1400ms ease;">
+          <img src="{{ s.src }}" alt="{{ s.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ s.fit }};object-position:{{ s.pos }};padding:{{ s.pad }};mix-blend-mode:{{ s.blend }};transform:{{ s.t }};transform-origin:{{ s.origin }};transition:transform 9000ms cubic-bezier(0.2,0.6,0.3,1);">
+          <div style="position:absolute;inset:0;background:{{ s.shade }};"></div>
+        </div>
+      </sc-for>
+
+      <div style="position:relative;flex:1;min-height:0;max-width:1360px;width:100%;margin:0 auto;padding:clamp(48px,7vw,104px) clamp(20px,4vw,48px) 40px;display:flex;flex-direction:column;justify-content:{{ textAlign }};">
+        <div style="display:grid;">
+          <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+            <div aria-hidden="{{ s.hidden }}" style="grid-area:1/1;max-width:{{ s.maxW }};color:{{ s.fg }};pointer-events:{{ s.pe }};visibility:{{ s.vis }};transition:visibility 0ms linear {{ s.visD }};">
+              <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:{{ s.kc }};margin-bottom:26px;opacity:{{ s.to }};transform:{{ s.ty }};transition:opacity 700ms ease {{ s.d0 }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d0 }};">
+                <span style="width:28px;height:2px;background:{{ s.fg }};"></span>{{ s.kicker }}
+              </div>
+              <div role="heading" aria-level="{{ s.level }}" style="font-size:{{ s.hs }};line-height:1;font-weight:700;letter-spacing:-0.035em;">
+                <span style="display:block;overflow:hidden;padding-bottom:0.08em;"><span style="display:block;transform:{{ s.ly }};transition:transform 1100ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d1 }};">{{ s.l1 }}</span></span>
+                <sc-if value="{{ s.hasL2 }}" hint-placeholder-val="{{ false }}">
+                  <span style="display:block;overflow:hidden;padding-bottom:0.08em;"><span style="display:block;color:{{ s.l2c }};transform:{{ s.ly }};transition:transform 1100ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d2 }};">{{ s.l2 }}</span></span>
+                </sc-if>
+              </div>
+              <p style="font-size:clamp(17px,1.4vw,20px);line-height:1.55;color:{{ s.sub }};margin:26px 0 0;max-width:600px;text-wrap:pretty;opacity:{{ s.to }};transform:{{ s.ty }};transition:opacity 800ms ease {{ s.d3 }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d3 }};">{{ s.p }}</p>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;opacity:{{ s.to }};transform:{{ s.ty }};transition:opacity 800ms ease {{ s.d4 }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d4 }};">
+                <a href="{{ s.href1 }}" onClick="{{ s.go1 }}" tabindex="{{ s.tab }}" style="background:{{ s.b1bg }};color:{{ s.b1fg }};border-radius:2px;padding:18px 26px;font-size:16px;font-weight:700;" style-hover="filter:brightness(0.92);color:{{ s.b1fg }};">{{ s.cta1 }}</a>
+                <sc-if value="{{ s.hasCta2 }}" hint-placeholder-val="{{ false }}">
+                  <a href="{{ s.href2 }}" onClick="{{ s.go2 }}" tabindex="{{ s.tab }}" style="background:transparent;color:{{ s.fg }};border:1px solid {{ s.b2b }};border-radius:2px;padding:17px 26px;font-size:16px;font-weight:600;" style-hover="background:rgba(127,127,127,0.14);color:{{ s.fg }};">{{ s.cta2 }}</a>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="position:relative;background:rgba(17,20,23,0.9);border-top:1px solid #2B2F38;color:#fff;">
+        <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:stretch;">
+          <div style="flex:0 0 auto;display:flex;align-items:center;gap:16px;padding:16px 32px 16px 0;border-right:1px solid #2B2F38;">
+            <div aria-hidden="true" style="font-size:44px;font-weight:800;letter-spacing:-0.04em;line-height:0.9;">{{ heroNum }}<span style="color:#A5A8B2;">+</span></div>
+            <div style="font-size:13px;font-weight:700;line-height:1.3;">Years of Engineering<br>Experience <span style="font-family:'IBM Plex Mono',monospace;font-weight:400;color:#A5A8B2;">· since 1994</span></div>
+            <span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">30+ years of engineering experience, since 1994</span>
+          </div>
+          <div style="flex:1 1 480px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));">
+            <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="4">
+              <button onClick="{{ c.pick }}" aria-current="{{ c.on }}" aria-label="{{ c.aria }}" style="position:relative;text-align:left;background:transparent;border:0;border-right:1px solid #2B2F38;color:{{ c.fg }};padding:16px clamp(10px,1.4vw,20px) 18px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;transition:color 200ms;" style-hover="color:#fff;">
+                <span style="position:absolute;left:0;right:0;top:-1px;height:2px;background:rgba(255,255,255,0.12);overflow:hidden;display:block;">{{ c.fill }}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;">{{ c.n }}</span>
+                <span style="font-size:clamp(12px,1vw,14px);font-weight:700;line-height:1.25;">{{ c.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" aria-labelledby="about-h" data-screen-label="02 About" style="padding:clamp(80px,10vw,144px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:clamp(40px,6vw,96px);align-items:center;">
+        <div data-rv="intro" style="opacity:{{ r.intro.o }};transform:{{ r.intro.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>About the group</div>
+          <h2 id="about-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Built on Experience. Driven by Engineering.</h2>
+          <p style="font-size:clamp(18px,1.4vw,20px);line-height:1.6;color:#222334;margin:28px 0 0;text-wrap:pretty;">The Vedanta Group of Companies is an engineering and manufacturing group based in Gujarat, India. It operates through two businesses, each with its own works, engineering team and certifications.</p>
+          <p style="font-size:17px;line-height:1.7;color:#3F4250;margin:18px 0 0;text-wrap:pretty;">Dhruv EPC Solutions designs and fabricates pressure vessels, heat exchangers, storage tanks and skid-mounted process packages. Precise Engineers designs and manufactures expansion joints, dismantling joints, valves and dampers. Customers include refiners, power utilities, steel producers, equipment manufacturers and EPC contractors, in India and for export.</p>
+          <dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 32px;margin:36px 0 0;border-top:2px solid #222334;">
+            <div style="padding:18px 0;border-bottom:1px solid #E0E0E0;">
+              <dt style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:#AA3833;"></span>Dhruv EPC Solutions Pvt. Ltd.</dt>
+              <dd style="margin:6px 0 0;font-size:14px;color:#5C5F6E;">Works · Manjusar GIDC, Savli, Vadodara</dd>
+            </div>
+            <div style="padding:18px 0;border-bottom:1px solid #E0E0E0;">
+              <dt style="font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;"><span style="width:8px;height:8px;background:#0E6BA8;"></span>Precise Engineers</dt>
+              <dd style="margin:6px 0 0;font-size:14px;color:#5C5F6E;">Works · Vitthal Udyognagar, Anand</dd>
+            </div>
+          </dl>
+          <div style="display:flex;gap:24px;flex-wrap:wrap;margin-top:32px;">
+            <a href="#heritage" onClick="{{ goHeritage }}" style="font-size:16px;font-weight:700;border-bottom:2px solid #222334;padding-bottom:4px;" style-hover="color:#5C5F6E;border-color:#5C5F6E;">About Us — our 30-year journey →</a>
+          </div>
+        </div>
+        <figure data-rv="introImg" style="margin:0;position:relative;opacity:{{ r.introImg.o }};transform:{{ r.introImg.y }};transition:opacity 1000ms cubic-bezier(0.2,0.7,0.1,1) 150ms, transform 1100ms cubic-bezier(0.2,0.7,0.1,1) 150ms;">
+          <div style="aspect-ratio:5/4;overflow:hidden;background:#1A1E22;">
+            <img src="assets/pe-large-bore-ej.jpg" alt="Large-bore expansion joint on the Precise Engineers shop floor" style="width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;transform:{{ r.introImg.zoom }};transition:transform 2400ms cubic-bezier(0.2,0.7,0.1,1);">
+          </div>
+          <figcaption style="position:absolute;left:0;bottom:0;background:#fff;padding:14px 18px 0 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5C5F6E;">Large-bore expansion joint · Precise Engineers works</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section id="businesses" aria-labelledby="biz-h" data-screen-label="03 Our Businesses" style="background:#1A1E22;color:#fff;padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="bizHead" style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between;align-items:flex-end;opacity:{{ r.bizHead.o }};transform:{{ r.bizHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="max-width:760px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#A5A8B2;margin-bottom:22px;"><span style="width:28px;height:2px;background:#fff;"></span>Our Businesses</div>
+            <h2 id="biz-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Two specialised businesses. One engineering group.</h2>
+          </div>
+          <p style="font-size:17px;line-height:1.65;color:#C9CCD3;margin:0;max-width:440px;text-wrap:pretty;">Each business makes its own product range in its own works, holds its own certifications and handles its own enquiries.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,540px),1fr));gap:24px;margin-top:clamp(40px,5vw,64px);">
+          <article data-rv="biz1" aria-labelledby="biz-despl" style="order:{{ desplOrder }};background:#fff;color:#222334;display:flex;flex-direction:column;min-width:0;opacity:{{ r.biz1.o }};transform:{{ r.biz1.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+            <a href="DESPL Website v2.dc.html" aria-label="Explore Dhruv EPC Solutions" style="display:block;position:relative;aspect-ratio:16/10;background:#EDEFF2;overflow:hidden;">
+              <img src="assets/despl-cgd-skid.jpg" alt="City Gas Distribution skid fabricated by Dhruv EPC Solutions for Emerson" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6% 5% 2%;mix-blend-mode:multiply;transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.05);">
+              <span style="position:absolute;left:0;top:0;height:4px;width:100%;background:#AA3833;"></span>
+              <span style="position:absolute;left:0;bottom:0;background:#1A1E22;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px;padding:9px 14px;">01 · Manjusar GIDC, Vadodara</span>
+            </a>
+            <div style="padding:clamp(28px,3.4vw,44px);display:flex;flex-direction:column;gap:18px;flex:1;">
+              <img src="assets/logo-despl.png" alt="" style="height:38px;width:auto;align-self:flex-start;display:block;">
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8D2F2A;margin-bottom:8px;">Static equipment · EPC packages · heavy engineering</div>
+                <h3 id="biz-despl" style="font-size:clamp(28px,2.6vw,38px);line-height:1.08;font-weight:700;letter-spacing:-0.015em;margin:0;">Dhruv EPC Solutions Pvt. Ltd.</h3>
+              </div>
+              <p style="font-size:17px;line-height:1.6;color:#3F4250;margin:0;text-wrap:pretty;">Pressure vessels, shell &amp; tube heat exchangers, storage tanks and skid-mounted process packages, designed and fabricated to ASME, IBR and TEMA under ASME U and U2 Certificates of Authorization.</p>
+              <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 24px;border-top:1px solid #E0E0E0;">
+                <sc-for list="{{ desplList }}" as="p" hint-placeholder-count="6">
+                  <li style="border-bottom:1px solid #EDEFF2;"><a href="{{ p.href }}" style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;font-size:15px;font-weight:600;" style-hover="color:#AA3833;">{{ p.name }}<span style="color:#AA3833;">→</span></a></li>
+                </sc-for>
+              </ul>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:10px;">
+                <a href="DESPL Website v2.dc.html" style="background:#AA3833;color:#fff;border-radius:2px;padding:16px 24px;font-size:16px;font-weight:600;" style-hover="background:#8D2F2A;color:#fff;">Explore Business →</a>
+                <button onClick="{{ enquireDespl }}" style="background:#fff;color:#AA3833;border:1px solid #D9D9D9;border-radius:2px;padding:16px 20px;font-size:16px;font-weight:600;cursor:pointer;" style-hover="border-color:#AA3833;">Enquire with DESPL</button>
+              </div>
+            </div>
+          </article>
+
+          <article data-rv="biz2" aria-labelledby="biz-pe" style="order:{{ peOrder }};background:#fff;color:#222334;display:flex;flex-direction:column;min-width:0;opacity:{{ r.biz2.o }};transform:{{ r.biz2.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1) 140ms, transform 1000ms cubic-bezier(0.2,0.7,0.1,1) 140ms;">
+            <a href="Precise Engineers Website v2.dc.html" aria-label="Explore Precise Engineers" style="display:block;position:relative;aspect-ratio:16/10;background:#1A1E22;overflow:hidden;">
+              <img src="assets/pe-inline-pb.jpg" alt="Inline pressure-balanced expansion joints built by Precise Engineers" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.05);">
+              <span style="position:absolute;left:0;top:0;height:4px;width:100%;background:#0E6BA8;"></span>
+              <span style="position:absolute;left:0;bottom:0;background:#1A1E22;color:#fff;font-family:'IBM Plex Mono',monospace;font-size:12px;padding:9px 14px;">02 · Vitthal Udyognagar, Anand</span>
+            </a>
+            <div style="padding:clamp(28px,3.4vw,44px);display:flex;flex-direction:column;gap:18px;flex:1;">
+              <img src="assets/logo-precise.png" alt="" style="height:38px;width:auto;align-self:flex-start;display:block;">
+              <div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#0A5589;margin-bottom:8px;">Expansion joints · bellows · pipeline components</div>
+                <h3 id="biz-pe" style="font-family:'Archivo',sans-serif;font-stretch:80%;font-size:clamp(30px,2.8vw,42px);line-height:1;font-weight:700;margin:0;">Precise Engineers</h3>
+              </div>
+              <p style="font-size:17px;line-height:1.6;color:#3F4250;margin:0;text-wrap:pretty;">Metallic, rubber and fabric expansion joints, dismantling joints, flange adaptors, valves and dampers, designed to EJMA and ASME B31.3 and built in our own works. EIL approved vendor.</p>
+              <ul style="list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0 24px;border-top:1px solid #E0E0E0;">
+                <sc-for list="{{ peList }}" as="p" hint-placeholder-count="6">
+                  <li style="border-bottom:1px solid #EDEFF2;"><a href="{{ p.href }}" style="display:flex;justify-content:space-between;gap:12px;padding:12px 0;font-size:15px;font-weight:600;" style-hover="color:#0E6BA8;">{{ p.name }}<span style="color:#0E6BA8;">→</span></a></li>
+                </sc-for>
+              </ul>
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:auto;padding-top:10px;">
+                <a href="Precise Engineers Website v2.dc.html" style="background:#0E6BA8;color:#fff;border-radius:2px;padding:16px 24px;font-size:16px;font-weight:600;" style-hover="background:#0A5589;color:#fff;">Explore Business →</a>
+                <button onClick="{{ enquirePe }}" style="background:#fff;color:#0E6BA8;border:1px solid #D9D9D9;border-radius:2px;padding:16px 20px;font-size:16px;font-weight:600;cursor:pointer;" style-hover="border-color:#0E6BA8;">Enquire with Precise Engineers</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" aria-labelledby="prod-h" data-screen-label="04 Products &amp; Solutions" style="background:#F5F6F8;padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="prodHead" style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between;align-items:flex-end;margin-bottom:clamp(40px,5vw,56px);opacity:{{ r.prodHead.o }};transform:{{ r.prodHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="max-width:760px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Products &amp; Solutions</div>
+            <h2 id="prod-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Core product lines across the group</h2>
+          </div>
+          <p style="font-size:17px;line-height:1.65;color:#3F4250;margin:0;max-width:440px;text-wrap:pretty;">Six of the group’s {{ productCount }} product lines. Each opens its detail page on the business that makes it.</p>
+        </div>
+        <div data-rv="prod" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:24px;">
+          <sc-for list="{{ prodCards }}" as="p" hint-placeholder-count="6">
+            <a href="{{ p.href }}" style="background:#fff;display:flex;flex-direction:column;min-width:0;opacity:{{ p.o }};transform:{{ p.y }};transition:opacity 800ms cubic-bezier(0.2,0.7,0.1,1) {{ p.d }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ p.d }}, box-shadow 260ms ease;" style-hover="box-shadow:0 18px 40px rgba(17,20,23,0.12);">
+              <div style="position:relative;aspect-ratio:4/3;background:{{ p.bg }};overflow:hidden;">
+                <sc-if value="{{ p.hasImg }}" hint-placeholder-val="{{ true }}">
+                  <img src="{{ p.img }}" alt="{{ p.alt }}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:{{ p.fit }};object-position:{{ p.pos }};padding:{{ p.pad }};mix-blend-mode:{{ p.blend }};transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.06);">
+                </sc-if>
+                <sc-if value="{{ p.noImg }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;inset:16px;border:1px dashed #A5A8B2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;padding:16px;">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#707070;letter-spacing:0.06em;">PHOTO REQUIRED</span>
+                    <span style="font-size:14px;color:#5C5F6E;max-width:260px;">{{ p.photo }}</span>
+                  </div>
+                </sc-if>
+                <span style="position:absolute;left:0;top:0;background:{{ p.color }};color:#fff;font-size:12px;font-weight:700;padding:7px 12px;">{{ p.biz }}</span>
+              </div>
+              <div style="padding:26px 28px 28px;display:flex;flex-direction:column;gap:12px;flex:1;border-top:1px solid #EDEFF2;">
+                <h3 style="font-size:23px;line-height:1.2;font-weight:700;margin:0;">{{ p.name }}</h3>
+                <p style="font-size:15px;line-height:1.6;color:#3F4250;margin:0;text-wrap:pretty;">{{ p.desc }}</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <sc-for list="{{ p.chips }}" as="c" hint-placeholder-count="2">
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#222334;background:#F5F6F8;border:1px solid #E0E0E0;padding:5px 9px;">{{ c }}</span>
+                  </sc-for>
+                </div>
+                <span style="margin-top:auto;padding-top:10px;font-size:15px;font-weight:700;color:{{ p.color }};">View product →</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;">
+          <a href="DESPL Website v2.dc.html#capabilities" style="order:{{ desplOrder }};border:1px solid #222334;border-radius:2px;padding:15px 22px;font-size:15px;font-weight:600;" style-hover="background:#222334;color:#fff;">All Dhruv EPC Solutions products →</a>
+          <a href="Precise Engineers Website v2.dc.html#capabilities" style="order:{{ peOrder }};border:1px solid #222334;border-radius:2px;padding:15px 22px;font-size:15px;font-weight:600;" style-hover="background:#222334;color:#fff;">All Precise Engineers products →</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="capabilities" aria-labelledby="mfg-h" data-screen-label="05 Manufacturing" style="padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="mfgHead" style="max-width:820px;opacity:{{ r.mfgHead.o }};transform:{{ r.mfgHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Manufacturing &amp; engineering</div>
+          <h2 id="mfg-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Engineering Capability. Manufacturing Precision.</h2>
+          <p style="font-size:17px;line-height:1.7;color:#3F4250;margin:24px 0 0;max-width:680px;text-wrap:pretty;">Design, fabrication, machining, forming and testing are carried out in the group’s two works. The figures below are taken from each business’s product and project records.</p>
+        </div>
+
+        <div data-rv="mfg" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,560px),1fr));gap:24px;margin-top:clamp(40px,5vw,56px);opacity:{{ r.mfg.o }};transform:{{ r.mfg.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1) 120ms, transform 1000ms cubic-bezier(0.2,0.7,0.1,1) 120ms;">
+          <div style="order:{{ desplOrder }};border-top:3px solid #AA3833;background:#F5F6F8;display:flex;flex-direction:column;">
+            <div style="padding:24px 28px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:18px;font-weight:700;">Dhruv EPC Solutions · Manjusar works</span>
+              <a href="DESPL Website v2.dc.html#facilities" style="font-size:14px;font-weight:600;color:#AA3833;" style-hover="color:#8D2F2A;">Facilities →</a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#E0E0E0;border-top:1px solid #E0E0E0;border-bottom:1px solid #E0E0E0;">
+              <sc-for list="{{ desplFacts }}" as="f" hint-placeholder-count="4">
+                <div style="background:#fff;padding:22px 24px;">
+                  <div style="font-size:clamp(24px,2.4vw,32px);font-weight:800;letter-spacing:-0.02em;line-height:1.05;">{{ f.v }}</div>
+                  <div style="font-size:14px;line-height:1.5;color:#5C5F6E;margin-top:6px;">{{ f.k }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:20px 28px 28px;">
+              <div style="grid-column:1/-1;aspect-ratio:16/8;position:relative;background:#EDEFF2;overflow:hidden;">
+                <img src="assets/despl-skid-3d.jpg" alt="3D model of a skid package from the Dhruv EPC Solutions design office" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.04);">
+                <span style="position:absolute;left:0;bottom:0;background:#1A1E22;color:#fff;font-size:13px;font-weight:600;padding:8px 12px;">Design office · 3D skid model</span>
+              </div>
+              <sc-for list="{{ desplSlots }}" as="s" hint-placeholder-count="3">
+                <div style="aspect-ratio:1/1;border:1px dashed #A5A8B2;background:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;gap:4px;">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#707070;letter-spacing:0.06em;">PHOTO REQUIRED</span>
+                  <span style="font-size:14px;font-weight:700;line-height:1.25;">{{ s }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="order:{{ peOrder }};border-top:3px solid #0E6BA8;background:#F5F6F8;display:flex;flex-direction:column;">
+            <div style="padding:24px 28px;display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;">
+              <span style="font-size:18px;font-weight:700;">Precise Engineers · Anand works</span>
+              <a href="Precise Engineers Website v2.dc.html#facilities" style="font-size:14px;font-weight:600;color:#0E6BA8;" style-hover="color:#0A5589;">Facilities →</a>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:#E0E0E0;border-top:1px solid #E0E0E0;border-bottom:1px solid #E0E0E0;">
+              <sc-for list="{{ peFacts }}" as="f" hint-placeholder-count="4">
+                <div style="background:#fff;padding:22px 24px;">
+                  <div style="font-size:clamp(24px,2.4vw,32px);font-weight:800;letter-spacing:-0.02em;line-height:1.05;">{{ f.v }}</div>
+                  <div style="font-size:14px;line-height:1.5;color:#5C5F6E;margin-top:6px;">{{ f.k }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;padding:20px 28px 28px;">
+              <div style="grid-column:1/-1;aspect-ratio:16/8;position:relative;background:#1A1E22;overflow:hidden;">
+                <img src="assets/pe-gimbal-ej.jpg" alt="Gimbal expansion joint in the Precise Engineers assembly bay" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%;transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.04);">
+                <span style="position:absolute;left:0;bottom:0;background:#1A1E22;color:#fff;font-size:13px;font-weight:600;padding:8px 12px;">Assembly bay · gimbal expansion joint</span>
+              </div>
+              <sc-for list="{{ peSlots }}" as="s" hint-placeholder-count="3">
+                <div style="aspect-ratio:1/1;border:1px dashed #A5A8B2;background:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:12px;gap:4px;">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#707070;letter-spacing:0.06em;">PHOTO REQUIRED</span>
+                  <span style="font-size:14px;font-weight:700;line-height:1.25;">{{ s }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:clamp(48px,6vw,72px);">
+          <div style="font-size:16px;font-weight:700;margin-bottom:16px;">Manufacturing disciplines</div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:1px;background:#E0E0E0;border:1px solid #E0E0E0;">
+            <sc-for list="{{ disciplines }}" as="c" hint-placeholder-count="8">
+              <div style="background:#fff;padding:24px;display:flex;flex-direction:column;gap:10px;transition:background 200ms;" style-hover="background:#F5F6F8;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px;">
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;">{{ c.n }}</span>
+                  <span style="display:flex;gap:4px;">
+                    <sc-if value="{{ c.d }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;font-weight:700;color:#fff;background:#AA3833;padding:3px 6px;">DESPL</span></sc-if>
+                    <sc-if value="{{ c.p }}" hint-placeholder-val="{{ true }}"><span style="font-size:11px;font-weight:700;color:#fff;background:#0E6BA8;padding:3px 6px;">PE</span></sc-if>
+                  </span>
+                </div>
+                <div style="font-size:18px;font-weight:700;">{{ c.t }}</div>
+                <div style="font-size:14px;line-height:1.55;color:#5C5F6E;">{{ c.s }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section data-rv="stats" aria-label="The group in figures" data-screen-label="06 Figures" style="background:#111417;color:#fff;padding:clamp(64px,8vw,104px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#A5A8B2;margin-bottom:40px;"><span style="width:28px;height:2px;background:#fff;"></span>The group in figures</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:40px 0;">
+          <sc-for list="{{ stats }}" as="s" hint-placeholder-count="6">
+            <div style="padding:0 28px 0 0;border-left:1px solid #2B2F38;padding-left:24px;opacity:{{ s.o }};transform:{{ s.y }};transition:opacity 800ms ease {{ s.d }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ s.d }};">
+              <div style="font-size:clamp(52px,5.4vw,80px);font-weight:800;letter-spacing:-0.04em;line-height:0.9;">{{ s.num }}<span style="color:#A5A8B2;">{{ s.suf }}</span></div>
+              <div style="font-size:16px;font-weight:700;margin-top:16px;line-height:1.3;">{{ s.k }}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A5A8B2;margin-top:8px;line-height:1.55;">{{ s.src }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:48px;padding-top:24px;border-top:1px solid #2B2F38;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A6116;background:#F5EDD8;padding:4px 8px;">FIGURES REQUIRED</span>
+          <span style="font-size:14px;color:#A5A8B2;">Total projects completed, workforce, works area and installed capacity — to be supplied and approved before publication.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" aria-labelledby="cl-h" data-screen-label="07 Clients &amp; Projects" style="padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="clHead" style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between;align-items:flex-end;margin-bottom:40px;opacity:{{ r.clHead.o }};transform:{{ r.clHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="max-width:760px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Clients &amp; projects</div>
+            <h2 id="cl-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Trusted Relationships. Proven Engineering.</h2>
+          </div>
+          <p style="font-size:17px;line-height:1.65;color:#3F4250;margin:0;max-width:440px;text-wrap:pretty;">{{ clientCount }} organisations are on the group’s client list — refiners, utilities, steel producers, equipment manufacturers and EPC contractors.</p>
+        </div>
+
+        <div data-rv="clients" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;background:#E0E0E0;border:1px solid #E0E0E0;">
+          <sc-for list="{{ logos }}" as="c" hint-placeholder-count="14">
+            <div title="{{ c.name }}" style="background:#fff;height:112px;display:flex;align-items:center;justify-content:center;padding:18px;">
+              <img src="{{ c.logo }}" alt="{{ c.name }}" loading="lazy" style="max-width:100%;max-height:54px;object-fit:contain;display:block;opacity:{{ c.o }};transform:{{ c.y }};transition:opacity 700ms ease {{ c.d }}, transform 800ms cubic-bezier(0.2,0.7,0.1,1) {{ c.d }};">
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-top:16px;">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A6116;background:#F5EDD8;padding:4px 8px;">GROUP LIST · PER-BUSINESS ATTRIBUTION AND LOGO PERMISSION PENDING</span>
+          <button onClick="{{ toggleClients }}" style="background:transparent;border:1px solid #222334;border-radius:2px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;" style-hover="background:#222334;color:#fff;">{{ clientsBtn }}</button>
+        </div>
+
+        <div style="margin-top:clamp(64px,8vw,104px);display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin-bottom:24px;">
+          <h3 style="font-size:clamp(26px,2.6vw,34px);font-weight:700;letter-spacing:-0.015em;margin:0;">Selected projects</h3>
+          <div style="display:flex;gap:20px;flex-wrap:wrap;font-size:15px;font-weight:600;">
+            <a href="DESPL Website v2.dc.html#projects" style="color:#AA3833;" style-hover="color:#8D2F2A;">DESPL portfolio →</a>
+            <a href="Precise Engineers Website v2.dc.html#projects" style="color:#0E6BA8;" style-hover="color:#0A5589;">PE portfolio →</a>
+          </div>
+        </div>
+
+        <a data-rv="featured" href="DESPL Website v2.dc.html#case/cgd-skids-emerson" style="display:flex;flex-wrap:wrap;background:#1A1E22;color:#fff;margin-bottom:24px;opacity:{{ r.featured.o }};transform:{{ r.featured.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="flex:1.2 1 480px;min-width:0;aspect-ratio:16/10;background:#EDEFF2;position:relative;overflow:hidden;">
+            <img src="assets/despl-cgd-skid.jpg" alt="City Gas Distribution skid for Emerson" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:6%;mix-blend-mode:multiply;transition:transform 900ms cubic-bezier(0.2,0.7,0.1,1);" style-hover="transform:scale(1.04);">
+          </div>
+          <div style="flex:1 1 380px;min-width:0;padding:clamp(28px,4vw,56px);display:flex;flex-direction:column;gap:18px;">
+            <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"><span style="font-size:12px;font-weight:700;background:#AA3833;padding:5px 10px;">Dhruv EPC Solutions</span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#A5A8B2;">City gas distribution</span></div>
+            <div style="font-size:clamp(26px,2.6vw,36px);line-height:1.12;font-weight:700;letter-spacing:-0.015em;">City Gas Distribution and District Regulating Station skids for Emerson</div>
+            <dl style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:10px 20px;font-size:15px;">
+              <dt style="color:#A5A8B2;">Client</dt><dd style="margin:0;">Emerson Process Management</dd>
+              <dt style="color:#A5A8B2;">Scope</dt><dd style="margin:0;line-height:1.5;">Fabrication of CGD and DRS skids</dd>
+              <dt style="color:#A5A8B2;">Application</dt><dd style="margin:0;">Natural gas regulation and metering</dd>
+            </dl>
+            <span style="margin-top:auto;font-size:15px;font-weight:700;color:#DC8D89;">Read the case study →</span>
+          </div>
+        </a>
+
+        <div data-rv="proj" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:24px;">
+          <sc-for list="{{ projects }}" as="j" hint-placeholder-count="6">
+            <a href="{{ j.href }}" style="background:#fff;border:1px solid #E0E0E0;border-top:3px solid {{ j.color }};padding:26px 26px 28px;display:flex;flex-direction:column;gap:14px;min-width:0;opacity:{{ j.o }};transform:{{ j.y }};transition:opacity 800ms ease {{ j.d }}, transform 900ms cubic-bezier(0.2,0.7,0.1,1) {{ j.d }}, box-shadow 240ms ease;" style-hover="box-shadow:0 16px 36px rgba(17,20,23,0.1);">
+              <div style="display:flex;justify-content:space-between;gap:10px;font-size:12px;"><span style="font-weight:700;color:{{ j.color }};">{{ j.biz }}</span><span style="font-family:'IBM Plex Mono',monospace;color:#707070;">{{ j.industry }}</span></div>
+              <div style="font-size:clamp(30px,2.8vw,40px);font-weight:800;letter-spacing:-0.03em;line-height:1;">{{ j.fig }}</div>
+              <div style="font-size:17px;line-height:1.35;font-weight:700;">{{ j.title }}</div>
+              <dl style="margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px;line-height:1.45;">
+                <dt style="color:#707070;">Client</dt><dd style="margin:0;">{{ j.client }}</dd>
+                <dt style="color:#707070;">Scope</dt><dd style="margin:0;">{{ j.scope }}</dd>
+              </dl>
+              <div style="margin-top:auto;padding-top:12px;border-top:1px solid #EDEFF2;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#707070;letter-spacing:0.05em;">PROJECT PHOTO REQUIRED</span>
+                <span style="font-size:14px;font-weight:700;color:{{ j.color }};">Case study →</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section id="heritage" aria-labelledby="her-h" data-screen-label="08 Heritage" style="background:#F5F6F8;padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="herHead" style="max-width:820px;margin-bottom:clamp(40px,5vw,64px);opacity:{{ r.herHead.o }};transform:{{ r.herHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Our journey</div>
+          <h2 id="her-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Three Decades of Building Engineering Excellence.</h2>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:22px;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A6116;background:#F5EDD8;padding:4px 8px;">MILESTONE YEARS AND ARCHIVAL PHOTOS PENDING</span>
+            <span style="font-size:14px;color:#5C5F6E;">Events are drawn from existing records; years marked “TBC” need confirmation.</span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:{{ tlCols }};gap:clamp(40px,6vw,96px);align-items:start;">
+          <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+            <div style="position:sticky;top:124px;">
+              <div style="position:relative;aspect-ratio:4/3;background:#EDEFF2;overflow:hidden;">
+                <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="1">
+                  <div style="position:absolute;inset:0;opacity:{{ m.o }};transition:opacity 700ms ease;">
+                    <sc-if value="{{ m.hasImg }}" hint-placeholder-val="{{ false }}">
+                      <img src="{{ m.img }}" alt="{{ m.alt }}" style="width:100%;height:100%;object-fit:{{ m.fit }};background:{{ m.bg }};display:block;filter:{{ m.filter }};">
+                    </sc-if>
+                    <sc-if value="{{ m.noImg }}" hint-placeholder-val="{{ true }}">
+                      <div style="position:absolute;inset:18px;border:1px dashed #A5A8B2;display:flex;flex-direction:column;justify-content:flex-end;padding:22px;gap:6px;">
+                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#707070;letter-spacing:0.06em;">{{ m.photoTag }}</span>
+                        <span style="font-size:16px;font-weight:600;color:#3F4250;">{{ m.photo }}</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-top:24px;">
+                <div style="font-size:clamp(56px,6vw,96px);font-weight:800;letter-spacing:-0.045em;line-height:0.85;font-variant-numeric:tabular-nums;">{{ tlYear }}</div>
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#5C5F6E;padding-bottom:6px;">{{ tlCount }}</div>
+              </div>
+              <div style="height:2px;background:#D9D9D9;margin-top:20px;position:relative;">
+                <div style="position:absolute;left:0;top:0;bottom:0;width:100%;background:#222334;transform:scaleX({{ tlFill }});transform-origin:left;transition:transform 160ms linear;"></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <ol id="vg-tl" style="list-style:none;margin:0;padding:0;position:relative;">
+            <span aria-hidden="true" style="position:absolute;left:7px;top:10px;bottom:10px;width:2px;background:#D9D9D9;"></span>
+            <span aria-hidden="true" style="position:absolute;left:7px;top:10px;width:2px;height:{{ tlFillPct }};max-height:calc(100% - 20px);background:#222334;transition:height 160ms linear;"></span>
+            <sc-for list="{{ milestones }}" as="m" hint-placeholder-count="6">
+              <li id="{{ m.id }}" style="position:relative;padding:0 0 0 48px;min-height:{{ m.minH }};padding-bottom:48px;opacity:{{ m.textO }};transition:opacity 500ms ease;">
+                <span aria-hidden="true" style="position:absolute;left:0;top:4px;width:16px;height:16px;border-radius:100%;background:{{ m.dot }};border:2px solid #222334;box-shadow:{{ m.ring }};transition:background 300ms, box-shadow 400ms;"></span>
+                <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                  <span style="font-size:22px;font-weight:800;letter-spacing:-0.02em;">{{ m.y }}</span>
+                  <sc-if value="{{ m.pending }}" hint-placeholder-val="{{ false }}"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A6116;background:#F5EDD8;padding:3px 6px;">TO CONFIRM</span></sc-if>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;">{{ m.biz }}</span>
+                </div>
+                <h3 style="font-size:clamp(22px,2vw,28px);line-height:1.2;font-weight:700;margin:10px 0 0;letter-spacing:-0.01em;">{{ m.t }}</h3>
+                <p style="font-size:16px;line-height:1.65;color:#3F4250;margin:10px 0 0;max-width:560px;text-wrap:pretty;">{{ m.d }}</p>
+              </li>
+            </sc-for>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section id="quality" aria-labelledby="q-h" data-screen-label="09 Quality" style="padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="qHead" style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between;align-items:flex-end;margin-bottom:40px;opacity:{{ r.qHead.o }};transform:{{ r.qHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="max-width:760px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Quality &amp; certifications</div>
+            <h2 id="q-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Certified by business. Inspected independently.</h2>
+          </div>
+          <p style="font-size:17px;line-height:1.65;color:#3F4250;margin:0;max-width:440px;text-wrap:pretty;">Certificates apply to the business and works that hold them. Equipment is inspected by the third-party and client bodies listed below.</p>
+        </div>
+        <div data-rv="certs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:24px;opacity:{{ r.certs.o }};transform:{{ r.certs.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="order:{{ desplOrder }};border:1px solid #E0E0E0;border-top:3px solid #AA3833;">
+            <div style="padding:20px 24px;border-bottom:1px solid #E0E0E0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;"><span style="font-size:17px;font-weight:700;">Dhruv EPC Solutions</span><a href="DESPL Website v2.dc.html#quality" style="font-size:14px;font-weight:600;color:#AA3833;" style-hover="color:#8D2F2A;">Quality at DESPL →</a></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+              <sc-for list="{{ desplStamps }}" as="s" hint-placeholder-count="4">
+                <div style="padding:22px 24px;border-bottom:1px solid #EDEFF2;display:flex;gap:16px;align-items:flex-start;">
+                  <div style="width:52px;height:52px;flex:none;border-radius:100%;border:2px solid #222334;display:flex;align-items:center;justify-content:center;outline:1px solid #D9D9D9;outline-offset:3px;font-size:12px;font-weight:800;">{{ s.mark }}</div>
+                  <div><div style="font-size:15px;font-weight:700;">{{ s.name }}</div><div style="font-size:14px;line-height:1.5;color:#5C5F6E;margin-top:3px;">{{ s.scope }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="order:{{ peOrder }};border:1px solid #E0E0E0;border-top:3px solid #0E6BA8;">
+            <div style="padding:20px 24px;border-bottom:1px solid #E0E0E0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;"><span style="font-size:17px;font-weight:700;">Precise Engineers</span><a href="Precise Engineers Website v2.dc.html#quality" style="font-size:14px;font-weight:600;color:#0E6BA8;" style-hover="color:#0A5589;">Quality at PE →</a></div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+              <sc-for list="{{ peStamps }}" as="s" hint-placeholder-count="2">
+                <div style="padding:22px 24px;border-bottom:1px solid #EDEFF2;display:flex;gap:16px;align-items:flex-start;">
+                  <div style="width:52px;height:52px;flex:none;border-radius:100%;border:2px solid #222334;display:flex;align-items:center;justify-content:center;outline:1px solid #D9D9D9;outline-offset:3px;font-size:12px;font-weight:800;">{{ s.mark }}</div>
+                  <div><div style="font-size:15px;font-weight:700;">{{ s.name }}</div><div style="font-size:14px;line-height:1.5;color:#5C5F6E;margin-top:3px;">{{ s.scope }}</div></div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:18px 24px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A6116;background:#F5EDD8;padding:4px 8px;">CERTIFICATE SCANS REQUIRED</span>
+              <span style="font-size:13px;color:#5C5F6E;">Scans, validity dates and ISO certification body — both businesses.</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:40px;">
+          <div style="display:flex;gap:12px 20px;align-items:center;flex-wrap:wrap;margin-bottom:14px;">
+            <span style="font-size:16px;font-weight:700;">Inspection and approval bodies across the group</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#8A6116;background:#F5EDD8;padding:4px 8px;">TYPE AND BUSINESS PER BODY · PENDING</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:1px;background:#E0E0E0;border:1px solid #E0E0E0;">
+            <sc-for list="{{ approvals }}" as="a" hint-placeholder-count="12">
+              <div title="{{ a.name }}" style="background:#fff;height:88px;display:flex;align-items:center;justify-content:center;padding:14px;">
+                <img src="{{ a.logo }}" alt="{{ a.name }}" loading="lazy" style="max-width:100%;max-height:44px;object-fit:contain;display:block;">
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="careers" aria-labelledby="car-h" data-screen-label="10 Careers" style="background:#F5F6F8;padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);">
+        <div data-rv="carHead" style="display:flex;flex-wrap:wrap;gap:24px 64px;justify-content:space-between;align-items:flex-end;margin-bottom:40px;opacity:{{ r.carHead.o }};transform:{{ r.carHead.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="max-width:760px;">
+            <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#5C5F6E;margin-bottom:22px;"><span style="width:28px;height:2px;background:#222334;"></span>Careers</div>
+            <h2 id="car-h" style="font-size:clamp(34px,4vw,56px);line-height:1.04;font-weight:700;letter-spacing:-0.025em;margin:0;text-wrap:balance;">Build your career in engineering and manufacturing.</h2>
+          </div>
+          <p style="font-size:17px;line-height:1.65;color:#3F4250;margin:0;max-width:460px;text-wrap:pretty;">Open positions at Dhruv EPC Solutions and Precise Engineers are listed below. If none fits, send us your CV and we will keep it on file for future openings.</p>
+        </div>
+
+        <div data-rv="jobs" style="background:#fff;border:1px solid #E0E0E0;opacity:{{ r.jobs.o }};transform:{{ r.jobs.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 24px;border-bottom:2px solid #222334;">
+            <span style="font-size:17px;font-weight:700;">Current openings <span style="font-weight:500;color:#707070;">· {{ jobCount }}</span></span>
+            <div role="tablist" aria-label="Filter openings" style="display:flex;gap:6px;flex-wrap:wrap;">
+              <sc-for list="{{ jobFilters }}" as="jf" hint-placeholder-count="3">
+                <button role="tab" aria-selected="{{ jf.on }}" onClick="{{ jf.pick }}" style="border:1px solid {{ jf.border }};background:{{ jf.bg }};color:{{ jf.fg }};border-radius:2px;padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;">{{ jf.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <sc-if value="{{ hasJobs }}" hint-placeholder-val="{{ true }}">
+            <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="3">
+              <div style="display:flex;flex-wrap:wrap;gap:14px 32px;align-items:center;padding:22px 24px;border-bottom:1px solid #EDEFF2;transition:background 180ms;" style-hover="background:#F5F6F8;">
+                <div style="flex:1 1 360px;min-width:0;">
+                  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+                    <span style="font-size:11px;font-weight:700;color:#fff;background:{{ j.color }};padding:3px 7px;">{{ j.biz }}</span>
+                    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#8A6116;background:#F5EDD8;padding:3px 6px;">EXAMPLE LISTING · REPLACE</span>
+                  </div>
+                  <div style="font-size:19px;font-weight:700;line-height:1.3;">{{ j.title }}</div>
+                  <div style="font-size:14px;color:#5C5F6E;margin-top:4px;">{{ j.dept }}</div>
+                </div>
+                <div style="flex:0 1 220px;min-width:0;font-size:14px;line-height:1.55;color:#3F4250;">{{ j.loc }}<br><span style="color:#707070;">{{ j.type }} · {{ j.exp }}</span></div>
+                <div style="flex:0 0 auto;margin-left:auto;"><button onClick="{{ j.apply }}" style="background:#222334;color:#fff;border:0;border-radius:2px;padding:13px 20px;font-size:15px;font-weight:600;cursor:pointer;" style-hover="background:#3F4250;">Apply →</button></div>
+              </div>
+            </sc-for>
+          </sc-if>
+          <sc-if value="{{ noJobs }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:40px 24px;display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+              <div style="font-size:19px;font-weight:700;">No open positions right now</div>
+              <div style="font-size:15px;line-height:1.6;color:#5C5F6E;max-width:560px;">We still want to hear from engineers, welders, fitters, inspectors and project professionals. Send your CV below and we will contact you when a suitable role opens.</div>
+            </div>
+          </sc-if>
+        </div>
+
+        <div id="careers-form" style="display:flex;flex-wrap:wrap;gap:clamp(32px,5vw,72px);margin-top:clamp(48px,6vw,72px);align-items:flex-start;">
+          <div style="flex:1 1 320px;min-width:0;">
+            <h3 style="font-size:clamp(26px,2.6vw,34px);line-height:1.12;font-weight:700;letter-spacing:-0.015em;margin:0;">{{ cTitle }}</h3>
+            <p style="font-size:16px;line-height:1.65;color:#3F4250;margin:16px 0 0;max-width:420px;text-wrap:pretty;">Tell us what you do and upload your CV. Our HR team reviews every application and keeps suitable profiles for future openings at either business.</p>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:28px;border-top:2px solid #222334;">
+              <sc-for list="{{ cPoints }}" as="cp" hint-placeholder-count="3">
+                <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #E0E0E0;"><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:#707070;padding-top:2px;">{{ cp.n }}</span><span style="font-size:15px;line-height:1.5;">{{ cp.t }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+
+          <form onSubmit="{{ cSubmit }}" novalidate="novalidate" style="flex:1.4 1 560px;min-width:0;background:#fff;border:1px solid #E0E0E0;padding:clamp(24px,3.4vw,40px);">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px;">
+              <sc-for list="{{ cFields }}" as="fl" hint-placeholder-count="4">
+                <div>
+                  <label for="{{ fl.id }}" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">{{ fl.label }}</label>
+                  <input id="{{ fl.id }}" type="{{ fl.type }}" autocomplete="{{ fl.ac }}" placeholder="{{ fl.ph }}" value="{{ fl.value }}" onChange="{{ fl.onChange }}" aria-invalid="{{ fl.hasErr }}" style="width:100%;height:52px;border:1px solid {{ fl.border }};border-radius:2px;padding:0 14px;font-size:16px;background:#fff;color:#222334;">
+                  <sc-if value="{{ fl.hasErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ fl.err }}</div></sc-if>
+                </div>
+              </sc-for>
+              <div>
+                <label for="vc-area" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">Area of work *</label>
+                <select id="vc-area" value="{{ cf.area }}" onChange="{{ cOn.area }}" style="width:100%;height:52px;border:1px solid {{ cEb.area }};border-radius:2px;padding:0 12px;font-size:16px;background:#fff;color:#222334;">
+                  <option value="">Select an area</option>
+                  <sc-for list="{{ cAreas }}" as="o" hint-placeholder-count="6"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+                <sc-if value="{{ cEh.area }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ cEm.area }}</div></sc-if>
+              </div>
+              <div>
+                <label for="vc-exp" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">Experience</label>
+                <select id="vc-exp" value="{{ cf.exp }}" onChange="{{ cOn.exp }}" style="width:100%;height:52px;border:1px solid #C9CCD3;border-radius:2px;padding:0 12px;font-size:16px;background:#fff;color:#222334;">
+                  <sc-for list="{{ cExps }}" as="o" hint-placeholder-count="5"><option value="{{ o }}">{{ o }}</option></sc-for>
+                </select>
+              </div>
+            </div>
+
+            <fieldset style="border:0;margin:20px 0 0;padding:0;">
+              <legend style="font-size:14px;font-weight:700;margin-bottom:10px;padding:0;">Preferred business</legend>
+              <div role="radiogroup" style="display:flex;gap:8px;flex-wrap:wrap;">
+                <sc-for list="{{ cBiz }}" as="b" hint-placeholder-count="3">
+                  <button type="button" role="radio" aria-checked="{{ b.on }}" onClick="{{ b.pick }}" style="background:{{ b.bg }};color:{{ b.fg }};border:1px solid {{ b.border }};border-radius:2px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;">{{ b.label }}</button>
+                </sc-for>
+              </div>
+            </fieldset>
+
+            <div style="margin-top:18px;">
+              <label for="vc-role" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">Position applying for</label>
+              <input id="vc-role" type="text" value="{{ cf.role }}" onChange="{{ cOn.role }}" placeholder="General application" style="width:100%;height:52px;border:1px solid #C9CCD3;border-radius:2px;padding:0 14px;font-size:16px;background:#fff;color:#222334;">
+            </div>
+
+            <div style="margin-top:18px;">
+              <div style="font-size:14px;font-weight:700;margin-bottom:8px;">CV / resume *</div>
+              <label style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px dashed {{ cvBorder }};border-radius:2px;padding:16px;cursor:pointer;background:#F5F6F8;" style-hover="border-color:#222334;">
+                <span style="font-size:14px;color:#3F4250;">{{ cvLabel }}</span>
+                <span style="font-size:14px;font-weight:700;border:1px solid #222334;padding:8px 14px;background:#fff;">{{ cvBtn }}</span>
+                <input type="file" accept=".pdf,.doc,.docx" onChange="{{ onCv }}" style="position:absolute;width:1px;height:1px;opacity:0;">
+              </label>
+              <sc-if value="{{ cEh.cv }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ cEm.cv }}</div></sc-if>
+            </div>
+
+            <div style="margin-top:18px;">
+              <label for="vc-msg" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">About you <span style="font-weight:400;color:#707070;">(optional)</span></label>
+              <textarea id="vc-msg" rows="3" value="{{ cf.msg }}" onChange="{{ cOn.msg }}" placeholder="Skills, qualifications, certifications (e.g. ASNT Level II, IBR welder), notice period…" style="width:100%;border:1px solid #C9CCD3;border-radius:2px;padding:14px;font-size:16px;line-height:1.5;resize:vertical;background:#fff;color:#222334;"></textarea>
+            </div>
+
+            <label style="display:flex;gap:12px;align-items:flex-start;margin-top:18px;font-size:14px;line-height:1.5;color:#3F4250;cursor:pointer;">
+              <input type="checkbox" checked="{{ cf.consent }}" onChange="{{ cOnConsent }}" style="width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:#222334;">
+              <span>I agree that Vedanta Group may keep my CV on file for up to 12 months and contact me about suitable openings. <span style="color:#707070;">Retention period and privacy notice pending HR and legal review.</span></span>
+            </label>
+            <sc-if value="{{ cEh.consent }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ cEm.consent }}</div></sc-if>
+
+            <button type="submit" disabled="{{ cSending }}" style="margin-top:22px;width:100%;background:#222334;color:#fff;border:0;border-radius:2px;padding:18px 24px;font-size:17px;font-weight:700;cursor:pointer;" style-hover="background:#3F4250;">{{ cSubmitLabel }}</button>
+
+            <sc-if value="{{ cSent }}" hint-placeholder-val="{{ false }}">
+              <div role="status" style="margin-top:16px;padding:16px;border:1px solid #BFD9C5;background:#EEF6F0;font-size:15px;line-height:1.5;">Thank you, {{ cf.name }}. Your application has been received. We will contact you at {{ cf.email }} if a suitable role opens.</div>
+            </sc-if>
+            <sc-if value="{{ cFailed }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="margin-top:16px;padding:16px;border:1px solid #EAD9B5;background:#FBF6EA;font-size:15px;line-height:1.55;">
+                <strong>Your application was not sent.</strong> The careers service is not connected in this prototype. You can email your CV instead — please attach the file:
+                <a href="{{ cMailto }}" style="display:inline-block;margin-top:8px;font-weight:700;color:#222334;border-bottom:2px solid #222334;">Email {{ careersEmail }} →</a>
+              </div>
+            </sc-if>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-labelledby="ct-h" data-screen-label="11 Enquiry" style="background:#1A1E22;color:#fff;padding:clamp(80px,10vw,136px) 0;">
+      <div style="max-width:1360px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;gap:clamp(40px,6vw,96px);align-items:flex-start;">
+        <div data-rv="ctL" style="flex:1 1 400px;min-width:0;opacity:{{ r.ctL.o }};transform:{{ r.ctL.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1), transform 1000ms cubic-bezier(0.2,0.7,0.1,1);">
+          <div style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#A5A8B2;margin-bottom:22px;"><span style="width:28px;height:2px;background:#fff;"></span>Enquiries</div>
+          <h2 id="ct-h" style="font-size:clamp(38px,4.6vw,64px);line-height:1.02;font-weight:700;letter-spacing:-0.03em;margin:0;text-wrap:balance;">Let's Engineer Your Next Project.</h2>
+          <p style="font-size:clamp(17px,1.4vw,19px);line-height:1.6;color:#C9CCD3;margin:24px 0 0;max-width:520px;text-wrap:pretty;">Have an industrial manufacturing requirement or a complex engineering challenge? Connect with our team to discuss your project.</p>
+          <div style="display:flex;flex-direction:column;gap:1px;background:#3F4250;border:1px solid #3F4250;margin-top:40px;">
+            <div style="order:{{ desplOrder }};background:#23282D;padding:24px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:10px;align-items:center;"><span style="width:10px;height:10px;background:#AA3833;"></span><span style="font-size:17px;font-weight:700;">Dhruv EPC Solutions</span></div>
+              <div style="font-size:14px;line-height:1.55;color:#C9CCD3;">Manjusar GIDC, Savli, Vadodara, Gujarat</div>
+              <div style="display:flex;gap:6px 20px;flex-wrap:wrap;font-size:15px;">
+                <a href="tel:+918905917700" style="color:#fff;" style-hover="color:#DC8D89;">+91 89059 17700</a>
+                <a href="tel:+917436033300" style="color:#fff;" style-hover="color:#DC8D89;">+91 74360 33300</a>
+                <a href="mailto:sales3@vedantagroup.net" style="color:#fff;" style-hover="color:#DC8D89;">sales3@vedantagroup.net</a>
+              </div>
+              <a href="DESPL Website v2.dc.html#rfq" style="font-size:14px;font-weight:600;color:#DC8D89;margin-top:4px;" style-hover="color:#fff;">Detailed RFQ form on the DESPL site →</a>
+            </div>
+            <div style="order:{{ peOrder }};background:#23282D;padding:24px;display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:10px;align-items:center;"><span style="width:10px;height:10px;background:#0E6BA8;"></span><span style="font-size:17px;font-weight:700;">Precise Engineers</span></div>
+              <div style="font-size:14px;line-height:1.55;color:#C9CCD3;">705/18, Phase IV, GIDC Estate, Vitthal Udyognagar, Anand 388121, Gujarat</div>
+              <div style="display:flex;gap:6px 20px;flex-wrap:wrap;font-size:15px;">
+                <a href="tel:+919377773186" style="color:#fff;" style-hover="color:#5BA8D4;">+91 93777 73186</a>
+                <a href="mailto:preciseengineers@vedantagroup.net" style="color:#fff;" style-hover="color:#5BA8D4;">preciseengineers@vedantagroup.net</a>
+              </div>
+              <a href="Precise Engineers Website v2.dc.html#rfq" style="font-size:14px;font-weight:600;color:#5BA8D4;margin-top:4px;" style-hover="color:#fff;">Detailed RFQ form on the PE site →</a>
+            </div>
+          </div>
+        </div>
+
+        <form data-rv="ctR" onSubmit="{{ submit }}" novalidate="novalidate" style="flex:1.2 1 520px;min-width:0;background:#fff;color:#222334;padding:clamp(24px,3.4vw,44px);opacity:{{ r.ctR.o }};transform:{{ r.ctR.y }};transition:opacity 900ms cubic-bezier(0.2,0.7,0.1,1) 140ms, transform 1000ms cubic-bezier(0.2,0.7,0.1,1) 140ms;">
+          <fieldset style="border:0;margin:0;padding:0;">
+            <legend style="font-size:15px;font-weight:700;margin-bottom:12px;padding:0;">Which business is your enquiry for?</legend>
+            <div role="radiogroup" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;">
+              <sc-for list="{{ bizOpts }}" as="b" hint-placeholder-count="3">
+                <button type="button" role="radio" aria-checked="{{ b.on }}" onClick="{{ b.pick }}" style="text-align:left;background:{{ b.bg }};color:{{ b.fg }};border:1px solid {{ b.border }};border-radius:2px;padding:14px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:72px;transition:background 180ms, border-color 180ms;">
+                  <span style="font-size:15px;font-weight:700;">{{ b.label }}</span>
+                  <span style="font-size:12px;opacity:0.8;">{{ b.sub }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </fieldset>
+
+          <div style="margin-top:22px;">
+            <label for="vg-eq" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">Product or equipment *</label>
+            <select id="vg-eq" value="{{ f.equipmentType }}" onChange="{{ on.equipmentType }}" style="width:100%;height:52px;border:1px solid {{ eb.equipmentType }};border-radius:2px;padding:0 12px;font-size:16px;background:#fff;color:#222334;">
+              <option value="">Select a product</option>
+              <sc-for list="{{ eqOpts }}" as="o" hint-placeholder-count="6">
+                <option value="{{ o }}">{{ o }}</option>
+              </sc-for>
+            </select>
+            <sc-if value="{{ eh.equipmentType }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ em.equipmentType }}</div></sc-if>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:18px;margin-top:18px;">
+            <sc-for list="{{ fields }}" as="fl" hint-placeholder-count="4">
+              <div>
+                <label for="{{ fl.id }}" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">{{ fl.label }}</label>
+                <input id="{{ fl.id }}" type="{{ fl.type }}" autocomplete="{{ fl.ac }}" placeholder="{{ fl.ph }}" value="{{ fl.value }}" onChange="{{ fl.onChange }}" aria-invalid="{{ fl.hasErr }}" style="width:100%;height:52px;border:1px solid {{ fl.border }};border-radius:2px;padding:0 14px;font-size:16px;background:#fff;color:#222334;">
+                <sc-if value="{{ fl.hasErr }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ fl.err }}</div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top:18px;">
+            <label for="vg-msg" style="display:block;font-size:14px;font-weight:700;margin-bottom:8px;">Requirement *</label>
+            <textarea id="vg-msg" rows="4" value="{{ f.message }}" onChange="{{ on.message }}" placeholder="Design code, material, size, quantity, required delivery…" style="width:100%;border:1px solid {{ eb.message }};border-radius:2px;padding:14px;font-size:16px;line-height:1.5;resize:vertical;background:#fff;color:#222334;"></textarea>
+            <sc-if value="{{ eh.message }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ em.message }}</div></sc-if>
+          </div>
+
+          <div style="margin-top:18px;">
+            <div style="font-size:14px;font-weight:700;margin-bottom:8px;">Drawings or RFQ document <span style="font-weight:400;color:#707070;">(optional)</span></div>
+            <label style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;border:1px dashed #A5A8B2;border-radius:2px;padding:16px;cursor:pointer;background:#F5F6F8;" style-hover="border-color:#222334;">
+              <span style="font-size:14px;color:#3F4250;">PDF, DWG, STEP, JPG, PNG · up to 5 files · 25 MB each</span>
+              <span style="font-size:14px;font-weight:700;border:1px solid #222334;padding:8px 14px;background:#fff;">Attach files</span>
+              <input type="file" multiple="multiple" accept=".pdf,.dwg,.step,.stp,.jpg,.jpeg,.png,.webp" onChange="{{ onFiles }}" style="position:absolute;width:1px;height:1px;opacity:0;">
+            </label>
+            <sc-for list="{{ files }}" as="fi" hint-placeholder-count="0">
+              <div style="display:flex;justify-content:space-between;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid #EDEFF2;font-size:14px;">
+                <span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{{ fi.name }} <span style="color:#707070;">· {{ fi.size }}</span></span>
+                <span style="display:flex;gap:12px;align-items:center;flex:none;"><span style="color:{{ fi.color }};font-size:13px;">{{ fi.status }}</span><button type="button" onClick="{{ fi.remove }}" aria-label="Remove file" style="background:transparent;border:0;cursor:pointer;font-size:16px;color:#5C5F6E;">×</button></span>
+              </div>
+            </sc-for>
+          </div>
+
+          <input type="text" name="website" tabindex="-1" autocomplete="off" value="{{ f.honeypot }}" onChange="{{ on.honeypot }}" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;">
+
+          <label style="display:flex;gap:12px;align-items:flex-start;margin-top:20px;font-size:14px;line-height:1.5;color:#3F4250;cursor:pointer;">
+            <input type="checkbox" checked="{{ f.consent }}" onChange="{{ onConsent }}" style="width:20px;height:20px;margin:1px 0 0;flex:none;accent-color:#222334;">
+            <span>I agree that Vedanta Group may use these details to respond to my enquiry. <span style="color:#707070;">Privacy notice pending legal review.</span></span>
+          </label>
+          <sc-if value="{{ eh.consent }}" hint-placeholder-val="{{ false }}"><div style="font-size:13px;color:#AA3833;margin-top:6px;">{{ em.consent }}</div></sc-if>
+
+          <div style="margin-top:24px;padding:14px 16px;background:#F5F6F8;border-left:3px solid {{ route.color }};font-size:14px;line-height:1.5;">
+            Routed to <strong>{{ route.label }}</strong> · <span style="color:#5C5F6E;">{{ route.email }}</span>
+          </div>
+
+          <button type="submit" disabled="{{ sending }}" style="margin-top:20px;width:100%;background:{{ route.btn }};color:#fff;border:0;border-radius:2px;padding:18px 24px;font-size:17px;font-weight:700;cursor:pointer;transition:filter 180ms;" style-hover="filter:brightness(0.9);">{{ submitLabel }}</button>
+
+          <sc-if value="{{ statusSent }}" hint-placeholder-val="{{ false }}">
+            <div role="status" style="margin-top:16px;padding:16px;border:1px solid #BFD9C5;background:#EEF6F0;font-size:15px;line-height:1.5;">Thank you. Your enquiry has been sent to {{ route.label }}. The team will reply to {{ f.email }}.</div>
+          </sc-if>
+          <sc-if value="{{ statusFailed }}" hint-placeholder-val="{{ false }}">
+            <div role="alert" style="margin-top:16px;padding:16px;border:1px solid #EAD9B5;background:#FBF6EA;font-size:15px;line-height:1.55;">
+              <strong>Your enquiry was not sent.</strong> The enquiry service is not connected in this prototype. You can send the same details by email instead:
+              <a href="{{ mailto }}" style="display:inline-block;margin-top:8px;font-weight:700;color:#222334;border-bottom:2px solid #222334;">Email {{ route.email }} →</a>
+            </div>
+          </sc-if>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer style="background:#111417;color:#A5A8B2;">
+    <div style="max-width:1360px;margin:0 auto;padding:clamp(56px,7vw,88px) clamp(20px,4vw,48px) 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;">
+      <div style="grid-column:span 1;">
+        <div style="background:#fff;display:inline-block;padding:8px 12px;"><img src="assets/logo-vedanta.png" alt="Vedanta Group of Companies" style="height:52px;width:auto;display:block;"></div>
+        <p style="font-size:14px;line-height:1.65;margin:20px 0 0;max-width:300px;">An engineering and manufacturing group operating through Dhruv EPC Solutions Pvt. Ltd. and Precise Engineers, with works in Vadodara and Anand, Gujarat.</p>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#F5F6F8;margin-bottom:16px;">Our Businesses</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+          <a href="DESPL Website v2.dc.html" style="color:#A5A8B2;" style-hover="color:#fff;">Dhruv EPC Solutions</a>
+          <a href="DESPL Website v2.dc.html#capabilities" style="color:#A5A8B2;" style-hover="color:#fff;">DESPL products</a>
+          <a href="Precise Engineers Website v2.dc.html" style="color:#A5A8B2;" style-hover="color:#fff;">Precise Engineers</a>
+          <a href="Precise Engineers Website v2.dc.html#capabilities" style="color:#A5A8B2;" style-hover="color:#fff;">PE products</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#F5F6F8;margin-bottom:16px;">Company</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+          <sc-for list="{{ footLinks }}" as="l" hint-placeholder-count="5">
+            <a href="{{ l.href }}" onClick="{{ l.go }}" style="color:#A5A8B2;" style-hover="color:#fff;">{{ l.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#F5F6F8;margin-bottom:16px;">Clients &amp; projects</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;">
+          <a href="DESPL Website v2.dc.html#clients" style="color:#A5A8B2;" style-hover="color:#fff;">Client directory</a>
+          <a href="DESPL Website v2.dc.html#projects" style="color:#A5A8B2;" style-hover="color:#fff;">DESPL project portfolio</a>
+          <a href="Precise Engineers Website v2.dc.html#projects" style="color:#A5A8B2;" style-hover="color:#fff;">PE project portfolio</a>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:#F5F6F8;margin-bottom:16px;">Registered office</div>
+        <div style="font-size:14px;line-height:1.6;">705/18, Phase IV, GIDC Estate, Vitthal Udyognagar, Anand 388121, Gujarat, India</div>
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:14px;margin-top:14px;">
+          <a href="tel:+918905917700" style="color:#A5A8B2;" style-hover="color:#fff;">+91 89059 17700</a>
+          <a href="mailto:vedant@vedantagroup.net" style="color:#A5A8B2;" style-hover="color:#fff;">vedant@vedantagroup.net</a>
+          <a href="mailto:rajesh@vedantagroup.net" style="color:#A5A8B2;" style-hover="color:#fff;">rajesh@vedantagroup.net</a>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1360px;margin:0 auto;padding:20px clamp(20px,4vw,48px) 32px;border-top:1px solid #2B2F38;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:13px;">
+      <span>© 2026 Vedanta Group of Companies</span>
+      <span style="display:flex;gap:20px;flex-wrap:wrap;"><span>Privacy notice</span><span>Terms of use</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#707070;">Legal pages pending review · social links to be supplied</span></span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;heroInterval&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:7,&quot;min&quot;:4,&quot;max&quot;:14,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;firstBusiness&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Dhruv EPC Solutions&quot;,&quot;Precise Engineers&quot;],&quot;default&quot;:&quot;Dhruv EPC Solutions&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Layout&quot;},&quot;showExampleJobs&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Careers&quot;}}">
+class Component extends DCLogic {
+  state = { vw: 1440, sy: 0, menu: null, mob: false, entered: false, reduced: false, slide: 0, seen: {}, active: 0, tlp: 0, allClients: false,
+    f: { company: 'dhruv', equipmentType: '', name: '', contactCompany: '', email: '', phone: '', message: '', honeypot: '', consent: false },
+    files: [], errs: {}, status: 'idle',
+    cf: { name: '', email: '', phone: '', city: '', area: '', exp: 'Fresher / under 2 years', biz: 'either', role: '', msg: '', consent: false }, cv: null, cerrs: {}, cstatus: 'idle', jobF: 'all' };
+
+  CountUp = ({ to, play, reduced, dur }) => {
+    const [v, setV] = React.useState(reduced ? to : 0);
+    React.useEffect(() => {
+      if (!play) return;
+      if (reduced) { setV(to); return; }
+      let raf, st; const d = dur || 1800;
+      const step = (n) => { if (st == null) st = n; const k = Math.min(1, (n - st) / d); setV(Math.round((1 - Math.pow(1 - k, 3)) * to)); if (k < 1) raf = requestAnimationFrame(step); };
+      raf = requestAnimationFrame(step);
+      return () => cancelAnimationFrame(raf);
+    }, [play, reduced, to]);
+    return React.createElement('span', { style: { fontVariantNumeric: 'tabular-nums' } }, v);
+  };
+
+  Fill = ({ ms, play }) => React.createElement('span', { style: { position: 'absolute', inset: 0, background: '#fff', transformOrigin: 'left', animation: play ? 'vgFill ' + ms + 'ms linear forwards' : 'none' } });
+
+  componentDidMount() {
+    this.onR = () => this.setState({ vw: window.innerWidth });
+    window.addEventListener('resize', this.onR); this.onR();
+    const reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || (this.props.motion ?? true) === false;
+    this.setState({ reduced });
+    this.t0 = Date.now();
+    requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ entered: true }, () => this.schedule())));
+    this.onS = () => { if (this.raf) return; this.raf = requestAnimationFrame(() => { this.raf = null; this.measure(); }); };
+    window.addEventListener('scroll', this.onS, { passive: true });
+    this.onK = (e) => { if (e.key === 'Escape') this.setState({ menu: null, mob: false }); };
+    window.addEventListener('keydown', this.onK);
+    setTimeout(() => this.observe(), 60);
+    const hid = (location.hash || '').slice(1);
+    if (hid && hid !== 'top') setTimeout(() => { const el = document.getElementById(hid); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 83, behavior: 'auto' }); }, 450);
+    if (!window.VEDANTA_DATA) { let n = 0; this.poll = setInterval(() => { if (window.VEDANTA_DATA || ++n > 50) { clearInterval(this.poll); this.forceUpdate(); } }, 100); }
+    this.measure();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onR); window.removeEventListener('scroll', this.onS); window.removeEventListener('keydown', this.onK);
+    clearTimeout(this.timer); clearInterval(this.poll); this.io && this.io.disconnect();
+  }
+  observe() {
+    const els = document.querySelectorAll('[data-rv]');
+    if (!('IntersectionObserver' in window)) { const s = {}; els.forEach(e => s[e.getAttribute('data-rv')] = true); this.setState({ seen: s }); return; }
+    this.io = new IntersectionObserver((entries) => {
+      const add = {};
+      entries.forEach(en => { if (en.isIntersecting) { add[en.target.getAttribute('data-rv')] = true; this.io.unobserve(en.target); } });
+      if (Object.keys(add).length) this.setState(s => ({ seen: { ...s.seen, ...add } }));
+    }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+    this.obs = new WeakSet();
+    els.forEach(e => { this.obs.add(e); this.io.observe(e); });
+    this.sweep();
+  }
+  componentDidUpdate() { this.rescan(); }
+  rescan() {
+    if (!this.io) return;
+    this.obs = this.obs || new WeakSet();
+    document.querySelectorAll('[data-rv]').forEach(el => { if (!this.obs.has(el) && !this.state.seen[el.getAttribute('data-rv')]) { this.obs.add(el); this.io.observe(el); } });
+  }
+  sweep() {
+    const vh = window.innerHeight, add = {};
+    document.querySelectorAll('[data-rv]').forEach(el => { const k = el.getAttribute('data-rv'); if (!this.state.seen[k] && el.getBoundingClientRect().top < vh * 0.9) add[k] = true; });
+    if (Object.keys(add).length) this.setState(s => ({ seen: { ...s.seen, ...add } }));
+  }
+  measure() {
+    this.sweep();
+    const sy = window.scrollY, vh = window.innerHeight, ol = document.getElementById('vg-tl');
+    let tlp = 0, active = 0;
+    if (ol) {
+      const r = ol.getBoundingClientRect(), line = vh * 0.55;
+      tlp = Math.max(0, Math.min(1, (line - r.top) / Math.max(1, r.height - 40)));
+      ol.querySelectorAll('li').forEach((li, i) => { if (li.getBoundingClientRect().top < line) active = i; });
+    }
+    tlp = Math.round(tlp * 200) / 200;
+    if (sy > 4 !== this.state.sy > 4 || tlp !== this.state.tlp || active !== this.state.active) this.setState({ sy, tlp, active });
+  }
+  interval() { return Math.max(3, this.props.heroInterval ?? 7) * 1000; }
+  schedule() {
+    clearTimeout(this.timer);
+    if (this.state.reduced) return;
+    this.timer = setTimeout(() => this.setState(s => ({ slide: (s.slide + 1) % 4 }), () => this.schedule()), this.interval());
+  }
+  pickSlide(i) { this.setState({ slide: (i + 4) % 4 }, () => this.schedule()); }
+  scrollTo(id) {
+    this.setState({ menu: null, mob: false });
+    const el = document.getElementById(id); if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (id === 'top' ? 200 : 83), behavior: this.state.reduced ? 'auto' : 'smooth' });
+  }
+  go(id) { return (e) => { if (e && e.preventDefault) e.preventDefault(); this.scrollTo(id); }; }
+  enquire(company) { return () => { this.setState(s => ({ f: { ...s.f, company, equipmentType: '' }, errs: {}, status: 'idle' })); this.scrollTo('contact'); }; }
+
+  validate(f) {
+    const e = {};
+    if (!f.equipmentType) e.equipmentType = 'Select a product or equipment type';
+    if (!f.name.trim()) e.name = 'Name required';
+    if (!f.contactCompany.trim()) e.contactCompany = 'Company name required';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) e.email = 'Enter a valid email address';
+    if (!/^\+[1-9]\d{6,14}$/.test(f.phone.replace(/[\s()-]/g, ''))) e.phone = 'Include the country code, e.g. +91 98765 43210';
+    if (f.message.trim().length < 10) e.message = 'Describe your requirement (at least 10 characters)';
+    if (!f.consent) e.consent = 'Please confirm so we can reply';
+    return e;
+  }
+  async submit(ev) {
+    ev.preventDefault();
+    const f = this.state.f, errs = this.validate(f);
+    this.setState({ errs });
+    if (Object.keys(errs).length) return;
+    if (this.state.files.some(x => x.bad)) return;
+    this.setState({ status: 'sending' });
+    const uuid = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx'.replace(/x/g, () => (Math.random() * 16 | 0).toString(16));
+    const body = { equipmentType: f.equipmentType, message: '[Source: group homepage]' + (f.company === 'unsure' ? ' [Business: not specified — route internally]' : '') + '\n' + f.message.trim(),
+      uploadedFileKeys: [], name: f.name.trim(), contactCompany: f.contactCompany.trim(), email: f.email.trim(), phone: f.phone.replace(/[\s()-]/g, ''),
+      honeypot: f.honeypot, submittedAt: this.t0, idempotencyKey: uuid };
+    if (f.company !== 'unsure') body.company = f.company;
+    try {
+      const D = window.VEDANTA_DATA || {};
+      const res = await fetch(D.rfqEndpoint || '/api/rfq', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      this.setState({ status: res.ok ? 'sent' : 'failed' });
+    } catch (e) { this.setState({ status: 'failed' }); }
+  }
+  onCv(e) {
+    const file = (e.target.files || [])[0]; e.target.value = '';
+    if (!file) return;
+    const ext = (file.name.split('.').pop() || '').toLowerCase();
+    const bad = !['pdf', 'doc', 'docx'].includes(ext) ? 'Upload a PDF, DOC or DOCX file' : file.size > 10 * 1024 * 1024 ? 'File must be 10 MB or smaller' : '';
+    this.setState(s => ({ cv: { name: file.name, size: file.size, bad }, cerrs: { ...s.cerrs, cv: bad || undefined } }));
+  }
+  async cSubmit(ev) {
+    ev.preventDefault();
+    const f = this.state.cf, e = {};
+    if (!f.name.trim()) e.name = 'Name required';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) e.email = 'Enter a valid email address';
+    if (!/^\+?[0-9]{8,15}$/.test(f.phone.replace(/[\s()-]/g, ''))) e.phone = 'Enter a valid phone number';
+    if (!f.area) e.area = 'Select an area of work';
+    if (!this.state.cv) e.cv = 'Attach your CV'; else if (this.state.cv.bad) e.cv = this.state.cv.bad;
+    if (!f.consent) e.consent = 'Please confirm so we can keep your CV on file';
+    this.setState({ cerrs: e });
+    if (Object.keys(e).length) return;
+    this.setState({ cstatus: 'sending' });
+    try {
+      const res = await fetch('/api/careers', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...f, cvFileName: this.state.cv.name, submittedAt: Date.now() }) });
+      this.setState({ cstatus: res.ok ? 'sent' : 'failed' });
+    } catch (x) { this.setState({ cstatus: 'failed' }); }
+  }
+  onFiles(e) {
+    const ok = ['pdf', 'dwg', 'step', 'stp', 'jpg', 'jpeg', 'png', 'webp'];
+    const add = Array.from(e.target.files || []).map(file => {
+      const ext = (file.name.split('.').pop() || '').toLowerCase();
+      const bad = !ok.includes(ext) ? 'File type not accepted' : file.size > 25 * 1024 * 1024 ? 'Larger than 25 MB' : '';
+      return { name: file.name, size: file.size, bad };
+    });
+    e.target.value = '';
+    this.setState(s => { const all = s.files.concat(add); return { files: all.map((x, i) => i >= 5 ? { ...x, bad: 'Maximum 5 files' } : x) }; });
+  }
+
+  renderVals() {
+    const s = this.state, D = window.VEDANTA_DATA || { clients: [], homeClients: [], groupApprovals: [] };
+    const desktop = s.vw >= 1080, motion = !s.reduced;
+    const peFirst = (this.props.firstBusiness ?? 'Dhruv EPC Solutions') === 'Precise Engineers';
+    const DU = 'DESPL Website v2.dc.html', PU = 'Precise Engineers Website v2.dc.html';
+    const RED = '#AA3833', BLUE = '#0E6BA8';
+    const L = (base, arr) => arr.map(([slug, name]) => ({ name, href: base + '#product/' + slug }));
+    const seen = (k) => !motion || !!s.seen[k];
+    const rv = (k) => ({ o: seen(k) ? 1 : 0, y: seen(k) ? 'none' : 'translateY(28px)', zoom: seen(k) ? 'scale(1)' : 'scale(1.08)' });
+    const r = {}; ['carHead', 'jobs', 'intro', 'introImg', 'bizHead', 'biz1', 'biz2', 'prodHead', 'mfgHead', 'mfg', 'clHead', 'featured', 'herHead', 'qHead', 'certs', 'ctL', 'ctR'].forEach(k => r[k] = rv(k));
+    const stag = (k, i, step) => ({ o: seen(k) ? 1 : 0, y: seen(k) ? 'none' : 'translateY(20px)', d: (motion ? i * (step || 90) : 0) + 'ms' });
+
+    const desplCats = [
+      { label: 'Static Equipment', items: L(DU, [['pressure-vessels', 'Pressure Vessels'], ['heat-exchangers', 'Shell & Tube Heat Exchangers'], ['storage-tanks', 'Storage Tanks & Air Receivers']]) },
+      { label: 'Skids & Packages', items: L(DU, [['process-skids', 'Process Skids'], ['pipe-spools', 'Piping Spools']]) },
+      { label: 'Fabrication & Machining', items: L(DU, [['heavy-fabrication', 'Heavy Fabrication'], ['heavy-machining', 'Heavy Machining'], ['plate-flanges', 'Plate Flanges & Base Frames']]) },
+    ];
+    const peCats = [
+      { label: 'Expansion Joints', items: L(PU, [['metallic-bellows', 'Metallic Bellows Expansion Joints'], ['rubber-bellows', 'Rubber Bellows'], ['fabric-bellows', 'Fabric Bellows'], ['telescopic', 'Telescopic Expansion Joints'], ['dismantling-joint', 'Dismantling Joints'], ['flange-adaptor', 'Flange Adaptors']]) },
+      { label: 'Flow Control', items: L(PU, [['zero-velocity-valve', 'Zero Velocity Valves'], ['dual-plate-check-valve', 'Dual Plate Check Valves'], ['damper', 'Dampers']]) },
+    ];
+    const productCount = desplCats.concat(peCats).reduce((n, c) => n + c.items.length, 0);
+
+    const navDef = [['About Us', 'about'], ['Our Businesses', null, 'biz'], ['Products & Solutions', null, 'prod'], ['Projects & Clients', 'projects'], ['Careers', null, 'car'], ['Contact', 'contact']];
+    const nav = navDef.map(([label, id, m]) => ({
+      label, hasMenu: !!m, expanded: m ? s.menu === m : undefined, chev: s.menu === m && m ? 'rotate(180deg)' : 'none', bar: m && s.menu === m ? 1 : 0,
+      click: m ? () => this.setState({ menu: s.menu === m ? null : m }) : () => this.scrollTo(id),
+      enter: () => this.setState({ menu: m || null }),
+    }));
+    const open = !!s.menu && desktop;
+
+    const live = s.entered || s.reduced, mob = s.vw < 760;
+    const shade = 'linear-gradient(90deg,rgba(17,20,23,0.9) 0%,rgba(17,20,23,0.66) 38%,rgba(17,20,23,0.12) 72%,rgba(17,20,23,0.04) 100%),linear-gradient(0deg,rgba(17,20,23,0.7) 0%,rgba(17,20,23,0) 38%)';
+    const shadeM = 'linear-gradient(0deg,rgba(17,20,23,0.94) 0%,rgba(17,20,23,0.7) 50%,rgba(17,20,23,0.2) 100%)';
+    const dark = { fg: '#fff', sub: '#E3E4E8', kc: '#C9CCD3', l2c: '#C9CCD3', b1bg: '#fff', b1fg: '#222334', b2b: 'rgba(255,255,255,0.5)', shade: mob ? shadeM : shade, bg: '#1A1E22', fit: 'cover', pad: '0', blend: 'normal' };
+    const slidesDef = [
+      { ...dark, label: 'Vedanta Group', kicker: 'Vedanta Group of Companies', l1: 'Engineering Excellence.', l2: 'Built Over 30+ Years.', level: 1, hs: 'clamp(44px,6.2vw,96px)', maxW: '980px',
+        p: 'Three decades of engineering expertise, manufacturing capability and trusted partnerships — delivering solutions for industries that power progress.',
+        cta1: 'Explore Our Capabilities →', href1: '#products', go1: this.go('products'), cta2: 'Discuss Your Project', href2: '#contact', go2: this.go('contact'),
+        src: 'assets/pe-pressure-balance.jpg', alt: 'Pressure-balanced expansion joint in the Precise Engineers works', pos: '62% 58%', origin: '70% 50%' },
+      { label: 'Dhruv EPC Solutions', kicker: 'Dhruv EPC Solutions · Vadodara', l1: 'Engineered for Complex Industrial Applications.', level: 2, hs: s.vw >= 1200 ? 'clamp(38px,4.6vw,72px)' : 'clamp(34px,4.2vw,52px)', maxW: s.vw >= 1200 ? 'min(620px, 40vw)' : (mob ? '620px' : '46%'),
+        p: 'Pressure vessels, heat exchangers, process skids and heavy fabrication from the Manjusar works — to ASME, IBR and TEMA.',
+        cta1: 'Explore DESPL →', href1: DU, cta2: 'Enquire with DESPL', href2: '#contact', go2: this.enquire('dhruv'),
+        fg: '#222334', sub: '#3F4250', kc: '#8D2F2A', l2c: '#5C5F6E', b1bg: RED, b1fg: '#fff', b2b: '#222334',
+        src: 'assets/despl-cgd-skid.jpg', alt: 'City Gas Distribution skid fabricated by Dhruv EPC Solutions for Emerson', bg: 'linear-gradient(180deg,#F3F4F6 0%,#DADDE2 100%)', fit: 'contain',
+        pos: mob ? '50% 0%' : '100% 45%', pad: mob ? '6% 4% 70%' : s.vw >= 1200 ? '6% 3% 14% 44%' : '8% 3% 16% 50%', blend: 'multiply', shade: 'none', origin: '75% 50%' },
+      { ...dark, label: 'Precise Engineers', kicker: 'Precise Engineers · Anand', l1: 'Precision-Engineered Solutions for Critical Pipeline Systems.', level: 2, hs: 'clamp(38px,4.6vw,72px)', maxW: '720px',
+        p: 'Metallic, rubber and fabric expansion joints, dismantling joints and pipeline components, designed to EJMA and built in our own works.',
+        cta1: 'Explore Precise Engineers →', href1: PU, cta2: 'Enquire with PE', href2: '#contact', go2: this.enquire('precise'), b1bg: BLUE, b1fg: '#fff',
+        src: 'assets/pe-gimbal-ej.jpg', alt: 'Gimbal expansion joint in the Precise Engineers assembly bay', pos: '70% 55%', origin: '65% 50%' },
+      { ...dark, label: 'Our journey', kicker: 'Since 1994', l1: 'Three decades on the shop floor.', level: 2, hs: 'clamp(38px,4.6vw,72px)', maxW: '680px',
+        p: 'From a single works in Anand to two specialised businesses serving refiners, utilities, steel producers and EPC contractors in India and abroad.',
+        cta1: 'Our 30-year journey →', href1: '#heritage', go1: this.go('heritage'),
+        src: 'assets/pe-shopfloor-team.jpg', alt: 'Precise Engineers team with expansion joints staged for inspection', pos: '40% 50%', origin: '40% 50%' },
+    ];
+    const slides = slidesDef.map((d, i) => { const on = i === s.slide, show = on && live, ms = (n) => (show ? n : 0) + 'ms';
+      return { ...d, hasL2: !!d.l2, hasCta2: !!d.cta2, hidden: !on, tab: on ? 0 : -1, pe: on ? 'auto' : 'none', vis: on ? 'visible' : 'hidden', visD: on ? '0ms' : '700ms',
+        o: show ? 1 : 0, t: show ? 'scale(1)' : 'scale(1.07)', to: show ? 1 : 0, ty: show ? 'none' : 'translateY(16px)', ly: show ? 'none' : 'translateY(105%)',
+        d0: ms(i === 0 && s.slide === 0 ? 150 : 350), d1: ms(i === 0 ? 250 : 450), d2: ms(i === 0 ? 420 : 560), d3: ms(i === 0 ? 700 : 700), d4: ms(i === 0 ? 850 : 820) }; });
+    const chapters = slidesDef.map((d, i) => ({ n: '0' + (i + 1), label: d.label, aria: 'Show slide ' + (i + 1) + ': ' + d.label, on: i === s.slide, fg: i === s.slide ? '#fff' : '#8C909B', pick: () => this.pickSlide(i),
+      fill: i === s.slide ? React.createElement(this.Fill, { key: 'f' + i + '-' + s.slide, ms: this.interval(), play: motion && live }) : null }));
+    const textAlign = mob ? 'flex-end' : 'center';
+    const desplList = L(DU, [['pressure-vessels', 'Pressure vessels'], ['heat-exchangers', 'Heat exchangers'], ['process-skids', 'Process skids & EPC packages'], ['pipe-spools', 'Piping spools'], ['heavy-fabrication', 'Heavy fabrication'], ['heavy-machining', 'Heavy machining']]);
+    const peList = L(PU, [['metallic-bellows', 'Metallic expansion bellows'], ['dismantling-joint', 'Dismantling joints'], ['telescopic', 'Telescopic expansion joints'], ['rubber-bellows', 'Rubber & fabric bellows'], ['flange-adaptor', 'Flange adaptors'], ['damper', 'Dampers']]);
+
+    const pc = [
+      { biz: 'Dhruv EPC Solutions', color: RED, name: 'Pressure Vessels', desc: 'Horizontal and vertical pressure vessels designed and fabricated to ASME Section VIII, stamped under DESPL’s U and U2 Certificates of Authorization.', chips: ['ASME U · U2', 'IBR'], img: 'assets/despl-pressure-vessel.jpg', alt: 'Horizontal pressure vessel by Dhruv EPC Solutions', fit: 'contain', pad: '8%', bg: '#fff', blend: 'multiply', href: DU + '#product/pressure-vessels' },
+      { biz: 'Dhruv EPC Solutions', color: RED, name: 'Process Skids & EPC Packages', desc: 'Skid-mounted process packages to ASME B31.3 with piping, electrical and instrumentation integration and factory acceptance testing before dispatch.', chips: ['21 m · 45 MT on record', 'FAT'], img: 'assets/despl-skid-3d.jpg', alt: '3D model of a skid package', fit: 'cover', pad: '0', bg: '#EDEFF2', blend: 'normal', href: DU + '#product/process-skids' },
+      { biz: 'Dhruv EPC Solutions', color: RED, name: 'Shell & Tube Heat Exchangers', desc: 'Shell & tube and kettle-type exchangers to TEMA and ASME, including super duplex construction to EIL specifications.', chips: ['Up to 100 T', 'TEMA · ASME'], img: '', photo: 'Heat exchanger with tube bundle, in the Manjusar works', bg: '#F5F6F8', href: DU + '#product/heat-exchangers' },
+      { biz: 'Precise Engineers', color: BLUE, name: 'Metallic Bellows Expansion Joints', desc: 'Gimbal, hinged and pressure-balanced expansion joints designed to EJMA with ASME B31.3 checks, in stainless, Inconel, Incoloy, Hastelloy and duplex.', chips: ['80 – 8,000 mm NB', 'EJMA'], img: 'assets/pe-double-gimbal.jpg', alt: 'Double gimbal expansion joint by Precise Engineers', fit: 'cover', pos: '50% 35%', pad: '0', bg: '#1A1E22', blend: 'normal', href: PU + '#product/metallic-bellows' },
+      { biz: 'Precise Engineers', color: BLUE, name: 'Rectangular Expansion Joints', desc: 'Rectangular metallic bellows with round corners for ducting and flue-gas systems, built to the size of the duct.', chips: ['Up to 9,000 × 5,000 mm'], img: 'assets/pe-rectangular.jpg', alt: 'Rectangular expansion joint by Precise Engineers', fit: 'contain', pad: '8%', bg: '#fff', blend: 'multiply', href: PU + '#product/metallic-bellows' },
+      { biz: 'Precise Engineers', color: BLUE, name: 'Dismantling Joints & Flange Adaptors', desc: 'Dismantling joints and flange adaptors for installing and removing valves and pumps in water and process pipelines.', chips: ['Pipeline components'], img: '', photo: 'Dismantling joint, flange face visible', bg: '#F5F6F8', href: PU + '#product/dismantling-joint' },
+    ];
+    const prodCards = pc.map((p, i) => ({ pos: '50% 50%', ...p, hasImg: !!p.img, noImg: !p.img, ...stag('prod', i % 3, 110) }));
+
+    const projDef = [
+      { biz: 'Dhruv EPC Solutions', color: RED, industry: 'Oil & gas', fig: '21 m · 45 MT', title: 'Natural gas conditioning skid for a TOYO project', client: 'TOYO project', scope: 'Skid with E&I integration; FAT before dispatch', href: DU + '#case/toyo-ngc-skid' },
+      { biz: 'Precise Engineers', color: BLUE, industry: 'Oil & gas', fig: '3,700 PSI', title: 'Expansion joint designed and manufactured for Chevron USA', client: 'Chevron USA', scope: 'Metallic bellows expansion joint, design and manufacture', href: PU + '#case/chevron-usa-3700-psi' },
+      { biz: 'Precise Engineers', color: BLUE, industry: 'Refining', fig: '2,192 mm ID', title: 'Inconel 625 FCCU expansion joint, under EIL', client: 'Refinery FCCU — under EIL', scope: 'Refractory-lined joint to UOP standard; cycle-life test under TPI', href: PU + '#case/fccu-inconel-625' },
+      { biz: 'Dhruv EPC Solutions', color: RED, industry: 'Export', fig: 'ASME ‘U’', title: 'Kettle-type heat exchanger for an Australian project', client: 'Australian project', scope: 'Design and fabrication; ASME U stamp applied', href: DU + '#case/kettle-hx-australia' },
+      { biz: 'Precise Engineers', color: BLUE, industry: 'Power', fig: '1,400 mm ID', title: 'Turbine crossover pressure-balance joint, Argentina', client: 'Siemens project', scope: 'Pressure-balanced expansion joint for export', href: PU + '#case/siemens-argentina-crossover' },
+      { biz: 'Dhruv EPC Solutions', color: RED, industry: 'Water & irrigation', fig: '300 m³', title: 'Surge vessel system for an irrigation project', client: 'Irrigation project', scope: 'Four 75 m³ surge vessels, executed including E&I', href: DU + '#case/surge-vessel-irrigation' },
+    ];
+    const projects = projDef.map((p, i) => ({ ...p, ...stag('proj', i % 3, 110) }));
+
+    const allC = D.clients || [];
+    const list = s.allClients ? allC.filter((c, i, a) => a.findIndex(x => x.logo === c.logo) === i) : (D.homeClients || []).map(sl => allC.find(c => c.slug === sl)).filter(Boolean);
+    const logos = list.map((c, i) => ({ ...c, ...stag('clients', s.allClients ? 0 : i, 45) }));
+
+    const MS = [
+      { y: '1994', pending: true, biz: 'Precise Engineers', t: 'Precise Engineers begins operations in Anand', d: 'The group’s first business starts work at GIDC Estate, Vitthal Udyognagar, Anand.', photoTag: 'ARCHIVAL PHOTO REQUIRED', photo: 'Early Anand works, or an early expansion joint' },
+      { y: 'Year TBC', pending: true, biz: 'Precise Engineers', t: 'Approved by Engineers India Limited', d: 'Precise Engineers is listed as an EIL approved vendor for expansion bellows and joints.', photoTag: 'DOCUMENT REQUIRED', photo: 'EIL approval letter or vendor listing' },
+      { y: 'Year TBC', pending: true, biz: 'Dhruv EPC Solutions', t: 'Dhruv EPC Solutions Pvt. Ltd. established', d: 'The group’s second business sets up its works at Manjusar GIDC, Savli, Vadodara, for pressure equipment and process skids.', photoTag: 'PHOTO REQUIRED', photo: 'Manjusar works — exterior or first fabrication bay' },
+      { y: 'Year TBC', pending: true, biz: 'Dhruv EPC Solutions', t: 'ASME U and U2 Certificates of Authorization', d: 'DESPL is authorised to apply the ASME U and U2 code stamps, alongside IBR approval for boiler-quality equipment.', img: 'assets/despl-pressure-vessel.jpg', alt: 'Pressure vessel by Dhruv EPC Solutions', fit: 'contain', bg: '#fff' },
+      { y: 'Year TBC', pending: true, biz: 'Both businesses', t: 'Projects delivered for export', d: 'Project records include supply to the USA, Argentina, Turkey, Saudi Arabia and Australia.', img: 'assets/pe-inline-pb.jpg', alt: 'Inline pressure-balanced expansion joints', fit: 'cover', bg: '#1A1E22' },
+      { y: '2026', pending: false, biz: 'Vedanta Group', t: 'Two businesses, two works', d: productCount + ' product lines, ' + (allC.length || 44) + ' organisations on the group client list and 15 documented projects across Dhruv EPC Solutions and Precise Engineers.', img: 'assets/pe-shopfloor-team.jpg', alt: 'Precise Engineers shop floor team', fit: 'cover', bg: '#1A1E22' },
+    ];
+    const act = desktop ? s.active : MS.length - 1;
+    const milestones = MS.map((m, i) => ({ ...m, id: 'ms-' + i, hasImg: !!m.img, noImg: !m.img, img: m.img || '', filter: i < 3 ? 'grayscale(1)' : 'none',
+      o: i === s.active ? 1 : 0, textO: !desktop || !motion || i <= s.active ? 1 : 0.38,
+      dot: i <= act ? '#222334' : '#fff', ring: i === act ? '0 0 0 6px rgba(34,35,52,0.12)' : 'none', minH: desktop ? '34vh' : 'auto' }));
+
+    const f = s.f, e = s.errs;
+    const ROUTES = {
+      dhruv: { label: 'Dhruv EPC Solutions', email: 'sales3@vedantagroup.net', color: RED, btn: RED },
+      precise: { label: 'Precise Engineers', email: 'preciseengineers@vedantagroup.net', color: BLUE, btn: BLUE },
+      unsure: { label: 'Vedanta Group enquiries desk', email: 'vedant@vedantagroup.net', color: '#222334', btn: '#222334' },
+    };
+    const route = ROUTES[f.company];
+    const setF = (k) => (ev) => { const v = ev.target.value; this.setState(st => ({ f: { ...st.f, [k]: v }, errs: { ...st.errs, [k]: undefined }, status: st.status === 'failed' ? 'idle' : st.status })); };
+    const on = {}; ['equipmentType', 'message', 'honeypot'].forEach(k => on[k] = setF(k));
+    const eb = {}, eh = {}, em = {}; ['equipmentType', 'message', 'consent'].forEach(k => { eh[k] = !!e[k]; em[k] = e[k] || ''; eb[k] = e[k] ? RED : '#C9CCD3'; });
+    const fields = [['name', 'Name *', 'text', 'name', ''], ['contactCompany', 'Company *', 'text', 'organization', ''], ['email', 'Email *', 'email', 'email', 'name@company.com'], ['phone', 'Phone *', 'tel', 'tel', '+91 98765 43210']]
+      .map(([k, label, type, ac, ph]) => ({ id: 'vg-' + k, label, type, ac, ph, value: f[k], onChange: setF(k), hasErr: !!e[k], err: e[k] || '', border: e[k] ? RED : '#C9CCD3' }));
+    const dNames = desplCats.flatMap(c => c.items.map(i => i.name)), pNames = peCats.flatMap(c => c.items.map(i => i.name));
+    const eqOpts = (f.company === 'dhruv' ? dNames : f.company === 'precise' ? pNames : dNames.concat(pNames)).concat(['Other / multiple items']);
+    const bizOpts = [['dhruv', 'Dhruv EPC Solutions', 'Vessels · exchangers · skids', RED], ['precise', 'Precise Engineers', 'Expansion joints · bellows', BLUE], ['unsure', 'Not sure', 'We will route it for you', '#222334']]
+      .map(([k, label, sub, c]) => ({ label, sub, on: f.company === k, bg: f.company === k ? c : '#fff', fg: f.company === k ? '#fff' : '#222334', border: f.company === k ? c : '#C9CCD3',
+        pick: () => this.setState(st => ({ f: { ...st.f, company: k, equipmentType: eqKeep(st.f.equipmentType, k) } })) }));
+    const eqKeep = (v, k) => { const pool = k === 'dhruv' ? dNames : k === 'precise' ? pNames : dNames.concat(pNames); return pool.includes(v) || v === 'Other / multiple items' ? v : ''; };
+    const kb = (n) => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+    const files = s.files.map((x, i) => ({ name: x.name, size: kb(x.size), status: x.bad || 'Ready', color: x.bad ? RED : '#2F7A45', remove: () => this.setState(st => ({ files: st.files.filter((_, j) => j !== i) })) }));
+    const mailto = 'mailto:' + route.email + '?subject=' + encodeURIComponent('Enquiry: ' + (f.equipmentType || 'project') + ' — ' + f.contactCompany) + '&body=' + encodeURIComponent('Name: ' + f.name + '\nCompany: ' + f.contactCompany + '\nEmail: ' + f.email + '\nPhone: ' + f.phone + '\nProduct: ' + f.equipmentType + '\n\n' + f.message + (s.files.length ? '\n\n(Drawings to follow as attachments)' : ''));
+
+    const JOBS = [
+      { biz: 'Dhruv EPC Solutions', k: 'dhruv', color: RED, title: 'Design Engineer — Pressure Vessels', dept: 'Engineering & design', loc: 'Manjusar GIDC, Vadodara', type: 'Full-time', exp: '3–6 years' },
+      { biz: 'Dhruv EPC Solutions', k: 'dhruv', color: RED, title: 'QA/QC Inspector (NDT Level II)', dept: 'Quality & inspection', loc: 'Manjusar GIDC, Vadodara', type: 'Full-time', exp: '4+ years' },
+      { biz: 'Precise Engineers', k: 'precise', color: BLUE, title: 'Production Supervisor — Bellows Shop', dept: 'Production', loc: 'Vitthal Udyognagar, Anand', type: 'Full-time', exp: '5+ years' },
+    ];
+    const showJobs = this.props.showExampleJobs ?? true;
+    const jobList = (showJobs ? JOBS : []).filter(j => s.jobF === 'all' || j.k === s.jobF);
+    const cf = s.cf, ce = s.cerrs;
+    const setC = (k) => (ev) => { const v = ev.target.value; this.setState(st => ({ cf: { ...st.cf, [k]: v }, cerrs: { ...st.cerrs, [k]: undefined }, cstatus: st.cstatus === 'failed' ? 'idle' : st.cstatus })); };
+    const cOn = {}; ['area', 'exp', 'role', 'msg'].forEach(k => cOn[k] = setC(k));
+    const cEb = {}, cEh = {}, cEm = {}; ['area', 'cv', 'consent'].forEach(k => { cEh[k] = !!ce[k]; cEm[k] = ce[k] || ''; cEb[k] = ce[k] ? RED : '#C9CCD3'; });
+    const careersEmail = 'vedant@vedantagroup.net';
+    const kb2 = (n) => n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+    const cvals = {
+      jobs: jobList.map(j => ({ ...j, apply: () => { this.setState(st => ({ cf: { ...st.cf, role: j.title, biz: j.k }, cstatus: 'idle' })); this.scrollTo('careers-form'); } })),
+      hasJobs: jobList.length > 0, noJobs: jobList.length === 0, jobCount: jobList.length + (jobList.length === 1 ? ' position' : ' positions'),
+      jobFilters: [['all', 'All'], ['dhruv', 'Dhruv EPC Solutions'], ['precise', 'Precise Engineers']].map(([k, label]) => ({ label, on: s.jobF === k, bg: s.jobF === k ? '#222334' : '#fff', fg: s.jobF === k ? '#fff' : '#222334', border: s.jobF === k ? '#222334' : '#C9CCD3', pick: () => this.setState({ jobF: k }) })),
+      cTitle: cf.role ? 'Apply: ' + cf.role : 'Send us your CV',
+      cPoints: [{ n: '01', t: 'Apply for an open position, or send a general application.' }, { n: '02', t: 'HR reviews your profile against current and upcoming roles at both businesses.' }, { n: '03', t: 'If there is a fit, we contact you for a technical discussion.' }],
+      cFields: [['name', 'Full name *', 'text', 'name', ''], ['email', 'Email *', 'email', 'email', 'name@example.com'], ['phone', 'Phone *', 'tel', 'tel', '+91 98765 43210'], ['city', 'Current location', 'text', 'address-level2', 'City']]
+        .map(([k, label, type, ac, ph]) => ({ id: 'vc-' + k, label, type, ac, ph, value: cf[k], onChange: setC(k), hasErr: !!ce[k], err: ce[k] || '', border: ce[k] ? RED : '#C9CCD3' })),
+      cAreas: ['Engineering & design', 'Production & fabrication', 'Welding', 'Machining', 'Quality & inspection (QA/QC, NDT)', 'Projects & planning', 'Sales & estimation', 'Purchase & stores', 'Accounts & administration', 'Other'],
+      cExps: ['Fresher / under 2 years', '2–5 years', '5–10 years', '10–15 years', '15+ years'],
+      cBiz: [['either', 'Either business', '#222334'], ['dhruv', 'Dhruv EPC Solutions', RED], ['precise', 'Precise Engineers', BLUE]].map(([k, label, c]) => ({ label, on: cf.biz === k, bg: cf.biz === k ? c : '#fff', fg: cf.biz === k ? '#fff' : '#222334', border: cf.biz === k ? c : '#C9CCD3', pick: () => this.setState(st => ({ cf: { ...st.cf, biz: k } })) })),
+      cf, cOn, cEb, cEh, cEm, careersEmail,
+      cvLabel: s.cv ? s.cv.name + ' · ' + kb2(s.cv.size) : 'PDF, DOC or DOCX · up to 10 MB', cvBtn: s.cv ? 'Replace file' : 'Upload CV', cvBorder: ce.cv ? RED : '#A5A8B2',
+      onCv: (ev) => this.onCv(ev), cSubmit: (ev) => this.cSubmit(ev),
+      cOnConsent: (ev) => { const c = ev.target.checked; this.setState(st => ({ cf: { ...st.cf, consent: c }, cerrs: { ...st.cerrs, consent: undefined } })); },
+      cSending: s.cstatus === 'sending', cSubmitLabel: s.cstatus === 'sending' ? 'Sending…' : 'Submit application', cSent: s.cstatus === 'sent', cFailed: s.cstatus === 'failed',
+      cMailto: 'mailto:' + careersEmail + '?subject=' + encodeURIComponent('Job application: ' + (cf.role || 'General application') + ' — ' + cf.name) + '&body=' + encodeURIComponent('Name: ' + cf.name + '\nEmail: ' + cf.email + '\nPhone: ' + cf.phone + '\nLocation: ' + cf.city + '\nArea: ' + cf.area + '\nExperience: ' + cf.exp + '\nPreferred business: ' + cf.biz + '\n\n' + cf.msg + '\n\n(CV attached)'),
+      goCareers: this.go('careers'),
+    };
+    return {
+      ...cvals,
+      desktop, mobile: !desktop, mobileOpen: s.mob,
+      burgerA: s.mob ? 'translateY(7px) rotate(45deg)' : 'none', burgerB: s.mob ? 0 : 1, burgerC: s.mob ? 'translateY(-7px) rotate(-45deg)' : 'none',
+      toggleMobile: () => this.setState({ mob: !s.mob }),
+      hdrShadow: s.sy > 4 ? '0 6px 24px rgba(17,20,23,0.08)' : 'none',
+      nav, closeMenu: () => s.menu && this.setState({ menu: null }),
+      menuBiz: s.menu === 'biz', menuProd: s.menu === 'prod', menuCar: s.menu === 'car',
+      menuJobs: (showJobs ? JOBS : []).map(j => ({ ...j, apply: () => { this.setState(st => ({ cf: { ...st.cf, role: j.title, biz: j.k }, cstatus: 'idle' })); this.scrollTo('careers-form'); } })),
+      menuHasJobs: showJobs && JOBS.length > 0, menuNoJobs: !(showJobs && JOBS.length > 0), menuJobCount: (showJobs ? JOBS.length : 0) + ' open positions',
+      goCareersForm: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState(st => ({ cf: { ...st.cf, role: '' } })); this.scrollTo('careers-form'); },
+      mp: { o: open ? 1 : 0, vis: open ? 'visible' : 'hidden', y: open ? 'none' : 'translateY(-8px)', visDelay: open ? '0ms' : '240ms', hidden: !open },
+      mNav: [['About Us', 'about'], ['Our Businesses', 'businesses'], ['Products & Solutions', 'products'], ['Projects & Clients', 'projects'], ['Careers', 'careers'], ['Contact', 'contact']].map(([label, id]) => ({ label, go: () => this.scrollTo(id) })),
+      goTop: this.go('top'), goContact: this.go('contact'), goProducts: this.go('products'), goBusinesses: this.go('businesses'), goHeritage: this.go('heritage'),
+      enquireDespl: this.enquire('dhruv'), enquirePe: this.enquire('precise'),
+      desplOrder: peFirst ? 2 : 1, peOrder: peFirst ? 1 : 2,
+      hero: { o: live ? 1 : 0, y: live ? 'none' : 'translateY(20px)', l1: live ? 'none' : 'translateY(105%)', l2: live ? 'none' : 'translateY(105%)' },
+      slides, chapters, textAlign, heroCols: desktop ? 'minmax(0,1fr) minmax(0,1.15fr)' : 'minmax(0,1fr)', heroH: desktop ? 'clamp(640px, calc(100vh - 122px), 900px)' : 'auto', stageH: desktop ? '100%' : (s.vw < 640 ? '440px' : '560px'),
+      heroNum: React.createElement(this.CountUp, { to: 30, play: live, reduced: s.reduced, dur: 2000 }),
+      r, desplCats, peCats, productCount, desplList, peList, prodCards,
+      desplFacts: [{ v: '200 T', k: 'Maximum unit weight, heavy fabrication' }, { v: 'Ø 4,000 mm', k: 'Floor-type boring mills' }, { v: '100 T', k: 'Heat exchangers, maximum unit weight' }, { v: '21 m · 45 MT', k: 'Largest skid on record' }],
+      peFacts: [{ v: '80 – 8,000 mm', k: 'NB range, circular metallic bellows' }, { v: '9,000 × 5,000 mm', k: 'Maximum rectangular bellows' }, { v: '3,700 PSI', k: 'Highest design pressure on record' }, { v: '2,192 mm ID', k: 'Inconel 625 joint, cycle-life tested under TPI' }],
+      desplSlots: ['Fabrication bay', 'Boring mill', 'Hydrotest'], peSlots: ['Bellows forming', 'Seam welding', 'Test bay'],
+      disciplines: [
+        { t: 'Design & engineering', s: 'Code design to ASME, TEMA and EJMA; 3D modelling; FEA under special design conditions.', d: true, p: true },
+        { t: 'Heavy fabrication', s: 'Vessel shells, skids, base frames and structures up to 200 T per unit.', d: true, p: false },
+        { t: 'Heavy machining', s: 'Floor-type boring mills to Ø 4,000 mm for tube-sheets, flanges and large components.', d: true, p: false },
+        { t: 'Bellows forming', s: 'Convolution forming for circular bellows 80 – 8,000 mm NB and rectangular bellows.', d: false, p: true },
+        { t: 'Welding', s: 'Qualified procedures and welders for carbon steel, stainless, duplex and nickel alloys.', d: true, p: true },
+        { t: 'Testing & inspection', s: 'NDT, hydrotest and stage inspection to code and client ITP, witnessed by third parties.', d: true, p: true },
+        { t: 'Skid integration & FAT', s: 'Piping, electrical and instrumentation integration with factory acceptance testing.', d: true, p: false },
+        { t: 'Heat & surface treatment', s: 'Post-weld heat treatment and surface finishing — in-house scope to be confirmed.', d: true, p: true },
+      ].map((c, i) => ({ ...c, n: String(i + 1).padStart(2, '0') })),
+      stats: [
+        { to: 30, suf: '+', k: 'Years of engineering experience', src: 'Since 1994' },
+        { to: 2, suf: '', k: 'Manufacturing works', src: 'Manjusar GIDC, Vadodara · Vitthal Udyognagar, Anand' },
+        { to: productCount, suf: '', k: 'Product lines', src: '8 Dhruv EPC · 9 Precise Engineers' },
+        { to: allC.length || 44, suf: '', k: 'Clients on the group list', src: 'Vedanta Group brochure 2026, p.4' },
+        { to: 15, suf: '', k: 'Documented projects', src: '8 Dhruv EPC · 7 Precise Engineers' },
+        { to: 5, suf: '', k: 'Export destinations on record', src: 'USA · Argentina · Turkey · Saudi Arabia · Australia' },
+      ].map((x, i) => ({ ...x, ...stag('stats', i, 90), num: React.createElement(this.CountUp, { key: x.k, to: x.to, play: seen('stats'), reduced: s.reduced, dur: 1600 + i * 120 }) })),
+      clientCount: allC.length || 44, logos, clientsBtn: s.allClients ? 'Show selected clients' : 'Show all ' + (allC.length || 44) + ' clients',
+      toggleClients: () => this.setState({ allClients: !s.allClients }),
+      projects,
+      tlCols: desktop ? 'minmax(0,1fr) minmax(0,1.1fr)' : 'minmax(0,1fr)',
+      milestones, tlYear: MS[s.active].y === 'Year TBC' ? '— TBC' : MS[s.active].y, tlCount: String(s.active + 1).padStart(2, '0') + ' / ' + String(MS.length).padStart(2, '0'),
+      tlFill: s.tlp, tlFillPct: (motion && desktop ? s.tlp * 100 : 100) + '%',
+      desplStamps: [{ mark: 'U', name: 'ASME U Certificate', scope: 'Sec. VIII Div. 1 pressure vessels' }, { mark: 'U2', name: 'ASME U2 Certificate', scope: 'Sec. VIII Div. 2 pressure vessels' }, { mark: 'IBR', name: 'IBR Approval', scope: 'Boiler-quality equipment' }, { mark: 'ISO', name: 'ISO 9001 · 14001 · 45001', scope: 'Quality, environment, OH&S' }],
+      peStamps: [{ mark: 'EIL', name: 'EIL Approved Vendor', scope: 'Expansion bellows and joints' }, { mark: 'ISO', name: 'ISO 9001:2015', scope: 'Design & manufacture of expansion joints' }],
+      approvals: D.groupApprovals || [],
+      f, on, eb, eh, em, fields, eqOpts, bizOpts, route, files, mailto,
+      onFiles: (ev) => this.onFiles(ev), onConsent: (ev) => { const c = ev.target.checked; this.setState(st => ({ f: { ...st.f, consent: c }, errs: { ...st.errs, consent: undefined } })); },
+      submit: (ev) => this.submit(ev), sending: s.status === 'sending',
+      submitLabel: s.status === 'sending' ? 'Sending…' : 'Send enquiry to ' + route.label,
+      statusSent: s.status === 'sent', statusFailed: s.status === 'failed',
+      footLinks: [['About Us', 'about'], ['Our journey', 'heritage'], ['Manufacturing', 'capabilities'], ['Quality & certifications', 'quality'], ['Careers', 'careers'], ['Contact', 'contact']].map(([label, id]) => ({ label, href: '#' + id, go: this.go(id) })),
+    };
+  }
+}
+</script>
+</body>
+</html>
