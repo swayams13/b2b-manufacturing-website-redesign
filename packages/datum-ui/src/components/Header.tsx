@@ -61,7 +61,11 @@ export interface HeaderNavLink {
 export interface HeaderMenu {
   id: string
   label: string
-  panel: React.ReactNode
+  /** Receives the panel's open state so the caller can apply its own
+   *  aria-hidden/tabIndex SSR-safe closed-state baseline (see MegaPanel.tsx
+   *  and this file's legacy panel for the pattern) — content here is
+   *  caller-supplied, so Header can't reach into it to set that itself. */
+  panel: (open: boolean) => React.ReactNode
 }
 
 export interface HeaderProps {
@@ -309,6 +313,10 @@ export function Header({
           <div
             id="datum-mega-menu"
             ref={legacyPanelRef}
+            // aria-hidden + tabIndex=-1 on every link below are the SSR-safe
+            // baseline for the closed state (see MegaPanel.tsx's identical
+            // comment) — the `inert` effect above only applies post-hydration.
+            aria-hidden={!menuOpen}
             className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
               menuOpen ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
             }`}
@@ -324,6 +332,7 @@ export function Header({
                       <li key={item.href}>
                         <a
                           href={item.href}
+                          tabIndex={menuOpen ? undefined : -1}
                           className="-mx-2 block rounded-sm px-2 py-2 transition-colors duration-instant hover:bg-steel-100"
                         >
                           <span className="block text-data font-medium text-steel-950">
@@ -341,6 +350,7 @@ export function Header({
                 <div className="border-l border-steel-200 pl-8">
                   <a
                     href={capabilityRail.href}
+                    tabIndex={menuOpen ? undefined : -1}
                     className="group flex items-center gap-2 text-data font-medium text-accent-text transition-colors duration-instant hover:text-accent-text-hover"
                   >
                     {capabilityRail.label}
@@ -361,11 +371,12 @@ export function Header({
             ref={(el) => {
               extraPanelRefs.current[m.id] = el
             }}
+            aria-hidden={openExtra !== m.id}
             className={`absolute inset-x-0 top-full border-t border-steel-200 bg-white shadow-overlay transition-all duration-standard motion-reduce:transition-none ${
               openExtra === m.id ? 'ease-enter opacity-100 translate-y-0' : 'pointer-events-none ease-exit opacity-0 -translate-y-3'
             }`}
           >
-            {m.panel}
+            {m.panel(openExtra === m.id)}
           </div>
         ))}
       </header>

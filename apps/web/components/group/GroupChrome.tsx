@@ -52,7 +52,12 @@ function drawerGroups(megaPanelColumns: MegaPanelColumn[]) {
   ]
 }
 
-function BusinessesPanel() {
+// `open` drives the SSR-safe closed-state baseline (aria-hidden + tabIndex
+// on every link) — Header.tsx's `inert` effect only applies post-hydration,
+// and this panel's content is caller-owned, so Header can't set it itself
+// (see HeaderMenu.panel's doc comment).
+function BusinessesPanel({ open }: { open: boolean }) {
+  const tabIndex = open ? undefined : -1
   return (
     <div className="mx-auto grid max-w-wide grid-cols-1 gap-8 px-6 py-8 md:grid-cols-3">
       <div className="flex flex-col gap-3">
@@ -60,46 +65,54 @@ function BusinessesPanel() {
         <p className="text-sm text-steel-700">
           Two businesses, each with its own works, engineering team, certifications and enquiry desk.
         </p>
-        <a href="/#businesses" className="text-data font-medium text-accent-text hover:text-accent-text-hover">
+        <a
+          href="/#businesses"
+          tabIndex={tabIndex}
+          className="text-data font-medium text-accent-text hover:text-accent-text-hover"
+        >
           Compare both businesses →
         </a>
       </div>
       <div className="pt-4" data-company="dhruv">
         <span className="block h-1 w-full bg-brand-500" aria-hidden="true" />
-        <a href="/dhruv-epc" className="mt-4 block">
+        <a href="/dhruv-epc" tabIndex={tabIndex} className="mt-4 block">
           <Logo company="dhruv-epc" size="secondary" />
         </a>
         <p className="mt-3 text-sm text-steel-600">
           Pressure vessels, heat exchangers, process skids and heavy fabrication. Manjusar GIDC, Vadodara.
         </p>
         <div className="mt-3 flex flex-wrap gap-4 text-sm font-medium">
-          <a href="/dhruv-epc" className="text-accent-text hover:text-accent-text-hover">
+          <a href="/dhruv-epc" tabIndex={tabIndex} className="text-accent-text hover:text-accent-text-hover">
             Products
           </a>
-          <a href="/clients-projects" className="text-accent-text hover:text-accent-text-hover">
+          <a href="/clients-projects" tabIndex={tabIndex} className="text-accent-text hover:text-accent-text-hover">
             Projects
           </a>
-          <a href={rfqHref('dhruv')} className="text-accent-text hover:text-accent-text-hover">
+          <a href={rfqHref('dhruv')} tabIndex={tabIndex} className="text-accent-text hover:text-accent-text-hover">
             Enquire with DESPL
           </a>
         </div>
       </div>
       <div className="pt-4" data-company="precise">
         <span className="block h-1 w-full bg-flex-500" aria-hidden="true" />
-        <a href="/precise-engineers" className="mt-4 block">
+        <a href="/precise-engineers" tabIndex={tabIndex} className="mt-4 block">
           <Logo company="precise-engineers" size="secondary" />
         </a>
         <p className="mt-3 text-sm text-steel-600">
           Expansion joints, bellows, dismantling joints and pipeline components. Vitthal Udyognagar, Anand.
         </p>
         <div className="mt-3 flex flex-wrap gap-4 text-sm font-medium">
-          <a href="/precise-engineers" className="text-accent-text hover:text-accent-text-hover">
+          <a
+            href="/precise-engineers"
+            tabIndex={tabIndex}
+            className="text-accent-text hover:text-accent-text-hover"
+          >
             Products
           </a>
-          <a href="/clients-projects" className="text-accent-text hover:text-accent-text-hover">
+          <a href="/clients-projects" tabIndex={tabIndex} className="text-accent-text hover:text-accent-text-hover">
             Projects
           </a>
-          <a href={rfqHref('precise')} className="text-accent-text hover:text-accent-text-hover">
+          <a href={rfqHref('precise')} tabIndex={tabIndex} className="text-accent-text hover:text-accent-text-hover">
             Enquire with Precise Engineers
           </a>
         </div>
@@ -112,8 +125,9 @@ function BusinessesPanel() {
 // list stay in sync with groupExampleJobs (site-data.ts); an empty array
 // there (real vacancies withdrawn per Decision 6) flips this to the
 // "no open positions" copy automatically, no separate flag to remember.
-function CareersPanel() {
+function CareersPanel({ open }: { open: boolean }) {
   const jobs = groupExampleJobs
+  const tabIndex = open ? undefined : -1
   return (
     <div className="mx-auto grid max-w-wide grid-cols-1 gap-8 px-6 py-8 md:grid-cols-2">
       <div className="flex flex-col gap-3">
@@ -122,11 +136,16 @@ function CareersPanel() {
           Openings at Dhruv EPC Solutions and Precise Engineers. No suitable role? Send your CV and we will keep it
           on file.
         </p>
-        <a href="/#careers" className="text-data font-medium text-accent-text hover:text-accent-text-hover">
+        <a
+          href="/#careers"
+          tabIndex={tabIndex}
+          className="text-data font-medium text-accent-text hover:text-accent-text-hover"
+        >
           All openings →
         </a>
         <a
           href="/#careers-form"
+          tabIndex={tabIndex}
           className="self-start rounded-sm bg-steel-950 px-4 py-3 text-sm font-semibold text-white transition-colors duration-fast hover:bg-steel-700"
         >
           Send your CV
@@ -142,6 +161,7 @@ function CareersPanel() {
             <a
               key={job.title}
               href="/#careers-form"
+              tabIndex={tabIndex}
               className="flex items-center gap-4 border-b border-steel-100 py-3 transition-colors duration-instant hover:bg-steel-50"
             >
               <span
@@ -189,8 +209,8 @@ export function GroupChrome({
         menuLabel="Products & Solutions"
         megaPanel={megaPanelColumns}
         extraMenus={[
-          { id: 'biz', label: 'Our Businesses', panel: <BusinessesPanel /> },
-          { id: 'car', label: 'Careers', panel: <CareersPanel /> },
+          { id: 'biz', label: 'Our Businesses', panel: (open) => <BusinessesPanel open={open} /> },
+          { id: 'car', label: 'Careers', panel: (open) => <CareersPanel open={open} /> },
         ]}
         links={[LINKS[0]!, LINKS[1]!, LINKS[2]!, CONTACT_LINK]}
         utilityBar={[
