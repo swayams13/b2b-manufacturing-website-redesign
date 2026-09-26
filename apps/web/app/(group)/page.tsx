@@ -5,6 +5,7 @@
 // Zero accent-filled elements outside the RFQ button (§13's amber/blue
 // law) — the door CTAs stay accent-colored links, not fills.
 import type { Metadata } from 'next'
+import Image from 'next/image'
 import {
   Button,
   CategoryCard,
@@ -24,6 +25,8 @@ import { groupStats } from '../../lib/site-data'
 const dhruvCertifications = getCertifications('dhruv-epc')
 const groupEntity = getEntity('group')
 const preciseCertifications = getCertifications('precise-engineers')
+const dhruvEntity = getEntity('dhruv-epc')
+const preciseEntity = getEntity('precise-engineers')
 // Clients & Projects spec §4: even indices row A, odd row B — 44 granted
 // clients today (not the spec's "42", see docs/mistakes.md 2026-09-03).
 const allClients = getClients()
@@ -97,6 +100,81 @@ export default function GroupHome() {
             Not a precedent for HomeHero itself, still used unchanged on
             the Dhruv/Precise home pages. */}
         <HeroCarousel />
+
+        {/* group-home-v2 §02 About (design_handoff_group_home_v2/README.md
+            "Screens / sections" item 4). Copy ported near-verbatim from the
+            reference, cross-checked against productCategories/*.json so
+            "valves and dampers" / "storage tanks" aren't overclaims. The
+            reference's #heritage in-page anchor becomes a real link to
+            /about — this build uses routes, not a single-page anchor
+            scroll. Per-company dot color on the works list intentionally
+            stays steel, not brand/flex red-blue: the only accent-color
+            override approved so far (docs/decisions.md, 2026-09-26) is
+            scoped to the "Our Businesses" cards, not here. */}
+        <section id="about" aria-labelledby="about-heading" className="border-t border-steel-200 bg-white">
+          <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+                <span className="h-px w-6 bg-current" aria-hidden="true" />
+                About the group
+              </p>
+              <h2
+                id="about-heading"
+                className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950"
+              >
+                Built on Experience. Driven by Engineering.
+              </h2>
+              <p className="mt-6 text-body-lg text-steel-950">
+                The Vedanta Group of Companies is an engineering and manufacturing group based
+                in Gujarat, India. It operates through two businesses, each with its own works,
+                engineering team and certifications.
+              </p>
+              <p className="mt-4 text-body text-steel-700">
+                Dhruv EPC Solutions designs and fabricates pressure vessels, heat exchangers,
+                storage tanks and skid-mounted process packages. Precise Engineers designs and
+                manufactures expansion joints, dismantling joints, valves and dampers. Customers
+                include refiners, power utilities, steel producers, equipment manufacturers and
+                EPC contractors, in India and for export.
+              </p>
+              <dl className="mt-8 grid grid-cols-1 gap-x-8 border-t-2 border-steel-950 sm:grid-cols-2">
+                {[dhruvEntity, preciseEntity].map((entity) => (
+                  <div key={entity.companySlug} className="border-b border-steel-200 py-4">
+                    <dt className="flex items-center gap-2 text-sm font-bold text-steel-950">
+                      <span className="size-2 flex-none bg-steel-950" aria-hidden="true" />
+                      {entity.legalName}
+                    </dt>
+                    <dd className="mt-2 text-sm text-steel-600">
+                      {entity.worksAddresses[0]!.label} · {entity.worksAddresses[0]!.address}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <div className="mt-8">
+                <Button variant="link" href="/about">
+                  About Us — our 30-year journey →
+                </Button>
+              </div>
+            </div>
+            <figure className="relative m-0">
+              {/* §16's only card-photo ratio token is 4/3 (packages/tokens/
+                  src/tailwind.ts) — the reference's 5:4 has no matching
+                  token and adding one is a §26 review event, not a
+                  section commit. 4/3 is the nearest available crop. */}
+              <div className="aspect-4/3 overflow-hidden bg-steel-950">
+                <Image
+                  src="/photography/precise-engineers/pe-large-bore-ej.jpg"
+                  alt="Large-bore expansion joint on the Precise Engineers shop floor"
+                  width={800}
+                  height={640}
+                  className="size-full object-cover"
+                />
+              </div>
+              <figcaption className="absolute bottom-0 left-0 bg-white px-4 py-2 font-mono text-helper text-steel-600">
+                Large-bore expansion joint · Precise Engineers works
+              </figcaption>
+            </figure>
+          </div>
+        </section>
 
         {/* §14.2 item 2 — products by category, the primary entry */}
         <section id="products" aria-labelledby="products-heading" className="bg-steel-900">

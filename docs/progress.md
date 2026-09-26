@@ -4798,3 +4798,82 @@ Projects, 10 Our Journey, 11 Quality, 12 Careers (+ `/api/careers`),
 polish, UI/UX review, Playwright e2e, full verify, PR). Given the size
 of what's left, stopping here to check in rather than continuing
 unsupervised through 10+ more sections in one pass.
+
+---
+
+### Session 41 — About section built, group home v2 continues
+
+Resumed from Session 40's checkpoint. Built section 4 (`02 About`,
+`design_handoff_group_home_v2/README.md`) directly into
+`(group)/page.tsx` — inline markup, like the page's other non-hero
+sections, not a separate component (no existing `datum-ui` component
+fits a two-column copy/definition-list/photo layout, and none of this
+page's other sections are broken out either).
+
+**Content sourcing, checked before writing:**
+- Works addresses for the definition list come from `getEntity('dhruv-epc')`
+  / `getEntity('precise-engineers')` (`worksAddresses[0]`), not
+  hardcoded — CLAUDE.md's EntityRecord-only rule.
+- The reference copy's product claims ("storage tanks", "valves and
+  dampers", "dismantling joints") were cross-checked against
+  `content/productCategories/*.json` before reuse — all real
+  (`static-equipment`, `flow-control`, `expansion-joints` categories)
+  rather than copied on faith.
+- The reference's `#heritage` in-page anchor becomes a real link to
+  `/about` — this build uses routes, not the prototype's single-page
+  anchor scroll (`/about` already exists with the fuller 30-year
+  history content).
+- Photo: `pe-large-bore-ej.jpg`, already promoted to production in
+  Session 40 and unused by `HeroCarousel`'s four slides — no new
+  asset needed.
+
+**Deliberately did not extend the per-company red/blue accent** to the
+works-list dot markers, even though the reference and the README's
+color mapping suggest it. The only accent-color override approved so
+far (`docs/decisions.md`, 2026-09-26) is scoped to the "Our Businesses"
+cards specifically, not this section — extending it here would be
+deciding a new instance of Decision 2 silently. Used a plain
+`steel-950` dot on both entries instead (Ambiguity Protocol step 2:
+the existing "Our companies" section further down this same page
+already solves company differentiation without per-company fill
+color, via `bg-accent`'s single group-scoped red for a hairline rule).
+
+**Real token-gap fixes found in lint, same pattern as Session 40:**
+1. `mt-7`, `mt-9`, `py-5`, `mt-1.5` — none exist in
+   `packages/tokens/src/tailwind.ts`'s spacing scale
+   (`{0,px,1,2,3,4,6,8,12,16,24,32,40}`); remapped to the nearest valid
+   steps (`mt-6`, `mt-8`, `py-4`, `mt-2`).
+2. `aspect-[5/4]` — an arbitrary value; `no-arbitrary-value` is `error`.
+   Only `aspect-4/3` exists as a token (`packages/tokens/src/tailwind.ts`
+   §16 comment: "Tailwind ships only square/video"). Adding a 5/4 token
+   is a §26 review event, not a section commit — reused `aspect-4/3`
+   instead, the same "nearest available token" call as Session 40's
+   `max-w` fix.
+
+**Verify:** `pnpm typecheck && lint && test && build` all clean (zero
+errors, zero new warnings — the only lint output is the pre-existing
+unrelated `LegalDocument.tsx` warnings from Session 38). Homepage
+route: 105 kB First Load JS, unchanged and still under the 120 kB
+marketing-SSG budget. Live-browser check (`pnpm --filter @vedanta/web
+dev`; ports 3000 and 3001 were both occupied by unrelated projects, so
+Next fell back to 3002): eyebrow/heading/copy/definition-list/photo
+render correctly, the `/about` link is present, an existing
+`CategoryCard`'s `:focus-visible` ring confirmed the global focus rule
+still fires. **Not verified this session:** 320px mobile reflow — same
+tool gap noted in Session 40 (`resize_window` doesn't visibly affect
+the captured screenshot); the section reuses the page's existing
+`grid-cols-1 lg:grid-cols-2` / `px-6` stacking pattern already relied
+on elsewhere on this page, but that's inference, not a verified
+screenshot. Flagging as an honest gap, not claiming verified.
+
+**Commit:** `apps/web/app/(group)/page.tsx` (About section) + this log,
+one commit.
+
+**Not started, unchanged from Session 39/40:** 5 Our Businesses
+(dark card treatment — a different build from this page's existing
+"Two specialized works" companies section, per the README), 6 Products
+& Solutions, 7 Manufacturing, 8 Figures, 9 Clients & Projects, 10 Our
+Journey, 11 Quality, 12 Careers (+ `/api/careers`), 13 Enquiry, 14
+Footer check, then SKILLS-RUNBOOK.md Steps 2–5. Stopping here, same
+reasoning as Session 40 — checking in rather than continuing
+unsupervised through the remaining 9+ sections in one pass.
