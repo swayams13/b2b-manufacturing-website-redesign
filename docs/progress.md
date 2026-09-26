@@ -5435,3 +5435,20 @@ URL directly if the redirect ever stops working.
 
 **To resume:** awaiting Swayam's PR review / merge decision. Nothing else
 outstanding on this branch.
+
+---
+
+### Session 48 — PR #33 merged to main
+
+Swayam approved and asked to merge. Confirmed CI clean first (`gh pr view
+33`: Lint/Typecheck/Test/Accessibility/Performance + Vercel preview all
+`SUCCESS`, `mergeStateStatus: CLEAN`, `mergeable: MERGEABLE`). Merged via
+regular merge commit (`gh pr merge 33 --merge`, branch kept, not deleted) —
+matches this repo's existing convention (PRs #25/#28-#32 were all merge
+commits, not squash/rebase). Merge commit `68739f6` on `main`.
+
+**To resume:** group homepage v2 is live on `main`. Nothing queued from this
+branch. Remaining backlog is the deferred list already logged in
+`docs/progress.md`'s "Deferred / next session work" section and project
+memory: Footer/utility-bar touch targets, `/api/careers` + CV upload,
+`/#contact` dead anchors, works photography, RFQ E2E creds (CG-3).
