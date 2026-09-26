@@ -5310,3 +5310,107 @@ API-failure states, screenshots at 390/1440px). Install browsers first:
 `pnpm --filter web exec playwright install chromium`. Then Step 5 (full
 verify + PR, with the diff handed to a reviewer subagent separately from
 this implementation session per CLAUDE.md's verify-is-separate rule).
+
+---
+
+### Session 47 — SKILLS-RUNBOOK.md Steps 4-5: Playwright suite, verify, one real a11y bug found and fixed
+
+**Step 4.** Added `apps/web/e2e/group-home-v2.spec.ts` (Playwright browsers
+installed first: `playwright install chromium`) covering every runbook
+bullet: axe zero serious/critical violations on `/`; exactly one accent-
+filled element in the viewport at *every* scroll position on desktop, not
+just page load (Header is always-fixed, so this holds throughout — proxies
+via `.bg-accent`, the class exclusive to `Button variant="rfq"`); one `h1`
+with no skipped heading levels; zero horizontal overflow at a true 320px
+Playwright viewport (unlike the browser-automation tool used in Sessions
+45/46, real Playwright has no window-size floor — this is the first time
+320px was actually tested, not proxied); full keyboard reach with visible
+focus rings across the primary nav, the mega panel, and the RFQ form;
+`prefers-reduced-motion` usability; RFQ required-field validation and a
+route-intercepted simulated API failure (asserts the alert renders and the
+page never redirects to the thank-you route — the mailto/tel fallback link
+is asserted only when present, since `NEXT_PUBLIC_CONTACT_EMAIL/PHONE` are
+still unset in this local build per Session 38's env list — a disclosed
+content gate, not weakened test coverage); and per-section screenshots at
+390/1440px into `e2e/__screenshots__/group-home-v2/` (20 files, hero + the
+9 top-level `<section>`s — "Industries served" is intentionally nested
+inside the Products section per `docs/decisions.md`'s page-architecture
+entry, not a missing 10th top-level section).
+
+**Three real bugs found while building the suite itself** (not app bugs —
+test-authoring bugs, all fixed before the suite was trusted):
+1. `main > *` (my own selector) also matched a zero-size `<script>` Next.js
+   injects as `main`'s first child, which is never "visible" and hung
+   `scrollIntoViewIfNeeded()` — narrowed to `main > section`.
+2. My `prefers-reduced-motion` assertion expected literally `'0s'`; the
+   codebase's actual global reset (`apps/web/app/globals.css` §11) uses
+   `0.01ms`, deliberately, so `transitionend` still fires for any JS relying
+   on it — asserted "collapsed to negligible" instead of the exact string.
+3. Several `getByText(...)` locators matched more than one element (Next's
+   own `#__next-route-announcer__` also carries `role="alert"`; "Pressure
+   Vessels"/"Name required" are substrings that also match elsewhere on the
+   page) — switched to `getByRole('radio', {name})` for ChoiceCard selection
+   and `{exact: true}` / a `fieldAlert()` helper that filters by visible text
+   for error assertions.
+
+**Also found, and disclosed rather than silently worked around:** running
+the suite the first time returned 9/12 failures that traced to something
+outside this branch entirely — port 3000 was being served by a *different*
+project's dev server (`vedanta-web-premium`, PID 96417, live Chrome tabs
+attached), and Playwright's `reuseExistingServer: true` silently reused it.
+Confirmed by fetching the actual HTML: totally different class-naming
+convention (`text-neutral-8`, `color-despl`), not this repo. Per the user's
+choice, ran the suite against a temporary port override (3100) instead of
+touching their other server — never committed; `playwright.config.ts` is
+unchanged from before this session, reverted via `git checkout` after every
+run. A second real issue then surfaced once pointed at the correct app:
+the homepage (by far the most image-heavy route) was slow enough under
+this file's default parallel concurrency, combined with the missing
+optional `sharp` package (`next build` warns about it; adding it needs its
+own package.json-change review per CLAUDE.md, not added), to blow the 30s
+per-test timeout on several tests at once. Fixed with
+`test.describe.configure({ mode: 'serial' })` + `test.slow()` — removes the
+contention instead of masking it with a blanket timeout bump. All 12 tests
+pass consistently after these fixes.
+
+**Step 5, verify pass — handed to an independent subagent, not self-graded.**
+`pnpm typecheck && pnpm lint && pnpm test && pnpm build` all clean (same
+pre-existing unrelated `LegalDocument.tsx` lint warnings as every session;
+125/125 datum-ui tests, 58/58 web tests). Per CLAUDE.md's "verify pass must
+be separate" rule, dispatched a fresh subagent with *only* the diff (`git
+diff` across Sessions 45-46's substantive commits, 431 lines, 7 files) and
+the governing Datum §11/§13/§14/§25 sections plus CLAUDE.md — no session
+context, no implementation conversation.
+
+**Real finding, confirmed and fixed same session (also logged to
+`docs/mistakes.md`):** Session 45's `ref.current.inert = !open` (the
+React-18-can't-set-`inert`-via-JSX workaround) only takes effect *after
+hydration* — it's an imperative DOM mutation a `useEffect` can't put into
+the server-rendered HTML. Before hydration finishes (or with JS disabled
+entirely), the closed mega panel / legacy panel / extraMenus panels were
+only visually suppressed (`opacity-0`/`pointer-events-none`, correctly
+computed at SSR time) while remaining fully keyboard-tabbable and exposed
+to the accessibility tree — a real regression from the old `hidden`
+attribute, which needed zero JS to achieve the same exclusion. Fixed by
+adding a real, JSX-renderable, SSR-safe baseline on top of (not instead of)
+the `inert` enhancement: `aria-hidden={!open}` on every panel, plus
+`tabIndex={open ? undefined : -1}` on every link inside — `MegaPanel.tsx`,
+Header's legacy panel, and `GroupChrome.tsx`'s `BusinessesPanel`/
+`CareersPanel`. The last one required changing `HeaderMenu.panel` from a
+static `ReactNode` to `(open: boolean) => ReactNode`, since that panel
+content is caller-owned and Header can't reach into it to set the baseline
+itself. Confirmed fixed by `curl`-ing the built server with zero JS
+executed: `aria-hidden="true"` and `tabindex="-1"` both present in the raw
+HTML for all three panel types. Re-ran the full e2e suite and full verify
+afterward — everything still green, no regressions. Commit `940b93c`.
+
+**Not done, deliberately out of scope:** Footer.tsx/utility-bar touch
+targets (Session 46, still a recommendation only). `/api/careers` + CV
+upload and the `/#contact` dead anchors remain deferred exactly as
+Sessions 44/45 logged them.
+
+**To resume:** all five SKILLS-RUNBOOK.md steps are complete. Nothing left
+on this branch but opening the PR — description should cover what was
+built, the governing Datum sections, the Apple/UI-UX-Pro/Playwright
+findings (fixed vs. deferred, per the runbook's own PR-description ask),
+and the two disclosed, deliberately-not-fixed gaps above.
