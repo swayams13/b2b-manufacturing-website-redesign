@@ -21,6 +21,7 @@ import {
 import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { JourneyTimeline } from '../../components/group/JourneyTimeline'
+import { Reveal } from '../../components/group/Reveal'
 import { RFQBand } from '../../components/RFQBand'
 import { getApprovals, getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
@@ -202,7 +203,7 @@ export default function GroupHome() {
             override approved so far (docs/decisions.md, 2026-09-26) is
             scoped to the "Our Businesses" cards, not here. */}
         <section id="about" aria-labelledby="about-heading" className="border-t border-steel-200 bg-white">
-          <div className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16">
+          <Reveal className="mx-auto grid max-w-wide grid-cols-1 items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16">
             <div>
               <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
                 <span className="h-px w-6 bg-current" aria-hidden="true" />
@@ -263,7 +264,7 @@ export default function GroupHome() {
                 Large-bore expansion joint · Precise Engineers works
               </figcaption>
             </figure>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §03 Our Businesses — replaces the old §14.2 item 6
@@ -275,7 +276,7 @@ export default function GroupHome() {
             stay non-accent (steel primary / secondary), so the RFQ button
             remains the page's only accent-*filled* element. */}
         <section id="businesses" aria-labelledby="businesses-heading" className="border-t border-steel-800 bg-steel-950">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-content">
                 <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-400">
@@ -305,7 +306,7 @@ export default function GroupHome() {
                       alt={biz.photoAlt}
                       fill
                       sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="object-cover transition-transform duration-signature ease-standard group-hover:scale-105"
+                      className="object-cover"
                     />
                     <span className={`absolute inset-x-0 top-0 h-1 ${biz.company === 'dhruv' ? 'bg-brand-500' : 'bg-flex-500'}`} aria-hidden="true" />
                     <span className="absolute bottom-0 left-0 bg-steel-950/90 px-4 py-2 font-mono text-helper text-white">
@@ -353,7 +354,7 @@ export default function GroupHome() {
                 </article>
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §04 Products & Solutions — replaces the old §14.2
@@ -362,7 +363,7 @@ export default function GroupHome() {
             Our Businesses cards' product link lists above; this is a
             curated showcase of individual products. */}
         <section id="products" aria-labelledby="products-heading" className="bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
               <div className="max-w-content">
                 <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
@@ -408,13 +409,13 @@ export default function GroupHome() {
                 All Precise Engineers products →
               </Button>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* §14.2 item 3 — industries served, the secondary entry */}
         {completeIndustries.length > 0 && (
           <section aria-labelledby="industries-heading" className="border-t border-steel-200 bg-white">
-            <div className="mx-auto max-w-wide px-6 py-16">
+            <Reveal className="mx-auto max-w-wide px-6 py-16">
               <h2 id="industries-heading" className="font-display text-h1 font-medium text-steel-950">
                 Industries served.
               </h2>
@@ -432,7 +433,7 @@ export default function GroupHome() {
                   />
                 ))}
               </div>
-            </div>
+            </Reveal>
           </section>
         )}
 
@@ -451,7 +452,7 @@ export default function GroupHome() {
             approved accent-color override is scoped to the Our Businesses
             cards specifically. */}
         <section id="capabilities" aria-labelledby="manufacturing-heading" className="border-t border-steel-200 bg-white">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <div className="max-w-content">
               <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
                 <span className="h-px w-6 bg-current" aria-hidden="true" />
@@ -527,7 +528,7 @@ export default function GroupHome() {
                 ))}
               </div>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §06 Figures — replaces the old §14.2 item 4
@@ -535,13 +536,13 @@ export default function GroupHome() {
             architecture" entry) with six sourced figures, computed from
             real content-loader counts rather than hardcoded. */}
         <section aria-labelledby="figures-heading" className="border-t border-steel-800 bg-steel-950">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <h2 id="figures-heading" className="mb-8 flex items-center gap-3 font-mono text-caption font-bold uppercase tracking-caption text-steel-400">
               <span className="h-px w-6 bg-current" aria-hidden="true" />
               The group in figures
             </h2>
             <StatBand stats={figures} onDark />
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §07 Clients & Projects — replaces the old §14.2
@@ -556,7 +557,7 @@ export default function GroupHome() {
             the full /clients-projects record instead of a per-project URL
             that doesn't exist. */}
         <section aria-labelledby="clients-projects-heading" className="border-t border-steel-200 bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
               <div>
                 <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
@@ -609,7 +610,7 @@ export default function GroupHome() {
                 />
               ))}
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §08 Our Journey — new section, no pre-v2
@@ -619,7 +620,7 @@ export default function GroupHome() {
             publishing" — a launch gate, not a code problem, on this
             prototype demo). */}
         <section id="heritage" aria-labelledby="journey-heading" className="border-t border-steel-200 bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
               <span className="h-px w-6 bg-current" aria-hidden="true" />
               Our Journey
@@ -630,14 +631,14 @@ export default function GroupHome() {
             <div className="mt-12">
               <JourneyTimeline milestones={journeyMilestones} />
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §09 Quality — relocated from its old §14.2
             position (which sat before Clients & Projects) to match the v2
             section order; content unchanged in this commit. */}
         <section id="quality" aria-labelledby="proof-heading" className="border-t border-steel-200 bg-white">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
               <span className="h-px w-6 bg-current" aria-hidden="true" />
               Quality
@@ -677,7 +678,7 @@ export default function GroupHome() {
                 <ApprovalWall approvals={groupApprovals} />
               </div>
             </div>
-          </div>
+          </Reveal>
         </section>
 
         {/* group-home-v2 §10 Careers — new section. Session 39's "build the
@@ -692,7 +693,7 @@ export default function GroupHome() {
             positions" fallback if groupExampleJobs is ever emptied, per
             the README's own on/off convention for this list. */}
         <section id="careers" aria-labelledby="careers-heading" className="border-t border-steel-200 bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 py-24">
+          <Reveal className="mx-auto max-w-wide px-6 py-24">
             <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
               <span className="h-px w-6 bg-current" aria-hidden="true" />
               Careers
@@ -750,7 +751,7 @@ export default function GroupHome() {
                 </Button>
               </div>
             </div>
-          </div>
+          </Reveal>
         </section>
 
       </main>

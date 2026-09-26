@@ -74,7 +74,7 @@ export function JourneyTimeline({ milestones }: { milestones: JourneyMilestone[]
                 alt={current.title}
                 fill
                 sizes="50vw"
-                className={`object-cover ${reduced ? '' : 'transition-opacity duration-signature ease-standard'}`}
+                className={`object-cover ${reduced ? '' : 'transition-opacity duration-standard ease-standard'}`}
               />
             ) : (
               <div className="flex size-full items-center justify-center p-8 text-center">
@@ -88,7 +88,7 @@ export function JourneyTimeline({ milestones }: { milestones: JourneyMilestone[]
           </div>
           <div className="h-1 w-full bg-steel-200" role="presentation">
             <div
-              className={`h-full bg-steel-950 ${reduced ? '' : 'transition-all duration-signature ease-standard'}`}
+              className={`h-full bg-steel-950 ${reduced ? '' : 'transition-all duration-standard ease-standard'}`}
               style={{ width: `${progressPct}%` }}
             />
           </div>
