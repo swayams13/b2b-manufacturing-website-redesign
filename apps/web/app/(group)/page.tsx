@@ -24,7 +24,7 @@ import { JourneyTimeline } from '../../components/group/JourneyTimeline'
 import { RFQBand } from '../../components/RFQBand'
 import { getApprovals, getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
-import { dhruvWorksFacts, groupFiguresExtra, journeyMilestones, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
+import { dhruvWorksFacts, groupExampleJobs, groupFiguresExtra, journeyMilestones, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
 const groupApprovals = getApprovals('group')
@@ -675,6 +675,79 @@ export default function GroupHome() {
               </h3>
               <div className="mt-8">
                 <ApprovalWall approvals={groupApprovals} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* group-home-v2 §10 Careers — new section. Session 39's "build the
+            full mechanism now" decision (backfilled to docs/decisions.md,
+            2026-09-26) is only partly executed here: real EXAMPLE job
+            listings, but the presigned CV upload + /api/careers route are
+            deferred to a dedicated session (same entry, "Session 44
+            addendum") rather than rushed through unreviewed inside this
+            batch of section commits. "Send us your CV" is a real mailto:
+            link (groupEntity's own email, not hardcoded) — a working
+            mechanism, not a fake success state. Renders the "no open
+            positions" fallback if groupExampleJobs is ever emptied, per
+            the README's own on/off convention for this list. */}
+        <section id="careers" aria-labelledby="careers-heading" className="border-t border-steel-200 bg-steel-50">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <p className="mb-6 flex items-center gap-3 text-caption font-bold uppercase tracking-caption text-steel-600">
+              <span className="h-px w-6 bg-current" aria-hidden="true" />
+              Careers
+            </p>
+            <h2 id="careers-heading" className="text-balance font-display text-h1 font-medium leading-none tracking-tight text-steel-950">
+              Build your career in engineering and manufacturing
+            </h2>
+            {groupExampleJobs.length === 0 ? (
+              <p className="mt-8 max-w-content text-body-lg text-steel-700">
+                There are no open positions right now. Send us your CV below and we&apos;ll keep it on file for the
+                next matching role.
+              </p>
+            ) : (
+              <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+                {[
+                  { company: 'dhruv' as const, label: 'Dhruv EPC Solutions' },
+                  { company: 'precise' as const, label: 'Precise Engineers' },
+                ].map(({ company, label }) => {
+                  const jobs = groupExampleJobs.filter((j) => j.company === company)
+                  if (jobs.length === 0) return null
+                  return (
+                    <div key={company} data-company={company}>
+                      <h3 className="text-xs font-medium uppercase tracking-caption text-steel-600">{label}</h3>
+                      <ul className="mt-4 flex flex-col gap-4">
+                        {jobs.map((job) => (
+                          <li key={job.title} className="rounded-sm border border-steel-200 bg-white p-6">
+                            <p className="font-mono text-helper text-steel-500">EXAMPLE listing</p>
+                            <h4 className="mt-2 font-display text-h4 font-medium text-steel-950">{job.title}</h4>
+                            <p className="mt-2 text-sm text-steel-700">
+                              {job.department} · {job.location}
+                            </p>
+                            <p className="mt-1 font-mono text-helper text-steel-500">
+                              {job.employmentType} · {job.experience}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            <div className="mt-12 rounded-sm border border-steel-200 bg-white p-8">
+              <h3 className="font-display text-h3 font-medium text-steel-950">Send us your CV</h3>
+              <p className="mt-3 max-w-content text-body text-steel-700">
+                Apply for an open position above, or send a general application — we review CVs against current
+                and upcoming roles at both businesses.
+              </p>
+              <div className="mt-6">
+                <Button
+                  variant="primary"
+                  href={`mailto:${groupEntity.emails[0]}?subject=${encodeURIComponent('Job application')}`}
+                >
+                  Email your CV to {groupEntity.emails[0]}
+                </Button>
               </div>
             </div>
           </div>

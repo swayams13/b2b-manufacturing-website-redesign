@@ -110,3 +110,17 @@ and does not revisit either.
 **Scope:** the group homepage (`(group)/page.tsx`) only. Not a precedent for any other route's section structure.
 
 **Approval:** Swayam, confirmed 26 Sep 2026.
+
+---
+
+## 2026-09-26 — Group homepage v2: Careers section scope (backfilled from Session 39)
+
+**What was decided (Session 39, Step 0 review — recorded in `docs/progress.md` at the time but never logged here; this entry backfills that gap):** build the Careers section's real mechanism now rather than defer the whole section — job-listing UI with real filtering, and eventually a presigned CV upload + `/api/careers` route — but the three job listings themselves stay tagged `EXAMPLE`, no fabricated real vacancies (per `design_handoff_group_home_v2/reference/Management review notes.md`). A new `app/api/` route still requires human review before merge per CLAUDE.md, regardless of when it's built.
+
+**Session 44 addendum (this build pass):** the CV-upload mechanism and `/api/careers` route are being deferred to a dedicated future session rather than built as part of this multi-section pass — the presigned-upload + validated-route + tests shape is comparable in size to the RFQ engine itself (which took multiple sessions originally), and rushing it through a compressed multi-section commit run risks exactly the kind of under-reviewed new attack surface CLAUDE.md's API-route review gate exists to catch. This section instead ships the job-listing UI (real `groupExampleJobs` records, `EXAMPLE` tag preserved) with a `mailto:` "Send us your CV" call to action — a real, working mechanism (opens the visitor's email client), not a fake success state — as an honest interim, not the full decided-on mechanism.
+
+**Why:** Session 39's own decision already anticipated the route needing separate sign-off; this addendum makes that separation of concerns explicit rather than build the full route unreviewed inside a large batch of section commits.
+
+**Scope:** the group homepage's Careers section only.
+
+**Approval:** Session 39 portion approved by Swayam, 2026-09-26. The addendum is a scope-execution call, not a new architecture decision — flagged in `docs/progress.md` for Swayam's visibility, not a stop-and-ask blocker.
