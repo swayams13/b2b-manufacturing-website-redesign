@@ -5001,3 +5001,19 @@ into the relevant commits.
   polish pass, the UI UX Pro review pass, the Playwright e2e suite
   (`e2e/group-home-v2.spec.ts`), and the PR. All section content is now
   built; these are the remaining steps before merge.
+
+**To resume:** all 14 "Screens/sections" from
+`design_handoff_group_home_v2/README.md` are built and committed on
+`feat/group-home-v2` — no more section-building work remains. Start
+the next session at SKILLS-RUNBOOK.md **Step 2** (Apple design-eng
+motion/interaction polish pass, scoped to header mega panel, scroll
+reveals, timeline, form feedback, hover/press states — stay within the
+§11 motion tokens and reduced-motion rules per the runbook prompt).
+Then Step 3 (UI UX Pro review at 320/768/1280/1920px), Step 4
+(Playwright e2e suite — install browsers first if not already done:
+`pnpm --filter web exec playwright install chromium`), Step 5 (full
+verify + PR). Two known, disclosed gaps to carry into the PR
+description rather than fix as part of polish: the deferred
+`/api/careers` route + CV upload (needs its own human-review pass),
+and `HeroCarousel.tsx`'s three `/#contact` dead anchors
+(`docs/mistakes.md`, 2026-09-26).
