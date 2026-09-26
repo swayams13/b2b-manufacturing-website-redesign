@@ -8,6 +8,7 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import {
+  ApprovalWall,
   Button,
   CertificationCard,
   ClientMarquee,
@@ -21,11 +22,12 @@ import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { JourneyTimeline } from '../../components/group/JourneyTimeline'
 import { RFQBand } from '../../components/RFQBand'
-import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
+import { getApprovals, getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
 import { dhruvWorksFacts, groupFiguresExtra, journeyMilestones, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
+const groupApprovals = getApprovals('group')
 const groupEntity = getEntity('group')
 const preciseCertifications = getCertifications('precise-engineers')
 const dhruvEntity = getEntity('dhruv-epc')
@@ -667,6 +669,14 @@ export default function GroupHome() {
                 </div>
               </div>
             ))}
+            <div className="mt-16 border-t border-steel-200 pt-16">
+              <h3 className="text-xs font-medium uppercase tracking-caption text-steel-600">
+                Approved &amp; inspected by
+              </h3>
+              <div className="mt-8">
+                <ApprovalWall approvals={groupApprovals} />
+              </div>
+            </div>
           </div>
         </section>
 
