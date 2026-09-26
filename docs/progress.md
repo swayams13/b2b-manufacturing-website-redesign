@@ -5172,3 +5172,141 @@ order, 44px touch targets), fixing only issues the spec supports and
 listing the rest as recommendations. Then Step 4 (Playwright e2e suite,
 install browsers first: `pnpm --filter web exec playwright install
 chromium`), Step 5 (full verify + PR).
+
+---
+
+### Session 46 — SKILLS-RUNBOOK.md Step 3: UI UX Pro review pass
+
+Resumed from Session 45's checkpoint (Step 2 done, Steps 3–5 remaining).
+Ran `pnpm --filter web dev` and reviewed the rendered group homepage
+(`apps/web/app/(group)/page.tsx`) live in a real browser at 768, 1280 and
+1920px, plus an automated 500px-window proxy for 320px (see tooling-gap
+note below), using a JS audit script (touch-target rects, WCAG contrast
+ratio via relative-luminance, heading-level sequence, horizontal-overflow
+check) cross-checked against manual screenshots and keyboard/focus testing.
+
+**Real bug found and fixed.** `packages/datum-ui/src/components/MegaPanel.tsx:119`
+used `py-1.5` — not a token in this project's closed spacing scale
+(`packages/tokens/src/tailwind.ts`'s `spacing` key only registers
+`0/1/2/3/4/6/8/12/16/24/32/40`, no `.5` steps). Tailwind's JIT compiler
+silently emits **no CSS** for an unrecognized utility name (confirmed by
+reading the compiled stylesheet directly: `.py-1\.5` doesn't exist, while
+`.py-1`/`.py-12`/`.py-16` do) — no build error, no lint warning, nothing.
+Effect: every product sub-link in the mega panel — both the desktop nav
+dropdown (all companies) and the group homepage's "Core product lines"
+grid section, since `MegaPanel` is reused for both per Step 1's "reuse the
+existing component" rule — rendered at a 20px-tall hit area, under
+CLAUDE.md's 24px absolute touch-target floor. Grepped the whole codebase
+for the same class of bug (`p-0.5/1.5/2.5/3.5` and `m-`/`gap-`/`w-`/`h-`
+equivalents in `apps/web` + `packages/datum-ui`) — this was the only
+occurrence, not systemic. Fixed to `py-2` (8px), matching the identical
+sibling pattern already established in `Header.tsx:327`. Verify: typecheck
+clean, lint clean (same pre-existing unrelated `LegalDocument.tsx` warnings
+as every prior session — nothing new), 125/125 datum-ui tests pass.
+Committed separately (`fb1b0de`) ahead of this log entry, one concern per
+commit.
+
+**Note on why lint didn't catch it:** `eslint-plugin-tailwindcss`'s
+`no-custom-classname` rule did flag two genuinely-invalid classnames
+elsewhere in the same lint run (`LegalDocument.tsx`'s pre-existing `gap-10`/
+`px-5` warnings), so the plugin does check class validity — it just didn't
+flag `py-1.5` here, most likely because `1.5` parses as a syntactically
+valid fractional step for Tailwind's spacing utility shape even though this
+project's closed scale never registers it, so the plugin's heuristic reads
+it as "shape-valid" rather than "custom." Not something to fix by touching
+lint config (that's an `eslint-disable`-adjacent config change requiring
+its own review per CLAUDE.md) — flagging here so a future session doesn't
+assume "lint passed" means "every class resolves to real CSS."
+
+**Full breakpoint results (320/500-proxy, 768, 1280, 1920px):**
+- **Heading structure:** exactly one `<h1>` (the HeroCarousel's rotating
+  headline text — confirmed it's a single persistent element whose
+  `textContent` changes across the carousel's 4 slides, not multiple `h1`s;
+  initially looked like a bug until re-querying moments apart showed the
+  same element with different text). Heading-level sequence checked
+  programmatically across all 53 headings on the page: every *increasing*
+  transition is exactly +1 (h2→h3→h4, never h2→h4) — no skipped levels.
+  Decreasing transitions (e.g. h4 back to h2, closing nested subsections)
+  are normal document-outline behavior, not skips.
+- **Horizontal overflow:** none at any of the four widths
+  (`scrollWidth === clientWidth` every time).
+- **Contrast (WCAG 2.2 AA):** automated relative-luminance scan across
+  every visible `p/a/button/h1-h4/span/label` on the page found zero
+  violations at any width (4.5:1 body text, 3:1 large/bold text).
+- **Touch targets:** after the MegaPanel fix, zero elements anywhere on
+  the page fall under the 24px absolute floor from the group homepage's
+  own build (Sessions 39–45's sections). The remaining 24–28 under-24
+  hits at every width are **not from this branch's work** — they're the
+  shared `Footer.tsx` link lists and the header's utility bar (phone/email/
+  company links), both ~18–20px tall, present site-wide on every route
+  from before this branch existed. Listed as a **recommendation, not
+  fixed**: touching `Footer.tsx`/the utility bar has site-wide blast
+  radius across all 35+ routes, which is out of scope for a group-homepage
+  session per CLAUDE.md's scope discipline ("one task per session," "don't
+  fix unrelated bugs inline") — worth its own session.
+- **Focus order / focus-visible:** tab order follows visual order
+  (utility bar → logo → primary nav → RFQ button), and the focus ring is
+  visible on every element tested, unaffected by Session 45's `inert`
+  rework of the mega panel.
+- **Mega panel keyboard behavior:** confirmed via direct state inspection
+  (not just visual) that Escape correctly closes the panel —
+  `aria-expanded="false"`, computed `opacity: 0`, `inert: true` — a
+  screenshot mid-close looked like a lingering "ghost" panel at first
+  glance, which was just the 240ms close transition caught mid-frame, not
+  a stuck-open bug.
+- **Single accent-filled element:** confirmed at every width and in both
+  the closed and open-mega-panel states — "Request a quote" is the only
+  filled/accent element on screen, satisfying the amber/blue law.
+- **Form UX:** out of this page's scope — the group homepage itself has
+  no form; RFQ form UX was already reviewed in Session 45 (submit-failure
+  alert fade). Not re-audited here.
+
+**Tooling gap, same root cause Session 45 already logged, reproduced
+again:** `resize_window` has a floor around 500px in this environment — it
+silently clamped a requested 320px and 200px window to 500px
+(`window.innerWidth` confirmed via JS both times), so a true 320px
+viewport isn't obtainable with the current browser-automation tool. Framing
+the site in an in-page iframe to force a 320px layout viewport was ruled
+out: `apps/web/next.config.mjs` sends `X-Frame-Options: DENY` site-wide,
+so self-framing is blocked by design (correctly — not weakening that for a
+test). Used the 500px floor as the mobile-viewport proxy instead, which is
+a legitimate stand-in for Tailwind's mobile-first base styles (this
+project's `screens` config in `packages/tokens/src/tailwind.ts` starts at
+`sm: 640px`, so 320–639px all share identical unprefixed CSS — nothing in
+this codebase targets a narrower breakpoint than that). Flagging as an
+honest gap, not a claimed 320px visual confirmation. Also independently
+reproduced Session 45's disclosed `document.hidden`/backgrounded-tab
+limitation (scroll-triggered `Reveal` sections stayed at `opacity-0` when
+scrolled to, since their `IntersectionObserver` callback never fires in
+this tab state) — worked around it the same way Session 45 did, by
+force-setting the reveal wrappers' classes via page JS to inspect the
+content underneath, not by fixing (or needing to fix) anything in
+`Reveal.tsx` itself.
+
+**Also discovered and corrected mid-session, not a design flaw:** an
+`document.documentElement.style.zoom = '156%'` value I set during an
+early, abandoned experiment (trying to force a narrower viewport) was left
+on the page and silently scaled every `getBoundingClientRect()` measurement
+by 1.56× relative to `getComputedStyle()` for several tool calls before
+being caught (a hamburger-menu button briefly measured 38×62px instead of
+its real 40×40px `h-compact`/`w-compact` token size). Reset before any of
+the touch-target/contrast findings above were recorded — none of this
+session's reported numbers are affected, but noting it so the pattern
+(computed-style vs. bounding-rect mismatch by a consistent scale factor ⇒
+check for a stray `zoom`/`transform`) is recognized faster if it recurs.
+
+**Not done, deliberately out of scope for this pass:** Footer.tsx/utility-bar
+touch-target sizing (recommendation only, logged above). RFQ form UX
+(already covered, Session 45). `/api/careers` + CV upload and the
+`/#contact` dead anchors remain deferred exactly as Sessions 44/45 logged
+them — untouched.
+
+**To resume:** Step 3 is complete. Next is SKILLS-RUNBOOK.md **Step 4** —
+add `apps/web/e2e/group-home-v2.spec.ts` (axe zero serious/critical
+violations, single accent element, one h1/no skipped headings, no
+horizontal scroll at 320px, full keyboard tab reach with visible focus
+ring, `prefers-reduced-motion` full usability, RFQ form required-field/
+API-failure states, screenshots at 390/1440px). Install browsers first:
+`pnpm --filter web exec playwright install chromium`. Then Step 5 (full
+verify + PR, with the diff handed to a reviewer subagent separately from
+this implementation session per CLAUDE.md's verify-is-separate rule).
