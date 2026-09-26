@@ -19,9 +19,9 @@ import {
 import { buildOrganization } from '@vedanta/schemas'
 import { HeroCarousel } from '../../components/group/HeroCarousel'
 import { RFQBand } from '../../components/RFQBand'
-import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany } from '../../lib/content-loader'
+import { getCertifications, getClients, getEntity, getIndustries, getProductsByCompany, getProjectHighlights } from '../../lib/content-loader'
 import { industryHref, productHref, productsIndexHref, rfqHref } from '../../lib/product-urls'
-import { dhruvWorksFacts, groupStats, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
+import { dhruvWorksFacts, groupFiguresExtra, manufacturingDisciplines, preciseWorksFacts } from '../../lib/site-data'
 
 const dhruvCertifications = getCertifications('dhruv-epc')
 const groupEntity = getEntity('group')
@@ -130,6 +130,32 @@ export default function GroupHome() {
     if (!product) throw new Error(`FEATURED_PRODUCTS references missing product: ${company}/${slug}`)
     return product
   })
+  const dhruvProjectCount = getProjectHighlights('dhruv-epc').length
+  const preciseProjectCount = getProjectHighlights('precise-engineers').length
+  // group-home-v2 §06 Figures — six sourced figures (README item 8: "only
+  // publish figures that have a source"), replacing the old §14.2 item 4
+  // groupStats-only band (docs/decisions.md, 2026-09-26 "page architecture"
+  // entry). groupStats itself is untouched — still used by /about.
+  const figures = [
+    { value: '30+', label: 'Years of engineering experience', source: 'Since 1994' },
+    {
+      value: '2',
+      label: 'Manufacturing works',
+      source: 'Manjusar GIDC, Vadodara · Vitthal Udyognagar, Anand',
+    },
+    {
+      value: String(dhruvProductCount + preciseProductCount),
+      label: 'Product lines',
+      source: `${dhruvProductCount} Dhruv EPC · ${preciseProductCount} Precise Engineers`,
+    },
+    { value: String(allClients.length), label: 'Clients on the group list', source: 'Vedanta Group brochure, 2026' },
+    {
+      value: String(dhruvProjectCount + preciseProjectCount),
+      label: 'Documented projects',
+      source: `${dhruvProjectCount} Dhruv EPC · ${preciseProjectCount} Precise Engineers`,
+    },
+    { ...groupFiguresExtra },
+  ]
 
   return (
     <>
@@ -486,10 +512,17 @@ export default function GroupHome() {
           </div>
         </section>
 
-        {/* §14.2 item 4 — proof band: stats + certifications, real figures only */}
-        <section className="border-t border-steel-200 bg-steel-50">
-          <div className="mx-auto max-w-wide px-6 pt-12">
-            <StatBand stats={groupStats} />
+        {/* group-home-v2 §06 Figures — replaces the old §14.2 item 4
+            groupStats band (docs/decisions.md, 2026-09-26 "page
+            architecture" entry) with six sourced figures, computed from
+            real content-loader counts rather than hardcoded. */}
+        <section aria-labelledby="figures-heading" className="border-t border-steel-800 bg-steel-950">
+          <div className="mx-auto max-w-wide px-6 py-24">
+            <h2 id="figures-heading" className="mb-8 flex items-center gap-3 font-mono text-caption font-bold uppercase tracking-caption text-steel-400">
+              <span className="h-px w-6 bg-current" aria-hidden="true" />
+              The group in figures
+            </h2>
+            <StatBand stats={figures} onDark />
           </div>
         </section>
 
