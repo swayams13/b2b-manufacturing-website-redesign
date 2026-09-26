@@ -5414,3 +5414,24 @@ on this branch but opening the PR — description should cover what was
 built, the governing Datum sections, the Apple/UI-UX-Pro/Playwright
 findings (fixed vs. deferred, per the runbook's own PR-description ask),
 and the two disclosed, deliberately-not-fixed gaps above.
+
+---
+
+### Session 47 (cont'd) — pushed, PR opened
+
+Swayam reviewed the rendered homepage locally (dev server on port 4000)
+and confirmed it looked good. Branch had never been pushed to origin
+before this — pushed `feat/group-home-v2` (30 commits ahead of `main`,
+`-u origin`) and opened **PR #33**:
+https://github.com/swayams13/b2b-manufacturing-website-redesign/pull/33
+
+Note: the GitHub remote itself was renamed/moved mid-session — `origin`
+still points at the old URL
+(`github.com/swayams13/Dhruv-EPC-Website-Redesign-.git`), which now
+redirects; `gh repo view` resolves the current name as
+`swayams13/b2b-manufacturing-website-redesign`. Push/PR both went through
+via the redirect, but a future session should update the `origin` remote
+URL directly if the redirect ever stops working.
+
+**To resume:** awaiting Swayam's PR review / merge decision. Nothing else
+outstanding on this branch.
