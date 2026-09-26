@@ -5017,3 +5017,158 @@ description rather than fix as part of polish: the deferred
 `/api/careers` route + CV upload (needs its own human-review pass),
 and `HeroCarousel.tsx`'s three `/#contact` dead anchors
 (`docs/mistakes.md`, 2026-09-26).
+
+---
+
+### Session 45 — SKILLS-RUNBOOK.md Step 2: motion/interaction polish pass
+
+Resumed from Session 44's checkpoint (all 14 sections built, nothing left
+but Steps 2–5). Applied the Apple design-eng skill (Emil Kowalski) to the
+five areas the runbook names — header mega panel, scroll reveals, timeline,
+form feedback, hover/press states — staying inside Datum §11's fixed token
+set (durations `instant`/`fast`/`standard`/`deliberate`/`signature`,
+`ease.enter`/`ease.exit`/`ease.standard`, no bounce/spring/overshoot) per
+CLAUDE.md's spec-wins rule. Where `design_handoff_group_home_v2/README.md`
+suggested a literal value that exceeds the token set (its own §11 caveat,
+README line 19), followed the canonical `docs/datum-design-system.md` text
+instead, not the prototype note.
+
+**1. Header mega panel — real open/close animation.** All three disclosure
+panels (`MegaPanel.tsx`, `Header.tsx`'s legacy single-company grid, and the
+group nav's `extraMenus` — Our Businesses/Careers) previously toggled via
+the `hidden` attribute: an instant, unanimated show/hide, contradicting the
+README's explicit "Mega panels ... animate opacity plus translateY at
+`duration-standard`" (line 30). Fixed by keeping the panel mounted and
+animating `opacity`/`translateY(-12px→0)` with `ease-enter` on open /
+`ease-exit` on close (`motion-reduce:transition-none`), and moving the
+open/closed accessibility state onto the `inert` DOM property instead of
+`hidden` (hidden` blocks CSS transitions outright — can't animate to/from
+`display: none`). **React 18 gotcha, logged so it isn't rediscovered:**
+`inert={boolean}` as a JSX prop doesn't work on this React version — React
+18.3.1 has no special-cased handling for the `inert` attribute, so it always
+strips it via the generic "remove boolean attribute" path regardless of
+true/false (verified by reading react-dom's `shouldRemoveAttributeWithWarning`
+source directly, not assumed). Set it imperatively instead:
+`ref.current.inert = !open` in a `useEffect`. `packages/tokens/src/tailwind.ts`
+already had `duration-standard`/`ease-enter`/`ease-exit` wired to Tailwind
+classes — no new token needed.
+
+**2. Scroll reveals — built for the first time; none existed anywhere in
+the codebase.** README line 45 requires it ("sections fade in and move up
+... the first time they enter the viewport, IntersectionObserver, runs
+once"); the 20px distance and duration-deliberate/signature suggestion
+there are the prototype's literal values the README itself says to clamp —
+used §11's actual spec instead (12px = `translate-y-3`, already precedented
+in `StickyQuoteChip.tsx`; `duration-standard`, `ease-enter`). New file
+`apps/web/components/group/Reveal.tsx`, a small client wrapper
+(IntersectionObserver, `once: true` via `observer.disconnect()` on first
+entry, `prefers-reduced-motion` skips the observer and renders shown
+immediately) applied to all 10 group-home-v2 section content wrappers in
+`(group)/page.tsx`. **Real bug caught while writing it:** the obvious
+implementation settles the "shown" state at `translate-y-0`, but a
+Tailwind translate utility sets `transform: translate(0,0)`, not `none` —
+any non-`none` transform on an ancestor creates a new containing block,
+which breaks `position: sticky` on descendants. `JourneyTimeline.tsx`'s
+sticky image panel is a section descendant, so this would have silently
+broken it. Fixed by dropping the translate class entirely once shown
+(`shown ? 'opacity-100' : 'translate-y-3 opacity-0'`), so the element
+settles at a true `transform: none`.
+
+**3. Timeline — token misuse fixed, not a new mechanic.**
+`JourneyTimeline.tsx`'s photo crossfade and progress-bar fill both used
+`duration-signature` (700ms) — but §11 reserves `signature` for "the
+signature moment only" (the product-hero datum-line draw). Neither of
+these is that moment; both are ordinary state-indication transitions on
+scroll. Changed to `duration-standard` (240ms), matching the "card
+transitions" row of §11's duration table. Confirmed `DatumRule.tsx`'s own
+`duration-signature` usage is the legitimate signature-moment component —
+left untouched.
+
+**4. Form feedback — RFQForm's submit-failure alert now fades in.**
+`(group)/request-a-quote/RFQForm.tsx`'s `role="alert"` failure box (the
+"your requirement could not be sent" message with the mailto/phone
+fallback) mounted with zero transition — instant appear, which Emil's
+framework flags directly ("elements appearing or disappearing without
+transition feel broken") and which is exactly the kind of action-confirming
+motion §11 calls a valid purpose. Added the same `shown` + `requestAnimationFrame`
+pattern `MobileDrawer.tsx` already established in this codebase (reused,
+not invented) — `duration-standard`, `ease-enter`, `motion-reduce:transition-none`.
+Left `FieldShell.tsx`'s per-field error text alone — it's a shared
+primitive used by every form on the site, not scoped to this page, and
+its error is already correctly announced via the existing `aria-live`
+region; a visual fade there is a broader-blast-radius call than this
+pass's scope.
+
+**5. Hover/press states — one real violation found and removed, nothing
+else changed.** Site-wide, every existing datum-ui card uses one
+consistent hover language: a small `motion-safe:group-hover:translate-x-1`
+arrow nudge at `duration-instant`/`ease-standard` — confirmed by grepping
+every component in `packages/datum-ui/src/components`. The Our Businesses
+card (`(group)/page.tsx`, built Session 44) was the one exception: its
+photo had `group-hover:scale-105` at `duration-signature` — a decorative
+zoom no other card in the system does, at 700ms (reserved for the
+signature moment), which is also exactly the "ambient/decorative
+animation" §11 opens by rejecting outright. Removed both the scale and the
+duration; the photo is now static on hover like every other card's photo
+in the codebase. `Button.tsx` was already spec-correct (checked, not
+assumed) — `active:translate-y-px`, no scale, matching its own header
+comment that vertical translate is "the only vertical movement" on press;
+did not touch it.
+
+**Verify:** `pnpm typecheck && lint && test && build` all clean — zero
+errors, zero new warnings (same pre-existing unrelated `LegalDocument.tsx`
+warnings as every prior session). 125/125 datum-ui tests pass. Homepage
+route unchanged at 106 kB First Load JS, still under the 120 kB budget.
+
+**Live-browser check, and an honest tooling gap.** `pnpm --filter
+@vedanta/web dev` on port 3000. Confirmed directly via JS introspection
+(not just eyeballing): the mega panel's `inert`/opacity/transform/easing
+are all correct in both the open state (`inert: false`, `opacity: 1`,
+`ease-enter` cubic-bezier) and the closed state (`inert: true`, `opacity:
+0`, `ease-exit` cubic-bezier, `pointer-events-none`); Tab-focus lands on
+the first panel link with the global `:focus-visible` ring still firing
+through the `inert`/animation rework; the Our Businesses photo no longer
+transforms on hover (`transform: none` confirmed via computed style while
+hovered). **Could not get a live visual confirmation that the
+IntersectionObserver-driven scroll reveal actually fires**, and traced why
+rather than guessing: this automated tab reports `document.hidden = true`
+/ `visibilityState: "hidden"` for the entire session (confirmed a bare
+`requestAnimationFrame` also never fires under this condition) — a
+backgrounded-tab characteristic of this browser-automation tool, the same
+family of limitation Session 40/41 already logged for `resize_window` not
+visibly taking effect on screenshots (confirmed that gap is still present
+too: `resize_window` to 320px did not change `window.innerWidth`). Verified
+the reveal's logic by code review instead — it's the same
+IntersectionObserver idiom already shipping in this codebase
+(`JourneyTimeline.tsx`, `useRfqAnchorInView.ts`, `AnchorRail.tsx`) — and by
+temporarily forcing the DOM classes visible via a page-JS override (not a
+source change) to inspect everything downstream of the reveal (hover
+state, focus rings, layout). Flagging this as an honest gap per CLAUDE.md,
+not a claimed verification: a real visitor's tab is visible from first
+paint in the overwhelming majority of cases, and a backgrounded tab's
+observers fire retroactively once it's foregrounded (standard browser
+behavior), so this doesn't change the implementation — it changes what
+could be confirmed with this tool this session. The RFQForm alert fade
+(same `shown`/rAF pattern as the already-shipped `MobileDrawer.tsx`) was
+verified by code review only, not exercised live — completing the two-step
+RFQ form via browser automation to force the failure state was judged not
+worth the tool-call budget for a five-line, low-risk, precedented change.
+
+**Commits:** `packages/datum-ui/src/components/MegaPanel.tsx` +
+`Header.tsx` (mega panel animation), `apps/web/components/group/Reveal.tsx`
+(new) + `(group)/page.tsx` (scroll reveals + hover-zoom fix),
+`apps/web/components/group/JourneyTimeline.tsx` (duration-signature fix),
+`(group)/request-a-quote/RFQForm.tsx` (submit-error fade) + this log.
+
+**Not done, deliberately out of scope for this pass:** `FieldShell.tsx`
+per-field error fade (see item 4 — broader blast radius, a11y already
+correct without it). `/api/careers` + CV upload and the `/#contact` dead
+anchors remain deferred exactly as Session 44 logged them — untouched.
+
+**To resume:** Step 2 is complete. Next is SKILLS-RUNBOOK.md **Step 3** —
+UI UX Pro skill review of the rendered page at 320/768/1280/1920px
+(hierarchy, readability, CTA clarity, form UX, WCAG 2.2 AA contrast, focus
+order, 44px touch targets), fixing only issues the spec supports and
+listing the rest as recommendations. Then Step 4 (Playwright e2e suite,
+install browsers first: `pnpm --filter web exec playwright install
+chromium`), Step 5 (full verify + PR).
