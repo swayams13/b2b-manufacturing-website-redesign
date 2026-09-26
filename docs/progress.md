@@ -4877,3 +4877,127 @@ Journey, 11 Quality, 12 Careers (+ `/api/careers`), 13 Enquiry, 14
 Footer check, then SKILLS-RUNBOOK.md Steps 2–5. Stopping here, same
 reasoning as Session 40 — checking in rather than continuing
 unsupervised through the remaining 9+ sections in one pass.
+
+---
+
+### Session 44 — sections 5–14 built (Our Businesses through Footer check), one commit per section
+
+Swayam asked to continue through the remaining 9 sections in one pass.
+Before touching code, surfaced a structural question that Session
+39/41 hadn't resolved: the pre-v2 page (blueprint §14.2) has four
+sections whose purpose overlaps a new v2 section (DOORS↔Our
+Businesses, category grid↔Products & Solutions, StatBand-only
+band↔Figures, clientele band↔Clients & Projects), and one pre-v2
+section (Industries served) has no slot at all in the v2 order.
+Swayam's answers, logged in `docs/decisions.md` 2026-09-26 "page
+architecture": **replace** the four overlapping sections in place
+(one v2 section per pre-v2 section, no duplication), and **keep**
+Industries served, inserted after Products & Solutions.
+
+**Sections built, each its own commit, `pnpm typecheck && lint && test
+&& build` clean after every one:**
+
+1. **Our Businesses (§03)** — replaces the DOORS cards. Real 6-item
+   product link lists per company via `productHref()`. Found and used
+   the right destination for "Enquire with …" (`rfqHref()` →
+   `/request-a-quote?company=…`) instead of `HeroCarousel`'s existing
+   `/#contact` dead anchors — logged those as a separate,
+   not-fixed-here finding in `docs/mistakes.md` (out of scope for this
+   commit, CLAUDE.md's log-don't-fix-inline rule).
+2. **Products & Solutions (§04)** — replaces the CategoryCard grid
+   with a curated 6-of-17 `ProductCard` showcase; category-level
+   browsing moved to the Our Businesses cards. One real photo
+   (`despl-skid-3d.jpg`, previously unused) on "Process Skids"; the
+   rest use `ProductCard`'s no-photo variant rather than force photos
+   that don't exist. Industries served kept in place directly after.
+3. **Manufacturing (§05)** — new section. Discovered `lib/site-data.ts`
+   already had `dhruvWorksFacts`/`preciseWorksFacts`/
+   `manufacturingDisciplines` pre-staged (real sourced figures,
+   apparently extracted from the reference ahead of this build) — used
+   directly rather than re-deriving. Omitted the reference's small
+   per-facility photo slots (boring mill, hydrotest, etc.) entirely —
+   that photography doesn't exist yet, and CLAUDE.md's omit-not-empty
+   convention beats a new placeholder-tag pattern for content with no
+   real shoot planned.
+4. **Figures (§06)** — replaces the old groupStats-only band with six
+   sourced figures; product/project/client counts are computed from
+   `getProductsByCompany`/`getProjectHighlights`/`getClients` so they
+   can't drift from the underlying records. `groupStats` itself
+   untouched (`/about` still uses it).
+5. **Clients & Projects (§07)** — replaces the old clientele band. Kept
+   `ClientMarquee` per the already-settled README Decision 8, added the
+   named featured case (Emerson CGD skids — a real `ProjectHighlight`
+   record paired with its matching promoted photo) and 3 `ProjectCard`
+   teasers built from real `content/projects/*.json` figures. No
+   case-study pages exist, so every card links to `/clients-projects`
+   rather than a URL that doesn't exist. The stale §14.2-item-5 comment
+   claiming `getProjectHighlights()` didn't exist yet was wrong by this
+   point — removed.
+6. **Our Journey (§08)** — new section, new component
+   (`components/group/JourneyTimeline.tsx`): an IntersectionObserver
+   tracks the nearest milestone row (same pattern as the existing
+   `useRfqAnchorInView.ts`, not continuous scroll-position math) to
+   drive a desktop sticky image/year panel + progress fill; mobile
+   renders rows only, per README. "Year TBC" milestones render as
+   literal text — matches the site's existing "DEMO figure —
+   engineering data pending" convention (`dhruvStats`) for a prototype
+   demo; README already flags TBC years as a launch content gate, not
+   a code problem. Also relocated the existing Quality/certifications
+   section to after this one, to match the v2 order (it previously sat
+   before Clients & Projects).
+7. **Quality (§09) enhancement** — added the group-level `ApprovalWall`
+   (12 real `content/approvals/*.json` records) below the existing
+   per-company `CertificationCard` grids. Separate record set from the
+   Dhruv/Precise certifications, so no entity bleed.
+8. **Careers (§10), scoped** — job-listing UI with the real
+   `EXAMPLE`-tagged `groupExampleJobs`, grouped by business, "no open
+   positions" fallback if that list is ever emptied, and a real
+   `mailto:` "Send us your CV" link (`groupEntity.emails[0]`, not
+   hardcoded). Session 39 had actually already decided to "build the
+   full mechanism now" (job UI + presigned CV upload + `/api/careers`
+   route) during its Step 0 review, but that decision was never logged
+   to `docs/decisions.md` — backfilled it, plus a "Session 44 addendum"
+   explicitly deferring the upload mechanism + new API route to a
+   dedicated future session: that shape is comparable in size to the
+   RFQ engine itself, and building it unreviewed inside a large batch
+   of section commits is exactly what CLAUDE.md's new-API-route
+   human-review gate exists to prevent.
+9. **Enquiry (§13) / Footer (§14) — verified, no changes needed.** The
+   existing `<RFQBand />` closer already matches the site's established
+   pattern (every company home page links out to the full
+   `/request-a-quote` form rather than embedding it — `RFQForm.tsx`
+   already has the business radiogroup, product select, honeypot,
+   time-trap + idempotency key, and presigned file upload the README
+   describes). `(group)/layout.tsx`'s `Footer` already renders from the
+   real `EntityRecord`. Neither needed a v2-specific rebuild.
+
+**Verify:** `pnpm typecheck && lint && test && build` clean after every
+commit above (confirmed again as one final pass at the end). Homepage
+route grew from 105 kB to 106 kB First Load JS — still well under the
+120 kB marketing-SSG budget. Live-browser check (`pnpm --filter
+@vedanta/web dev`; ports 3000 and 3001 occupied again, landed on
+3001 this time) confirmed every new section renders with real data —
+Our Businesses cards' photos/logos/top-rule colors, the Products grid,
+Manufacturing facts and disciplines, the Figures band's live-computed
+counts (17 product lines, 44 clients, 15 projects), the
+Clients & Projects featured case and ProjectCards, the Journey
+timeline's progress bar visibly advancing on scroll and its honest
+"Year TBC"/"Archival photo required" placeholders, the Quality
+ApprovalWall, and the Careers job listings + CV mailto link.
+
+**Commits (9, one per item above, `feat(group-home): …`):**
+Our Businesses · Products & Solutions · Manufacturing · Figures ·
+Clients & Projects · Our Journey · Quality (ApprovalWall) · Careers
+(scoped) — plus `docs/decisions.md`/`docs/mistakes.md` updates folded
+into the relevant commits.
+
+**Not done, deliberately out of scope for this pass:**
+- `/api/careers` route + presigned CV upload (see Careers note above —
+  flagged for a dedicated session, human-review-gated per CLAUDE.md).
+- `HeroCarousel.tsx`'s three `/#contact` dead anchors (found this
+  session, logged to `docs/mistakes.md`, not fixed — pre-existing,
+  unrelated to the section being built when found).
+- SKILLS-RUNBOOK.md Steps 2–5: the Apple design-eng motion/interaction
+  polish pass, the UI UX Pro review pass, the Playwright e2e suite
+  (`e2e/group-home-v2.spec.ts`), and the PR. All section content is now
+  built; these are the remaining steps before merge.
